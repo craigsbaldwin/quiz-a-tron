@@ -2,7 +2,8 @@
   <div id="app">
     <ProgressBar :progress="progress" />
     <Questions :step="step" :questions="questions" />
-    <ProgressButtons :step="step" :questions="questions.length" />
+    <ProgressButtons :step="step" :questions="questions" />
+    <Scoring :questions="questions" />
   </div>
 </template>
 
@@ -10,6 +11,7 @@
   import ProgressBar from './components/ProgressBar.vue';
   import ProgressButtons from './components/ProgressButtons.vue';
   import Questions from './components/Questions.vue';
+  import Scoring from './components/Scoring.vue';
 
   export default {
     name: 'App',
@@ -18,55 +20,78 @@
       ProgressBar,
       ProgressButtons,
       Questions,
+      Scoring,
     },
 
     data() {
       return {
         progress: 0,
+        step: 0,
+        score: 0,
+        finished: false,
         questions: [
           {
             question: "This is a 1 test?",
-            number: 1,
+            points: 1,
+            type: 'multi',
+            answer: 'This is answer A',
+            givenAnswer: false,
+            answers: [
+              { answer: 'This is answer A' },
+              { answer: 'This is answer B' },
+              { answer: 'This is answer C' },
+              { answer: 'This is answer D' },
+            ],
           },
           {
             question: "This is a 2 test?",
-            number: 2,
-          },
-          {
-            question: "This is a 3 test?",
-            number: 3,
-          },
-          {
-            question: "This is a 4 test?",
-            number: 4,
-          },
-          {
-            question: "This is a 5 test?",
-            number: 5,
+            points: 1,
+            type: 'multi',
+            answer: 'This is answer D',
+            givenAnswer: false,
+            answers: [
+              { answer: 'This is answer A' },
+              { answer: 'This is answer C' },
+              { answer: 'This is answer D' },
+            ],
           },
         ],
-        step: 0,
       }
     },
 
     methods: {
-      handleNextQuestion(step) {
-        this.step = (step + 1);
-
-        this.calculateProgress();
-      },
-
       calculateProgress() {
         const totalQuestions = this.questions.length;
         this.progress = Math.round(((this.step - 1) / totalQuestions) * 100);
-      }
+      },
+
+      handleNextQuestion(step) {
+        this.step = (step + 1);
+        this.calculateProgress();
+      },
+
+      handleAnswerGiven(data) {
+        this.questions[data.step - 1].givenAnswer = data.answer;
+      },
+
+      handleQuizFinish() {
+        this.finished = true;
+      },
     },
 
-    created() {
+    mounted() {
       this.calculateProgress();
 
       window.VueEventBus.$on('next-question', (step) => {
         this.handleNextQuestion(step);
+      });
+
+      window.VueEventBus.$on('answer-given', (data) => {
+        this.handleAnswerGiven(data);
+      });
+
+      window.VueEventBus.$on('finished', () => {
+        this.handleQuizFinish();
       });
     },
   }

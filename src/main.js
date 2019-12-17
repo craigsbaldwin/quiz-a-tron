@@ -7,4 +7,4 @@ window.VueEventBus = new Vue();
 
 new Vue({
   render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');

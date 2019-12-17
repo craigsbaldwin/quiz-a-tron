@@ -3,23 +3,24 @@
     <button
       class="progress-buttons__button"
       v-if="step === 0"
-      @click="progress()"
+      @click="start"
     >
       Start
     </button>
 
     <button
       class="progress-buttons__button"
-      v-if="step < questions && step > 0"
-      @click="progress()"
-    >
-      Next
-    </button>
+      v-if="step < numberOfQuestions && step > 0"
+      @click="next"
+      :disabled="isDisabled"
+      v-text="(!isDisabled) ? 'Next' : 'Answer'"
+    ></button>
 
     <button
       class="progress-buttons__button"
-      v-if="step === questions"
-      @click="progress()"
+      v-if="step === numberOfQuestions"
+      @click="finish"
+      :disabled="isDisabled"
     >
       Finish
     </button>
@@ -30,12 +31,34 @@
 export default {
   props: {
     step: Number,
-    questions: Number,
+    questions: Array,
   },
 
   methods: {
-    progress() {
+    start() {
       window.VueEventBus.$emit('next-question', this.step);
+    },
+
+    next() {
+      window.VueEventBus.$emit('next-question', this.step);
+    },
+
+    finish() {
+      window.VueEventBus.$emit('finished');
+    },
+  },
+
+  computed: {
+    numberOfQuestions() {
+      return this.questions.length;
+    },
+
+    isDisabled() {
+      if (!this.questions[this.step - 1]) {
+        return true;
+      }
+
+      return (this.questions[this.step - 1].givenAnswer === false);
     }
   }
 }
@@ -53,6 +76,12 @@ export default {
 
       &:hover {
         background-color: var(--colour-dark-green);
+      }
+
+      &[disabled] {
+        background-color: var(--colour-text);
+        cursor: not-allowed;
+        opacity: 0.5;
       }
     }
   }

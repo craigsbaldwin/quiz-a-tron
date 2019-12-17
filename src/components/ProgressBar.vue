@@ -10,9 +10,8 @@
       <span
         class="progress-bar__text"
         v-if="progress > 0"
-      >
-        {{ setProgressText(progress) }}
-      </span>
+        v-text="`${progress}%`"
+      ></span>
     </div>
   </div>
 </template>
@@ -22,12 +21,6 @@ export default {
   props: {
     progress: Number,
   },
-
-  methods: {
-    setProgressText(progress) {
-      return `${progress}%`;
-    }
-  }
 }
 </script>
 

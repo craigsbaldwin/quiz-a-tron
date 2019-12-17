@@ -12,12 +12,40 @@
       v-if="step > 0"
     >
       <span class="questions__number">
-        {{ question.number }}
+        {{ this.step }}
       </span>
 
       <h2 class="questions__question">
         {{ question.question }}
       </h2>
+    </div>
+
+    <div class="questions__answers answers">
+      <div
+        class="answers__answer"
+        v-for="(answer, index) in question.answers"
+        :key="index"
+      >
+        <input
+          :id="handleiseAnswer(step, answer)"
+          :name="step"
+          @change="handleChange(answer.answer)"
+          type="radio"
+        >
+
+        <label
+          :for="handleiseAnswer(step, answer)"
+        >
+          {{ answer.answer }}
+        </label>
+      </div>
+    </div>
+
+    <div
+      class="questions__points"
+      v-if="step !== 0"
+    >
+      This question is worth: {{ question.points }}
     </div>
   </div>
 </template>
@@ -29,11 +57,30 @@ export default {
     step: Number,
   },
 
+  methods: {
+    handleiseAnswer(step, answer) {
+      return `${step}-${answer.answer.toLowerCase().replace(/\s/g, '-')}`;
+    },
+
+    handleChange(answer) {
+      const data = {
+        step: this.step,
+        answer,
+      }
+
+      window.VueEventBus.$emit('answer-given', data);
+    }
+  },
+
   computed: {
     question() {
+      if (!this.questions[this.step - 1]) {
+        return false;
+      }
+
       return this.questions[this.step - 1];
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -64,6 +111,10 @@ export default {
 
     &__question {
       font-size: 24px;
+    }
+
+    &__answers {
+      margin-bottom: var(--gutter);
     }
   }
 </style>
