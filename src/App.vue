@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <div class="header">
+      Quiz-a-tron
+    </div>
+
     <ProgressBar :progress="progress" />
     <Questions :step="step" :questions="questions" />
     <ProgressButtons :step="step" :questions="questions" />
@@ -106,13 +110,15 @@
     --colour-green: rgb(46, 204, 113);
     --colour-dark-green: rgb(39, 174, 96);
     --colour-grey: rgb(189, 195, 199);
+    --colour-dark-grey: rgb(52, 73, 94);
     --colour-yellow: rgb(241, 196, 15);
 
     --timing: 0.4s;
     --easing: ease;
 
-    --gutter: 20px;
-    --progress-bar: 40px;
+    --gutter-small: 20px;
+    --gutter-large: 40px;
+    --progress-bar: 50px;
   }
 
   * {
@@ -128,9 +134,24 @@
   #app {
     color: var(--colour-text);
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    margin-bottom: var(--gutter);
-    padding: var(--gutter);
-    padding-bottom: var(--progress-bar);
+    margin: 0 auto;
+    margin-top: var(--progress-bar);
+    padding: var(--gutter-large);
+    max-width: 600px;
     min-height: 100vh;
+  }
+
+  .header {
+    align-items: center;
+    background-color: var(--colour-dark-grey);
+    color: var(--colour-text-inverse);
+    display: flex;
+    height: var(--progress-bar);
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
   }
 </style>

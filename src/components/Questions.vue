@@ -8,94 +8,105 @@
     </p>
 
     <div
-      class="questions__header"
+      class="questions__container"
       v-if="step > 0"
     >
-      <span class="questions__number">
-        {{ this.step }}
-      </span>
-
-      <h2 class="questions__question">
-        {{ question.question }}
-      </h2>
-    </div>
-
-    <div class="questions__answers answers">
       <div
-        class="answers__answer"
-        v-for="(answer, index) in question.answers"
+        class="questions__question"
+        :class="{ 'is-active': step === (index + 1) }"
+        v-for="(question, index) in questions"
         :key="index"
       >
-        <input
-          :id="handleiseAnswer(step, answer)"
-          :name="step"
-          @change="handleChange(answer.answer)"
-          type="radio"
-        >
+        <div class="questions__header">
+          <span class="questions__number">
+            {{ index + 1 }}
+          </span>
 
-        <label
-          :for="handleiseAnswer(step, answer)"
-        >
-          {{ answer.answer }}
-        </label>
+          <h2 class="questions__question-text">
+            {{ question.question }}
+          </h2>
+        </div>
+
+        <div class="questions__answers answers">
+          <div
+            class="answers__answer"
+            v-for="(answer, index) in question.answers"
+            :key="index"
+          >
+            <input
+              :id="handleiseAnswer(step, answer)"
+              :name="step"
+              @change="handleChange(answer.answer)"
+              type="radio"
+            >
+
+            <label
+              :for="handleiseAnswer(step, answer)"
+            >
+              {{ answer.answer }}
+            </label>
+          </div>
+        </div>
+
+        <Points
+          v-if="step !== 0"
+          :point="question.points"
+        />
       </div>
-    </div>
-
-    <div
-      class="questions__points"
-      v-if="step !== 0"
-    >
-      This question is worth: {{ question.points }}
     </div>
   </div>
 </template>
 
 <script>
-export default {
-  props: {
-    questions: Array,
-    step: Number,
-  },
+  import Points from './Points.vue';
 
-  methods: {
-    handleiseAnswer(step, answer) {
-      return `${step}-${answer.answer.toLowerCase().replace(/\s/g, '-')}`;
+  export default {
+    components: {
+      Points,
     },
 
-    handleChange(answer) {
-      const data = {
-        step: this.step,
-        answer,
-      }
-
-      window.VueEventBus.$emit('answer-given', data);
-    }
-  },
-
-  computed: {
-    question() {
-      if (!this.questions[this.step - 1]) {
-        return false;
-      }
-
-      return this.questions[this.step - 1];
+    props: {
+      questions: Array,
+      step: Number,
     },
-  },
-}
+
+    methods: {
+      handleiseAnswer(step, answer) {
+        return `${step}-${answer.answer.toLowerCase().replace(/\s/g, '-')}`;
+      },
+
+      handleChange(answer) {
+        const data = {
+          step: this.step,
+          answer,
+        }
+
+        window.VueEventBus.$emit('answer-given', data);
+      }
+    },
+  }
 </script>
 
 <style lang="scss" scoped>
   .questions {
-    margin-bottom: var(--gutter);
+    margin-bottom: var(--gutter-large);
 
     &__header {
       align-items: center;
       display: flex;
-      margin-bottom: var(--gutter);
+      margin-bottom: var(--gutter-small);
     }
 
     &__start {
       font-size: 18px;
+    }
+
+    &__question {
+      display: none;
+
+      &.is-active {
+        display: block;
+      }
     }
 
     &__number {
@@ -105,16 +116,16 @@ export default {
       display: flex;
       height: var(--progress-bar);
       justify-content: center;
-      margin-right: var(--gutter);
+      margin-right: var(--gutter-small);
       width: var(--progress-bar);
     }
 
-    &__question {
+    &__question-text {
       font-size: 24px;
     }
 
     &__answers {
-      margin-bottom: var(--gutter);
+      margin-bottom: var(--gutter-large);
     }
   }
 </style>

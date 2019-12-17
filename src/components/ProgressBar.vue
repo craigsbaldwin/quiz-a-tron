@@ -17,23 +17,23 @@
 </template>
 
 <script>
-export default {
-  props: {
-    progress: Number,
-  },
-}
+  export default {
+    props: {
+      progress: Number,
+    },
+  }
 </script>
 
 <style lang="scss" scoped>
   .progress-bar {
-    background-color: var(--colour-grey);
     left: 0;
-    bottom: 0;
     height: var(--progress-bar);
     position: fixed;
-    transform: translateY(100%);
+    top: 0;
+    transform: translateY(-100%);
     transition: transform var(--timing) var(--easing);
     width: 100%;
+    z-index: 2;
 
     &__bar {
       align-items: center;
