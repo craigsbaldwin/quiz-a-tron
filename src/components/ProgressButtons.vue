@@ -50,6 +50,10 @@ export default {
       cursor: pointer;
       font-size: 18px;
       padding: 10px 20px;
+
+      &:hover {
+        background-color: var(--colour-dark-green);
+      }
     }
   }
 </style>

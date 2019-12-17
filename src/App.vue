@@ -25,19 +25,24 @@
         progress: 0,
         questions: [
           {
-            question: "This is a test?",
+            question: "This is a 1 test?",
+            number: 1,
           },
           {
-            question: "This is a test?",
+            question: "This is a 2 test?",
+            number: 2,
           },
           {
-            question: "This is a test?",
+            question: "This is a 3 test?",
+            number: 3,
           },
           {
-            question: "This is a test?",
+            question: "This is a 4 test?",
+            number: 4,
           },
           {
-            question: "This is a test?",
+            question: "This is a 5 test?",
+            number: 5,
           },
         ],
         step: 0,
@@ -54,7 +59,6 @@
       calculateProgress() {
         const totalQuestions = this.questions.length;
         this.progress = Math.round(((this.step - 1) / totalQuestions) * 100);
-
       }
     },
 
@@ -75,7 +79,9 @@
     --colour-text-inverse: rgb(236, 240, 241);
 
     --colour-green: rgb(46, 204, 113);
+    --colour-dark-green: rgb(39, 174, 96);
     --colour-grey: rgb(189, 195, 199);
+    --colour-yellow: rgb(241, 196, 15);
 
     --timing: 0.4s;
     --easing: ease;
@@ -98,6 +104,7 @@
     color: var(--colour-text);
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     margin-bottom: var(--gutter);
+    padding: var(--gutter);
     padding-bottom: var(--progress-bar);
     min-height: 100vh;
   }

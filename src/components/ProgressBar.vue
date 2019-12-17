@@ -1,12 +1,15 @@
 <template>
-  <div class="progress-bar">
+  <div
+    class="progress-bar"
+    :class="{ 'is-active': progress >= 0 }"
+  >
     <div
       class="progress-bar__bar"
-      :style="{ paddingRight: (this.progress > 0) ? '10px' : 0, width: this.progress + '%'}"
+      :style="{ paddingRight: (progress > 0) ? '10px' : 0, width: progress + '%'}"
     >
       <span
         class="progress-bar__text"
-        v-if="this.progress > 0"
+        v-if="progress > 0"
       >
         {{ setProgressText(progress) }}
       </span>
@@ -35,6 +38,8 @@ export default {
     bottom: 0;
     height: var(--progress-bar);
     position: fixed;
+    transform: translateY(100%);
+    transition: transform var(--timing) var(--easing);
     width: 100%;
 
     &__bar {
@@ -49,6 +54,10 @@ export default {
       top: 0;
       transition: padding-right var(--timing) var(--easing), width var(--timing) var(--easing);
       width: 0;
+    }
+
+    &.is-active {
+      transform: translateY(0);
     }
   }
 </style>
