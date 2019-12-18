@@ -27,30 +27,19 @@
           </h2>
         </div>
 
-        <div class="questions__answers answers">
-          <div
-            class="answers__answer"
-            v-for="(answer, index) in question.answers"
+        <div class="questions__choices">
+          <Choices
+            v-for="(part, index) in question.choices"
             :key="index"
-          >
-            <input
-              :id="handleiseAnswer(step, answer)"
-              :name="step"
-              @change="handleChange(answer.answer)"
-              type="radio"
-            >
-
-            <label
-              :for="handleiseAnswer(step, answer)"
-            >
-              {{ answer.answer }}
-            </label>
-          </div>
+            :choice="part.answers"
+            :step="step"
+            :choiceGroup="index"
+          />
         </div>
 
         <Points
           v-if="step !== 0"
-          :point="question.points"
+          :choices="question.choices"
         />
       </div>
     </div>
@@ -58,31 +47,18 @@
 </template>
 
 <script>
+  import Choices from './Choices.vue';
   import Points from './Points.vue';
 
   export default {
     components: {
+      Choices,
       Points,
     },
 
     props: {
       questions: Array,
       step: Number,
-    },
-
-    methods: {
-      handleiseAnswer(step, answer) {
-        return `${step}-${answer.answer.toLowerCase().replace(/\s/g, '-')}`;
-      },
-
-      handleChange(answer) {
-        const data = {
-          step: this.step,
-          answer,
-        }
-
-        window.VueEventBus.$emit('answer-given', data);
-      }
     },
   }
 </script>
@@ -124,7 +100,7 @@
       font-size: 24px;
     }
 
-    &__answers {
+    &__choices {
       margin-bottom: var(--gutter-large);
     }
   }

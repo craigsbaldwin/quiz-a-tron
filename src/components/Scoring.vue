@@ -42,7 +42,8 @@
             return;
           }
 
-          score += question.points;
+          const points = question.answers.length;
+          score += points;
         });
 
         return score;

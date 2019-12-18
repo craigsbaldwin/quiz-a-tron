@@ -11,7 +11,7 @@
     <button
       class="progress-buttons__button"
       v-if="step < numberOfQuestions && step > 0"
-      @click="next"
+      @click="answerQuestion"
       :disabled="isDisabled"
       v-text="(!isDisabled) ? 'Next' : 'Answer'"
     ></button>
@@ -36,15 +36,15 @@
 
     methods: {
       start() {
-        window.VueEventBus.$emit('next-question', this.step);
+        window.VueEventBus.$emit('Quiz:Start', this.step);
       },
 
-      next() {
-        window.VueEventBus.$emit('next-question', this.step);
+      answerQuestion() {
+        window.VueEventBus.$emit('Question:Answered', this.step);
       },
 
       finish() {
-        window.VueEventBus.$emit('finished');
+        window.VueEventBus.$emit('Quiz:Finished');
       },
     },
 
@@ -58,7 +58,9 @@
           return true;
         }
 
-        return (this.questions[this.step - 1].givenAnswer === false);
+        const answered = this.questions[this.step - 1].choices.filter((choice) => choice.answered == false);
+
+        return answered.length > 0;
       }
     }
   }

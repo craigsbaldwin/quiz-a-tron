@@ -36,28 +36,48 @@
         questions: [
           {
             question: "This is a 1 test?",
-            points: 1,
             type: 'multi',
-            answer: 'This is answer A',
-            givenAnswer: false,
-            answers: [
-              { answer: 'This is answer A' },
-              { answer: 'This is answer B' },
-              { answer: 'This is answer C' },
-              { answer: 'This is answer D' },
+            choices: [
+              {
+                points: 1,
+                answered: false,
+                answers: [
+                  { answer: '1 This is answer A' },
+                  { answer: '1 This is answer B' },
+                  { answer: '1 This is answer C' },
+                  { answer: '1 This is answer D' },
+                ],
+              },
+              {
+                points: 1,
+                answered: false,
+                answers: [
+                  { answer: '2 This is answer A' },
+                  { answer: '2 This is answer B' },
+                  { answer: '2 This is answer C' },
+                  { answer: '2 This is answer D' },
+                ],
+              },
             ],
+            answers: [0],
+            givenAnswers: [],
           },
           {
             question: "This is a 2 test?",
-            points: 1,
             type: 'multi',
-            answer: 'This is answer D',
-            givenAnswer: false,
-            answers: [
-              { answer: 'This is answer A' },
-              { answer: 'This is answer C' },
-              { answer: 'This is answer D' },
+            choices: [
+              {
+                points: 1,
+                answered: false,
+                answers: [
+                  { answer: 'This is answer A' },
+                  { answer: 'This is answer B' },
+                  { answer: 'This is answer D' },
+                ],
+              },
             ],
+            answers: [2],
+            givenAnswers: [],
           },
         ],
       }
@@ -69,13 +89,13 @@
         this.progress = Math.round(((this.step - 1) / totalQuestions) * 100);
       },
 
-      handleNextQuestion(step) {
+      navigateNextQuestion(step) {
         this.step = (step + 1);
         this.calculateProgress();
       },
 
-      handleAnswerGiven(data) {
-        this.questions[data.step - 1].givenAnswer = data.answer;
+      handleAnswerChoice(data) {
+        this.questions[data.step - 1].choices[data.choiceGroup].answered = true;
       },
 
       handleQuizFinish() {
@@ -86,15 +106,19 @@
     mounted() {
       this.calculateProgress();
 
-      window.VueEventBus.$on('next-question', (step) => {
-        this.handleNextQuestion(step);
+      window.VueEventBus.$on('Quiz:Start', (step) => {
+        this.navigateNextQuestion(step);
       });
 
-      window.VueEventBus.$on('answer-given', (data) => {
-        this.handleAnswerGiven(data);
+      window.VueEventBus.$on('Question:Choice', (data) => {
+        this.handleAnswerChoice(data);
       });
 
-      window.VueEventBus.$on('finished', () => {
+      window.VueEventBus.$on('Question:Answered', (step) => {
+        this.navigateNextQuestion(step);
+      });
+
+      window.VueEventBus.$on('Quiz:Finish', () => {
         this.handleQuizFinish();
       });
     },
