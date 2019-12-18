@@ -6,6 +6,7 @@
       :key="index"
     >
       {{ index + 1 }}:
+
       <span v-text="markQuestion(question)">
         Not answered
       </span>
@@ -23,12 +24,18 @@
 
     methods: {
       markQuestion(question) {
-        if (question.givenAnswer === false) {
+        if (question.givenAnswers.length === 0) {
           return 'Not answered'
-        } else if (question.givenAnswer === question.answer) {
-          return 'Correct'
+        }
+
+        const wrongAnswers = question.givenAnswers.filter((answer, index) => answer !== question.answers[index]);
+
+        if (wrongAnswers.length ===  question.answers.length) {
+          return 'Wrong';
+        } else if (wrongAnswers.length > 0) {
+          return 'Partially correct';
         } else {
-          return 'Wrong'
+          return 'Correct';
         }
       }
     },
@@ -38,12 +45,13 @@
         let score = 0;
 
         this.questions.forEach((question) => {
-          if (question.givenAnswer !== question.answer) {
-            return;
-          }
+          question.givenAnswers.forEach((answer, index) => {
+            if (answer !== question.answers[index]) {
+              return;
+            }
 
-          const points = question.answers.length;
-          score += points;
+            score += question.choices[index].points;
+          });
         });
 
         return score;

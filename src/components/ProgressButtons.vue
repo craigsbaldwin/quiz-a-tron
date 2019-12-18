@@ -13,7 +13,7 @@
       v-if="step < numberOfQuestions && step > 0"
       @click="answerQuestion"
       :disabled="isDisabled"
-      v-text="(!isDisabled) ? 'Next' : 'Answer'"
+      v-text="(!isDisabled) ? 'Next question' : 'Please provide answers'"
     ></button>
 
     <button

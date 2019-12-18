@@ -59,7 +59,7 @@
                 ],
               },
             ],
-            answers: [0],
+            answers: [0, 1],
             givenAnswers: [],
           },
           {
@@ -98,6 +98,22 @@
         this.questions[data.step - 1].choices[data.choiceGroup].answered = true;
       },
 
+      scoreAnswer(step) {
+        const choices = [...document.querySelectorAll(`[js-choices="${step}"]`)];
+
+        choices.forEach((choiceGroup) => {
+          const inputs = [...choiceGroup.querySelectorAll('input')];
+
+          inputs.forEach((input, index) => {
+            if (!input.checked) {
+              return;
+            }
+
+            this.questions[step - 1].givenAnswers.push(index);
+          });
+        });
+      },
+
       handleQuizFinish() {
         this.finished = true;
       },
@@ -116,6 +132,7 @@
 
       window.VueEventBus.$on('Question:Answered', (step) => {
         this.navigateNextQuestion(step);
+        this.scoreAnswer(step);
       });
 
       window.VueEventBus.$on('Quiz:Finish', () => {

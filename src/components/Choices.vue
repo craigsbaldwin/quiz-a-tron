@@ -1,5 +1,8 @@
 <template>
-  <div class="choices">
+  <div
+    class="choices"
+    :js-choices="step"
+  >
     <div
       class="choices__choice"
       v-for="(choice, index) in choice"
@@ -8,8 +11,8 @@
       <input
         :id="handleiseChoice(step, choice)"
         :name="`${step}-${choiceGroup}`"
-        @change="handleChoice()"
         type="radio"
+        @change="handleChoice()"
       >
 
       <label
