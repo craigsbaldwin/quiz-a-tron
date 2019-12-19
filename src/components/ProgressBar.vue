@@ -8,9 +8,9 @@
       :style="{ paddingRight: (progress > 0) ? '10px' : 0, width: progress + '%'}"
     >
       <span
-        class="progress-bar__text"
         v-if="progress > 0"
         v-text="`${progress}%`"
+        class="progress-bar__text"
       ></span>
     </div>
   </div>

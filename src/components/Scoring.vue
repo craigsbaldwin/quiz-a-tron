@@ -2,8 +2,8 @@
   <div class="scoring">
     <div
       class="scoring__score"
-      v-for="(question, index) in questions"
       :key="index"
+      v-for="(question, index) in questions"
     >
       {{ index + 1 }}:
 
@@ -28,7 +28,16 @@
           return 'Not answered'
         }
 
-        const wrongAnswers = question.givenAnswers.filter((answer, index) => answer !== question.answers[index]);
+        const wrongAnswers = question.givenAnswers.filter((answer, index) => {
+          let givenAnswer = question.answers[index];
+
+          if (typeof answer === 'string') {
+            answer = answer.toLowerCase();
+            givenAnswer = givenAnswer.toLowerCase();
+          }
+
+          return (answer !== givenAnswer);
+        });
 
         if (wrongAnswers.length ===  question.answers.length) {
           return 'Wrong';
@@ -62,6 +71,6 @@
 
 <style lang="scss" scoped>
   .scoring {
-    margin-top: var(--gutter-large);
+    margin-top: var(--gutter-l);
   }
 </style>

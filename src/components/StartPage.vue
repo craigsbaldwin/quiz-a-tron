@@ -27,7 +27,7 @@
   .start-page {
     &__text {
       font-size: 18px;
-      margin-bottom: var(--gutter-small);
+      margin-bottom: var(--gutter-s);
     }
   }
 </style>

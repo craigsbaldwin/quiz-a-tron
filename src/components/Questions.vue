@@ -5,12 +5,12 @@
       v-if="step > 0"
     >
       <form
+        v-for="(question, index) in questions"
         class="questions__question"
         :class="{ 'is-active': step === (index + 1) }"
         :key="index"
         :js-question="index + 1"
         @submit.prevent="submitAnswer(index + 1)"
-        v-for="(question, index) in questions"
       >
         <div class="questions__header">
           <span class="questions__number">
@@ -22,19 +22,15 @@
           </h2>
         </div>
 
-        <div class="questions__choices">
-          <Choices
-            v-for="(part, index) in question.choices"
-            :key="index"
-            :choice="part.answers"
-            :step="step"
-            :choiceGroup="index"
-          />
-        </div>
+        <Choices
+          class="questions__choices"
+          :question="question"
+          :step="step"
+        />
 
         <Points
-          :choices="question.choices"
           v-if="step !== 0"
+          :choices="question.choices"
         />
 
         <ProgressButtons
@@ -48,9 +44,9 @@
 </template>
 
 <script>
-  import Choices from './Choices.vue';
   import Points from './Points.vue';
   import ProgressButtons from './ProgressButtons.vue';
+  import Choices from './Choices.vue';
 
   export default {
     components: {
@@ -66,7 +62,7 @@
 
     methods: {
       submitAnswer(questionNumber) {
-        window.VueEventBus.$emit('Question:Answered', questionNumber);
+        window.VueEventBus.$emit('Question:Submit', questionNumber);
       },
 
       // finish() {
@@ -78,12 +74,12 @@
 
 <style lang="scss" scoped>
   .questions {
-    margin-bottom: var(--gutter-large);
+    margin-bottom: var(--gutter-l);
 
     &__header {
       align-items: center;
       display: flex;
-      margin-bottom: var(--gutter-small);
+      margin-bottom: var(--gutter-s);
     }
 
     &__question {
@@ -101,7 +97,7 @@
       display: flex;
       height: var(--progress-bar);
       justify-content: center;
-      margin-right: var(--gutter-small);
+      margin-right: var(--gutter-s);
       width: var(--progress-bar);
     }
 
@@ -110,7 +106,7 @@
     }
 
     &__choices {
-      margin-bottom: var(--gutter-large);
+      margin-bottom: var(--gutter-l);
     }
   }
 </style>

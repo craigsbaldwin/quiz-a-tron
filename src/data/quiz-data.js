@@ -5,48 +5,66 @@ const data = {
   finished: false,
   questions: [
     {
-      question: "This is a 1 test?",
-      type: 'multi',
+      question: "Give me some text",
+      type: 'text',
       choices: [
         {
-          points: 1,
+          points: 2,
           answered: false,
-          answers: [
-            { answer: '1 This is answer A' },
-            { answer: '1 This is answer B' },
-            { answer: '1 This is answer C' },
-            { answer: '1 This is answer D' },
-          ],
+          label: 'Song'
         },
         {
-          points: 1,
+          points: 2,
           answered: false,
-          answers: [
-            { answer: '2 This is answer A' },
-            { answer: '2 This is answer B' },
-            { answer: '2 This is answer C' },
-            { answer: '2 This is answer D' },
-          ],
-        },
+          label: 'Artist'
+        }
       ],
-      answers: [0, 1],
+      answers: ['Song', 'Artist'],
       givenAnswers: [],
     },
     {
-      question: "This is a 2 test?",
-      type: 'multi',
+      question: "This is a test?",
+      type: 'radio',
       choices: [
         {
           points: 1,
           answered: false,
           answers: [
-            { answer: 'This is answer A' },
-            { answer: 'This is answer B' },
-            { answer: 'This is answer D' },
+            { label: 'This is answer A' },
+            { label: 'This is answer B' },
+            { label: 'This is answer C' },
           ],
         },
       ],
       answers: [2],
+      givenAnswers: [],
+    },
+    {
+      question: "This is a test?",
+      type: 'radio',
+      choices: [
+        {
+          points: 1,
+          answered: false,
+          answers: [
+            { label: '1 This is answer A' },
+            { label: '1 This is answer B' },
+            { label: '1 This is answer C' },
+            { label: '1 This is answer D' },
+          ],
+        },
+        {
+          points: 1,
+          answered: false,
+          answers: [
+            { label: '2 This is answer A' },
+            { label: '2 This is answer B' },
+            { label: '2 This is answer C' },
+            { label: '2 This is answer D' },
+          ],
+        },
+      ],
+      answers: [0, 1],
       givenAnswers: [],
     },
   ],

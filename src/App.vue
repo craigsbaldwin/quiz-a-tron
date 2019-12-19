@@ -46,22 +46,29 @@
         this.calculateProgress();
       },
 
-      handleAnswerChoice(data) {
+      handleAnswerInput(data) {
         this.questions[data.step - 1].choices[data.choiceGroup].answered = true;
       },
 
-      scoreAnswer(questionNumber) {
+      saveAnswer(questionNumber) {
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
 
         choices.forEach((choiceGroup) => {
           const inputs = [...choiceGroup.querySelectorAll('input')];
 
           inputs.forEach((input, index) => {
-            if (!input.checked) {
-              return;
-            }
+            const type = input.getAttribute('type');
 
-            this.questions[questionNumber - 1].givenAnswers.push(index);
+            switch (type) {
+              case 'radio':
+                if (!input.checked) { return; }
+                this.questions[questionNumber - 1].givenAnswers.push(index);
+                break;
+
+              case 'text':
+                this.questions[questionNumber - 1].givenAnswers.push(input.value);
+                break;
+            }
           });
         });
       },
@@ -78,13 +85,13 @@
         this.navigateNextQuestion(0);
       });
 
-      window.VueEventBus.$on('Question:Choice', (data) => {
-        this.handleAnswerChoice(data);
+      window.VueEventBus.$on('Question:Input', (data) => {
+        this.handleAnswerInput(data);
       });
 
-      window.VueEventBus.$on('Question:Answered', (questionNumber) => {
+      window.VueEventBus.$on('Question:Submit', (questionNumber) => {
         this.navigateNextQuestion(questionNumber);
-        this.scoreAnswer(questionNumber);
+        this.saveAnswer(questionNumber);
       });
 
       window.VueEventBus.$on('Quiz:Finish', () => {
@@ -109,8 +116,9 @@
     --timing: 0.4s;
     --easing: ease;
 
-    --gutter-small: 20px;
-    --gutter-large: 40px;
+    --gutter-xs: 10px;
+    --gutter-s: 20px;
+    --gutter-l: 40px;
     --progress-bar: 50px;
   }
 
@@ -130,7 +138,7 @@
     color: var(--colour-text);
     margin: 0 auto;
     margin-top: var(--progress-bar);
-    padding: var(--gutter-large);
+    padding: var(--gutter-l);
     max-width: 600px;
     min-height: 100vh;
   }
@@ -155,7 +163,7 @@
     color: var(--colour-text-inverse);
     cursor: pointer;
     font-size: 18px;
-    padding: var(--gutter-small) var(--gutter-large);
+    padding: var(--gutter-s) var(--gutter-l);
     position: relative;
     width: 100%;
     z-index: 1;

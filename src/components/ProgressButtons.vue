@@ -1,19 +1,19 @@
 <template>
   <div class="progress-buttons">
     <button
+      v-if="step < length && step > 0"
+      v-text="(!isDisabled) ? 'Next question' : 'Please provide answers'"
       class="button"
       :disabled="isDisabled"
       type="submit"
-      v-if="step < length && step > 0"
-      v-text="(!isDisabled) ? 'Next question' : 'Please provide answers'"
     ></button>
 
     <button
+      v-if="step === length"
+      v-text="(!isDisabled) ? 'Finish' : 'Please provide answers'"
       class="button"
       :disabled="isDisabled"
       type="submit"
-      v-if="step === length"
-      v-text="(!isDisabled) ? 'Finish' : 'Please provide answers'"
     ></button>
   </div>
 </template>

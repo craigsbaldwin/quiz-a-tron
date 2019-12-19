@@ -35,12 +35,12 @@
     align-items: center;
     background-color: var(--colour-grey);
     display: flex;
-    margin-bottom: var(--gutter-small);
-    padding: var(--gutter-small);
+    margin-bottom: var(--gutter-s);
+    padding: var(--gutter-s);
 
     &__icon {
       height: 36px;
-      margin-right: var(--gutter-small);
+      margin-right: var(--gutter-s);
       width: 36px;
     }
 

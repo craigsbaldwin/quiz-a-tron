@@ -1,56 +1,46 @@
 <template>
-  <div
-    class="choices"
-    js-choices="group"
-  >
-    <div
-      class="choices__choice"
-      v-for="(choice, index) in choice"
+  <div v-if="question.type === 'radio'">
+    <Radio
+      v-for="(part, index) in question.choices"
+      :choice="part.answers"
+      :choiceGroup="index"
       :key="index"
-    >
-      <input
-        :id="handleiseChoice(step, choice)"
-        :name="`${step}-${choiceGroup}`"
-        type="radio"
-        @change="handleChoice()"
-      >
+      :step="step"
+    />
+  </div>
 
-      <label
-        :for="handleiseChoice(step, choice)"
-      >
-        {{ choice.answer }}
-      </label>
-    </div>
+  <div v-else-if="question.type === 'text'">
+    <TextField
+      v-for="(part, index) in question.choices"
+      :choiceGroup="index"
+      :key="index"
+      :label="part.label"
+      :step="step"
+    />
   </div>
 </template>
 
 <script>
+  import Radio from './types/Radio.vue';
+  import TextField from './types/TextField.vue';
+
   export default {
-    props: {
-      choice: Array,
-      choiceGroup: Number,
-      step: Number,
+    components: {
+      Radio,
+      TextField,
     },
 
-    methods: {
-      handleiseChoice(step, choice) {
-        return `${step}-${choice.answer.toLowerCase().replace(/\s/g, '-')}`;
-      },
-
-      handleChoice() {
-        const data = {
-          step: this.step,
-          choiceGroup: this.choiceGroup
-        }
-
-        window.VueEventBus.$emit('Question:Choice', data);
-      }
+    props: {
+      question: Object,
+      step: Number,
     },
   }
 </script>
 
 <style lang="scss" scoped>
   .choices {
-    margin-bottom: var(--gutter-small);
+    &__type {
+      margin-bottom: var(--gutter-s);
+    }
   }
 </style>
