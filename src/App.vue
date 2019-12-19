@@ -119,7 +119,9 @@
 
     --gutter-xs: 10px;
     --gutter-s: 20px;
+    --gutter-m: 30px;
     --gutter-l: 40px;
+
     --progress-bar: 50px;
   }
 

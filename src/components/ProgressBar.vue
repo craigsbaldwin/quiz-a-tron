@@ -28,7 +28,7 @@
   .progress-bar {
     left: 0;
     height: var(--progress-bar);
-    position: fixed;
+    position: absolute;
     top: 0;
     transform: translateY(-100%);
     transition: transform var(--timing-s) var(--easing);

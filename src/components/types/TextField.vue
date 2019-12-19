@@ -58,6 +58,7 @@
       display: block;
       font-size: 24px;
       padding: var(--gutter-s);
+      transition: box-shadow var(--timing-s) var(--easing);
       width: 100%;
 
       &:focus {

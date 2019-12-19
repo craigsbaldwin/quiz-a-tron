@@ -54,6 +54,7 @@
     position: relative;
     transition: background-color var(--timing-s) var(--easing),
       border-color var(--timing-s) var(--easing),
+      box-shadow var(--timing-s) var(--easing),
       color var(--timing-s) var(--easing);
     width: 100%;
     z-index: 1;
@@ -91,10 +92,11 @@
 
     &:focus {
       box-shadow: 0 0 20px 0 var(--colour-grey);
+      border-color: var(--colour-dark-green);
       outline: none;
     }
 
-    &:hover {
+    &:hover:not([disabled]) {
       background-color: var(--colour-dark-green);
       border-color: var(--colour-dark-green);
     }
