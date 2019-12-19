@@ -44,15 +44,26 @@
 <style lang="scss" scoped>
   .text-field {
     &__label {
-      display: block;
-      margin-bottom: var(--gutter-xs);
+      background-color: var(--colour-dark-grey);
+      color: var(--colour-text-inverse);
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: -3px;
+      padding: var(--gutter-xs) var(--gutter-s);
     }
 
     &__input {
+      border: 3px solid var(--colour-dark-grey);
       display: block;
-      font-size: 18px;
-      padding: var(--gutter-xs);
+      font-size: 24px;
+      padding: var(--gutter-s);
       width: 100%;
+
+      &:focus {
+        box-shadow: 0 0 20px 0 var(--colour-grey);
+        outline: none;
+      }
     }
   }
 </style>

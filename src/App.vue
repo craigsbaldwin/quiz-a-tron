@@ -113,7 +113,8 @@
     --colour-dark-grey: rgb(52, 73, 94);
     --colour-yellow: rgb(241, 196, 15);
 
-    --timing: 0.4s;
+    --timing-s: 0.4s;
+    --timing-m: 0.6s;
     --easing: ease;
 
     --gutter-xs: 10px;
@@ -155,66 +156,5 @@
     top: 0;
     width: 100%;
     z-index: 1;
-  }
-
-  .button {
-    background-color: var(--colour-green);
-    border: 0;
-    color: var(--colour-text-inverse);
-    cursor: pointer;
-    font-size: 18px;
-    padding: var(--gutter-s) var(--gutter-l);
-    position: relative;
-    width: 100%;
-    z-index: 1;
-
-    &::before,
-    &::after {
-      background-color: var(--colour-green);
-      bottom: -6px;
-      content: '';
-      right: -6px;
-      position: absolute;
-    }
-
-    &::before {
-      height: 100%;
-      width: 3px;
-    }
-
-    &::after {
-      height: 3px;
-      width: 100%;
-    }
-
-    &:active {
-      outline: none;
-      transform: translate(6px, 6px);
-
-      &::before,
-      &::after {
-        bottom: 0;
-        right: 0;
-      }
-    }
-
-    &:focus {
-      outline: none;
-    }
-
-    &:hover {
-      background-color: var(--colour-dark-green);
-    }
-
-    &[disabled] {
-      background-color: var(--colour-text);
-      cursor: not-allowed;
-      opacity: 0.5;
-
-      &::before,
-      &::after {
-        background-color: var(--colour-text);
-      }
-    }
   }
 </style>

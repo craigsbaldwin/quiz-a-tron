@@ -31,7 +31,7 @@
     position: fixed;
     top: 0;
     transform: translateY(-100%);
-    transition: transform var(--timing) var(--easing);
+    transition: transform var(--timing-s) var(--easing);
     width: 100%;
     z-index: 2;
 
@@ -45,7 +45,7 @@
       left: 0;
       position: absolute;
       top: 0;
-      transition: padding-right var(--timing) var(--easing), width var(--timing) var(--easing);
+      transition: padding-right var(--timing-s) var(--easing), width var(--timing-s) var(--easing);
       width: 0;
     }
 

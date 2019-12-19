@@ -33,7 +33,7 @@
           :choices="question.choices"
         />
 
-        <ProgressButtons
+        <Buttons
           :length="questions.length"
           :question="question"
           :step="index + 1"
@@ -44,15 +44,15 @@
 </template>
 
 <script>
+  import Buttons from './Buttons.vue';
   import Points from './Points.vue';
-  import ProgressButtons from './ProgressButtons.vue';
   import Choices from './Choices.vue';
 
   export default {
     components: {
+      Buttons,
       Choices,
       Points,
-      ProgressButtons,
     },
 
     props: {
@@ -79,7 +79,7 @@
     &__header {
       align-items: center;
       display: flex;
-      margin-bottom: var(--gutter-s);
+      margin-bottom: var(--gutter-l);
     }
 
     &__question {

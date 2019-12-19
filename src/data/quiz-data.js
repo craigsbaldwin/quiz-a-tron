@@ -14,7 +14,7 @@ const data = {
           label: 'Song'
         },
         {
-          points: 2,
+          points: 1,
           answered: false,
           label: 'Artist'
         }
