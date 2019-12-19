@@ -1,21 +1,16 @@
 <template>
   <div class="questions">
-    <p
-      class="questions__start"
-      v-if="step === 0"
-    >
-      Start quiz text goes here
-    </p>
-
     <div
       class="questions__container"
       v-if="step > 0"
     >
-      <div
+      <form
         class="questions__question"
         :class="{ 'is-active': step === (index + 1) }"
-        v-for="(question, index) in questions"
         :key="index"
+        :js-question="index + 1"
+        @submit.prevent="submitAnswer(index + 1)"
+        v-for="(question, index) in questions"
       >
         <div class="questions__header">
           <span class="questions__number">
@@ -38,10 +33,16 @@
         </div>
 
         <Points
-          v-if="step !== 0"
           :choices="question.choices"
+          v-if="step !== 0"
         />
-      </div>
+
+        <ProgressButtons
+          :length="questions.length"
+          :question="question"
+          :step="index + 1"
+        />
+      </form>
     </div>
   </div>
 </template>
@@ -49,16 +50,28 @@
 <script>
   import Choices from './Choices.vue';
   import Points from './Points.vue';
+  import ProgressButtons from './ProgressButtons.vue';
 
   export default {
     components: {
       Choices,
       Points,
+      ProgressButtons,
     },
 
     props: {
       questions: Array,
       step: Number,
+    },
+
+    methods: {
+      submitAnswer(questionNumber) {
+        window.VueEventBus.$emit('Question:Answered', questionNumber);
+      },
+
+      // finish() {
+      //   window.VueEventBus.$emit('Quiz:Finished');
+      // },
     },
   }
 </script>
@@ -71,10 +84,6 @@
       align-items: center;
       display: flex;
       margin-bottom: var(--gutter-small);
-    }
-
-    &__start {
-      font-size: 18px;
     }
 
     &__question {

@@ -1,32 +1,34 @@
 <template>
   <div id="app">
-    <div class="header">
+    <header class="header">
       Quiz-a-tron
-    </div>
+    </header>
 
     <ProgressBar :progress="progress" />
+
+    <StartPage v-if="step === 0" />
+
     <Questions :step="step" :questions="questions" />
-    <ProgressButtons :step="step" :questions="questions" />
     <Scoring :questions="questions" />
   </div>
 </template>
 
 <script>
   import ProgressBar from './components/ProgressBar.vue';
-  import ProgressButtons from './components/ProgressButtons.vue';
   import Questions from './components/Questions.vue';
   import Scoring from './components/Scoring.vue';
+  import StartPage from './components/StartPage.vue';
 
   import quizData from './data/quiz-data.js';
 
   export default {
-    name: 'App',
+    name: 'Quiz-a-tron',
 
     components: {
       ProgressBar,
-      ProgressButtons,
       Questions,
       Scoring,
+      StartPage,
     },
 
     data() {
@@ -48,8 +50,8 @@
         this.questions[data.step - 1].choices[data.choiceGroup].answered = true;
       },
 
-      scoreAnswer(step) {
-        const choices = [...document.querySelectorAll(`[js-choices="${step}"]`)];
+      scoreAnswer(questionNumber) {
+        const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
 
         choices.forEach((choiceGroup) => {
           const inputs = [...choiceGroup.querySelectorAll('input')];
@@ -59,7 +61,7 @@
               return;
             }
 
-            this.questions[step - 1].givenAnswers.push(index);
+            this.questions[questionNumber - 1].givenAnswers.push(index);
           });
         });
       },
@@ -72,17 +74,17 @@
     mounted() {
       this.calculateProgress();
 
-      window.VueEventBus.$on('Quiz:Start', (step) => {
-        this.navigateNextQuestion(step);
+      window.VueEventBus.$on('Quiz:Start', () => {
+        this.navigateNextQuestion(0);
       });
 
       window.VueEventBus.$on('Question:Choice', (data) => {
         this.handleAnswerChoice(data);
       });
 
-      window.VueEventBus.$on('Question:Answered', (step) => {
-        this.navigateNextQuestion(step);
-        this.scoreAnswer(step);
+      window.VueEventBus.$on('Question:Answered', (questionNumber) => {
+        this.navigateNextQuestion(questionNumber);
+        this.scoreAnswer(questionNumber);
       });
 
       window.VueEventBus.$on('Quiz:Finish', () => {
@@ -114,17 +116,18 @@
 
   * {
     box-sizing: border-box;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
   }
 
   html, body {
     background-color: var(--colour-background);
+    font-size: 100%;
   }
 
   #app {
     color: var(--colour-text);
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
     margin: 0 auto;
     margin-top: var(--progress-bar);
     padding: var(--gutter-large);
@@ -144,5 +147,66 @@
     top: 0;
     width: 100%;
     z-index: 1;
+  }
+
+  .button {
+    background-color: var(--colour-green);
+    border: 0;
+    color: var(--colour-text-inverse);
+    cursor: pointer;
+    font-size: 18px;
+    padding: var(--gutter-small) var(--gutter-large);
+    position: relative;
+    width: 100%;
+    z-index: 1;
+
+    &::before,
+    &::after {
+      background-color: var(--colour-green);
+      bottom: -6px;
+      content: '';
+      right: -6px;
+      position: absolute;
+    }
+
+    &::before {
+      height: 100%;
+      width: 3px;
+    }
+
+    &::after {
+      height: 3px;
+      width: 100%;
+    }
+
+    &:active {
+      outline: none;
+      transform: translate(6px, 6px);
+
+      &::before,
+      &::after {
+        bottom: 0;
+        right: 0;
+      }
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      background-color: var(--colour-dark-green);
+    }
+
+    &[disabled] {
+      background-color: var(--colour-text);
+      cursor: not-allowed;
+      opacity: 0.5;
+
+      &::before,
+      &::after {
+        background-color: var(--colour-text);
+      }
+    }
   }
 </style>

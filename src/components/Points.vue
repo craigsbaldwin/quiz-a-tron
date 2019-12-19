@@ -35,6 +35,7 @@
     align-items: center;
     background-color: var(--colour-grey);
     display: flex;
+    margin-bottom: var(--gutter-small);
     padding: var(--gutter-small);
 
     &__icon {

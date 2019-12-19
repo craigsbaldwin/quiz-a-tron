@@ -1,7 +1,7 @@
 <template>
   <div
     class="choices"
-    :js-choices="step"
+    js-choices="group"
   >
     <div
       class="choices__choice"
