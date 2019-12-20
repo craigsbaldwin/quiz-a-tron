@@ -1,5 +1,5 @@
 const data = {
-  debug: true,
+  debug: false,
   progress: 0,
   step: 0,
   score: 0,

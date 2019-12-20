@@ -83,6 +83,6 @@
 
 <style lang="scss" scoped>
   .scoring {
-
+    margin-top: var(--gutter-m);
   }
 </style>

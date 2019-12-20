@@ -73,8 +73,6 @@
 
 <style lang="scss" scoped>
   .questions {
-    margin-bottom: var(--gutter-l);
-
     &__container {
       position: relative;
     }

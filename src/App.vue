@@ -210,7 +210,7 @@
     --gutter-m: 30px;
     --gutter-l: 40px;
 
-    --progress-bar: 50px;
+    --progress-bar: 60px;
   }
 
   /**
@@ -265,6 +265,22 @@
 
   h2 {
     font-size: var(--font-l);
+  }
+
+  a {
+    border-bottom: 1px solid currentColor;
+    color: currentColor;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--colour-green);
+    }
+  }
+
+  small,
+  small a {
+    font-size: var(--font-xs);
+    line-height: 1;
   }
 
   /**
