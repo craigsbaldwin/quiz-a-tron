@@ -2,8 +2,8 @@
   <div v-if="question.type === 'radio'">
     <Radio
       v-for="(part, index) in question.choices"
-      :choice="part.answers"
-      :choiceGroup="index"
+      :choices="part"
+      :radioGroup="index"
       :key="index"
       :step="step"
     />
@@ -12,7 +12,7 @@
   <div v-else-if="question.type === 'text'">
     <TextField
       v-for="(part, index) in question.choices"
-      :choiceGroup="index"
+      :textGroup="index"
       :key="index"
       :label="part.label"
       :step="step"

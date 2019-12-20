@@ -5,13 +5,13 @@
   >
     <label
       class="text-field__label"
-      :for="`${step}-${choiceGroup}-Text`"
+      :for="`${step}-${textGroup}-Text`"
     >
       {{ label }}
     </label>
 
     <input
-      :id="`${step}-${choiceGroup}-Text`"
+      :id="`${step}-${textGroup}-Text`"
       class="text-field__input"
       :placeholder="label"
       type="text"
@@ -23,9 +23,9 @@
 <script>
   export default {
     props: {
-      choiceGroup: Number,
       label: String,
       step: Number,
+      textGroup: Number,
     },
 
     methods: {
@@ -33,7 +33,7 @@
         const element = event.target;
         const data = {
           step: this.step,
-          choiceGroup: this.choiceGroup,
+          group: this.textGroup,
         }
 
         if (element.getAttribute('type') === 'text' && element.value === '') {

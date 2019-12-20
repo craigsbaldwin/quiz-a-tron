@@ -14,9 +14,9 @@ const data = {
           label: 'Song'
         },
         {
+          label: 'Artist',
           points: 1,
           answered: false,
-          label: 'Artist'
         }
       ],
       answers: ['Song', 'Artist'],
@@ -27,6 +27,7 @@ const data = {
       type: 'radio',
       choices: [
         {
+          label: 'A label goes here',
           points: 1,
           answered: false,
           answers: [

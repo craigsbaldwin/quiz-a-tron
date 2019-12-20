@@ -47,18 +47,18 @@
       },
 
       handleAnswerInput(data) {
-        this.questions[data.step - 1].choices[data.choiceGroup].answered = true;
+        this.questions[data.step - 1].choices[data.group].answered = true;
       },
 
       handleQuestionDisable(data) {
-        this.questions[data.step - 1].choices[data.choiceGroup].answered = false;
+        this.questions[data.step - 1].choices[data.group].answered = false;
       },
 
       saveAnswer(questionNumber) {
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
 
-        choices.forEach((choiceGroup) => {
-          const inputs = [...choiceGroup.querySelectorAll('input')];
+        choices.forEach((group) => {
+          const inputs = [...group.querySelectorAll('input')];
 
           inputs.forEach((input, index) => {
             const type = input.getAttribute('type');
@@ -149,8 +149,8 @@
     color: var(--colour-text);
     margin: 0 auto;
     margin-top: var(--progress-bar);
-    padding: var(--gutter-l);
-    max-width: 600px;
+    padding: var(--gutter-l) var(--gutter-m);
+    max-width: 580px;
     min-height: 100vh;
   }
 
