@@ -25,6 +25,11 @@
     },
 
     methods: {
+
+      /**
+       * Mark the question.
+       * @param {Array} question - Question data.
+       */
       markQuestion(question) {
         if (question.givenAnswers.length === 0) {
           return 'Not answered'
@@ -52,6 +57,11 @@
     },
 
     computed: {
+
+      /**
+       * Calculate the total score by iterating over all questions.
+       * @returns {Number}
+       */
       totalScore() {
         let score = 0;
 

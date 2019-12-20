@@ -60,6 +60,10 @@
     },
 
     methods: {
+
+      /**
+       * Submit question form.
+       */
       submitAnswer(questionNumber) {
         window.VueEventBus.$emit('Question:Submit', questionNumber);
       },

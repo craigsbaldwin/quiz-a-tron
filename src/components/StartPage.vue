@@ -38,6 +38,10 @@
 <script>
   export default {
     methods: {
+
+      /**
+       * Start the quiz.
+       */
       handleStart() {
         window.VueEventBus.$emit('Quiz:Start');
       },

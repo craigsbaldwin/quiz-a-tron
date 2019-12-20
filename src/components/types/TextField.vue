@@ -29,6 +29,11 @@
     },
 
     methods: {
+
+      /**
+       * Handle text input.
+       * @param {Event} event - Key up event.
+       */
       handleInput(event) {
         const element = event.target;
         const data = {

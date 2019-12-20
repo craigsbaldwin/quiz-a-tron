@@ -15,6 +15,11 @@
     },
 
     computed: {
+
+      /**
+       * Compute the question's total points.
+       * @returns {Number}
+       */
       points() {
         let points = 0;
 

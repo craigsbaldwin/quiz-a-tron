@@ -45,10 +45,17 @@
     },
 
     methods: {
+
+      /**
+       * Create a handle ID for accessibility.
+       */
       handleiseId(step, choice) {
         return `${step}-${choice.label.toLowerCase().replace(/\s/g, '-')}`;
       },
 
+      /**
+       * Handle radio choice.
+       */
       handleInput() {
         const data = {
           step: this.step,

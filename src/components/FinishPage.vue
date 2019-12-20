@@ -67,6 +67,11 @@
     },
 
     methods: {
+
+      /**
+       * Reveal the password value.
+       * @param {Event} event - Click event.
+       */
       revealPassword(event) {
         const element = event.target;
 
@@ -80,6 +85,10 @@
         element.classList.remove('is-active');
       },
 
+      /**
+       * Submit the password input.
+       * @param {Event} event - Click event.
+       */
       handleSubmit(event) {
         const element = event.target;
         const passwordInput = element.querySelector('input').value;

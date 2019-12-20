@@ -30,6 +30,11 @@
     },
 
     computed: {
+
+      /**
+       * Calculate if disabled as no answer given.
+       * @returns {Boolean}
+       */
       isDisabled() {
         const answered = this.question.choices.filter((choice) => choice.answered == false);
 
