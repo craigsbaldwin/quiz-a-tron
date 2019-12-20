@@ -313,7 +313,9 @@
   /**
    * Typography.
    */
-  h2, p, img {
+  h2:not(:last-child),
+  p:not(:last-child),
+  img:not(:last-child) {
     margin-bottom: var(--gutter-s);
   }
 
@@ -346,6 +348,11 @@
   small a {
     font-size: var(--font-xs);
     line-height: 1;
+  }
+
+  small p {
+    font-size: var(--font-xs);
+    line-height: 1.4;
   }
 
   /**

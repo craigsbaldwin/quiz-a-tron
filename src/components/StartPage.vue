@@ -1,23 +1,40 @@
 <template>
   <div class="start">
-    <p>
-      Welcome to the <strong>Quiz-a-tron</strong>, a Vue-powered quiz app.
-    </p>
+    <div class="start__content">
+      <p>
+        Welcome to the <strong>Quiz-a-tron</strong>, a Vue-powered quiz app.
+      </p>
 
-    <p>
-      It's time to test all aspects of your knowledge, from music and movies, to geography and language, and everything in between. This is meant to be tricky.
-    </p>
+      <p>
+        It's time to test all aspects of your knowledge, from music and movies, to geography and language, and everything in between. This is meant to be tricky.
+      </p>
 
-    <p class="start__warning">
-      If you refresh or navigate away from the page you will lose all your progress!
-    </p>
+      <p class="start__warning">
+        If you refresh or navigate away from the page you will lose all your progress!
+      </p>
+    </div>
 
     <h2>Prize</h2>
 
-    <img
-      alt="Minipresso"
-      src=""
-    >
+    <div class="start__prize">
+      <img
+        alt="Minipresso"
+        src="../assets/prize.png"
+      >
+
+      <div class="start__prize-description">
+        <p>
+          minipresso<br>
+          <strong>RRP: £50.00</strong>
+        </p>
+
+        <small>
+          <p>
+            Make and enjoy a full cup of coffee wherever your wanderlust takes you with the all-in-one Pipamoka, the first portable coffee maker to use vacuum pressure for a quick, rich brew.
+          </p>
+        </small>
+      </div>
+    </div>
 
     <div class="start__container">
       <h2 class="start__label label">Rules</h2>
@@ -106,10 +123,25 @@
 
 <style lang="scss" scoped>
   .start {
+    &__content,
+    &__prize {
+      margin-bottom: var(--gutter-l);
+    }
+
     &__warning {
       background-color: var(--colour-yellow);
       font-weight: 700;
       padding: var(--gutter-s);
+    }
+
+    &__prize {
+      align-items: center;
+      display: flex;
+
+      img {
+        margin-right: var(--gutter-m);
+        width: 30%;
+      }
     }
 
     &__group {
