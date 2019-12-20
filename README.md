@@ -1,29 +1,14 @@
 # Quiz-a-tron
 
-## Project setup
-```
-yarn install
-```
+The Quiz-a-tron is a Vue-powered quiz app designed for We Make Website's wind downs.
 
-### Compiles and hot-reloads for development
-```
-yarn start
-```
+It pulls its data from an external JSONBIN. At the end of the quiz a user's answers are submitted to a different JSONBIN and reviewed on a custom dashboard.
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+## Commands
+`yarn install` - Setup project
 
-### Run your tests
-```
-yarn run test
-```
+`yarn start` - Compiles and hot-reloads for development
 
-### Lints and fixes files
-```
-yarn run lint
-```
+`yarn build` - Compiles and minifies for production
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+`yarn lint` - Lints and fixes files
