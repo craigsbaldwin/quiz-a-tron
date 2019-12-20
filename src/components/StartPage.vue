@@ -70,7 +70,7 @@
       >
 
       <button
-        v-text="(!isDisabled) ? 'Start quiz' : 'Enter name'"
+        v-text="(!isDisabled) ? 'Start quiz' : 'Enter name to start'"
         class="button"
         :disabled="isDisabled"
         type="submit"
