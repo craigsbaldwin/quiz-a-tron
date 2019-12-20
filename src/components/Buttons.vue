@@ -59,6 +59,17 @@
     width: 100%;
     z-index: 1;
 
+    &::before {
+      border: 3px solid transparent;
+      content: '';
+      height: calc(100% - 6px);
+      left: 0;
+      position: absolute;
+      top: 0;
+      transition: border-color var(--timing-s) var(--easing);
+      width: calc(100% - 6px);
+    }
+
     &__text {
       display: block;
       left: 50%;
@@ -92,8 +103,11 @@
 
     &:focus {
       box-shadow: 0 0 20px 0 var(--colour-grey);
-      border-color: var(--colour-dark-green);
       outline: none;
+
+      &::before {
+        border-color: var(--colour-background);
+      }
     }
 
     &:hover:not([disabled]) {

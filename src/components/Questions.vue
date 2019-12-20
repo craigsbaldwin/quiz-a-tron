@@ -1,43 +1,42 @@
 <template>
   <div class="questions">
-    <div
-      class="questions__container"
-      v-if="step > 0"
-    >
+    <div class="questions__container">
       <form
         v-for="(question, index) in questions"
-        class="questions__question"
+        class="questions__question question"
         :class="{ 'is-active': step === (index + 1) }"
         :key="index"
         :js-question="index + 1"
         @submit.prevent="submitAnswer(index + 1)"
       >
-        <div class="questions__header">
-          <span class="questions__number">
-            {{ index + 1 }}
-          </span>
+        <div class="question__container">
+          <div class="question__header">
+            <span class="question__number">
+              {{ index + 1 }}
+            </span>
 
-          <h2 class="questions__question-text">
-            {{ question.question }}
-          </h2>
+            <h2 class="question__question-text">
+              {{ question.question }}
+            </h2>
+          </div>
+
+          <Choices
+            class="question__choices"
+            :question="question"
+            :step="step"
+          />
+
+          <Points
+            v-if="step !== 0"
+            :choices="question.choices"
+          />
+
+          <Buttons
+            :length="questions.length"
+            :question="question"
+            :step="index + 1"
+          />
         </div>
-
-        <Choices
-          class="questions__choices"
-          :question="question"
-          :step="step"
-        />
-
-        <Points
-          v-if="step !== 0"
-          :choices="question.choices"
-        />
-
-        <Buttons
-          :length="questions.length"
-          :question="question"
-          :step="index + 1"
-        />
       </form>
     </div>
   </div>
@@ -76,10 +75,8 @@
   .questions {
     margin-bottom: var(--gutter-l);
 
-    &__header {
-      align-items: center;
-      display: flex;
-      margin-bottom: var(--gutter-l);
+    &__container {
+      position: relative;
     }
 
     &__question {
@@ -88,6 +85,14 @@
       &.is-active {
         display: block;
       }
+    }
+  }
+
+  .question {
+    &__header {
+      align-items: center;
+      display: flex;
+      margin-bottom: var(--gutter-l);
     }
 
     &__number {

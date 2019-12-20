@@ -142,13 +142,28 @@
 
     &__input:focus ~ #{$parent}__label {
       &::before {
+        border-color: var(--colour-green);
         box-shadow: 0 0 20px 0 var(--colour-grey);
+      }
+
+      &::after {
+        background-color: var(--colour-green);
       }
     }
 
     &__input:checked ~ #{$parent}__label {
       &::after {
         transform: scale(1);
+      }
+    }
+
+    &:focus-within {
+      #{$parent}__container {
+        border-color: var(--colour-green);
+      }
+
+      #{$parent}__legend {
+        background-color: var(--colour-green);
       }
     }
 

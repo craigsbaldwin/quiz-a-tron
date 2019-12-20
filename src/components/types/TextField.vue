@@ -49,6 +49,8 @@
 
 <style lang="scss" scoped>
   .text-field {
+    $parent: &;
+
     &__label {
       background-color: var(--colour-dark-grey);
       color: var(--colour-text-inverse);
@@ -68,9 +70,14 @@
       width: 100%;
 
       &:focus {
+        border-color: var(--colour-green);
         box-shadow: 0 0 20px 0 var(--colour-grey);
         outline: none;
       }
+    }
+
+    &:focus-within #{$parent}__label {
+      background-color: var(--colour-green);
     }
   }
 </style>
