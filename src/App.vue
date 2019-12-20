@@ -4,43 +4,47 @@
       <h1>Quiz-a-tron</h1>
     </header>
 
-    <ProgressBar :progress="progress" />
+    <Loading v-if="!quiz.loaded" />
 
-    <StartPage v-if="step === 0" />
+    <div v-else>
+      <ProgressBar :progress="quiz.progress" />
 
-    <Questions
-      v-if="!finished"
-      :step="step"
-      :questions="questions"
-    />
+      <StartPage v-if="quiz.step === 0" />
 
-    <FinishPage
-      v-if="finished"
-      :questions="questions"
-      :unlocked="unlocked"
-    />
+      <Questions
+        v-if="!quiz.finished"
+        :step="quiz.step"
+        :questions="quiz.questions"
+      />
 
-    <Scoring
-      v-if="debug && step > 0 && !unlocked"
-      :questions="questions"
-    />
+      <FinishPage
+        v-if="quiz.finished"
+        :questions="quiz.questions"
+        :unlocked="quiz.unlocked"
+      />
+
+      <Scoring
+        v-if="quiz.debug && quiz.step > 0 && !quiz.unlocked"
+        :questions="quiz.questions"
+      />
+    </div>
   </div>
 </template>
 
 <script>
   import FinishPage from './components/FinishPage.vue';
+  import Loading from './components/Loading.vue';
   import ProgressBar from './components/ProgressBar.vue';
   import Questions from './components/Questions.vue';
   import StartPage from './components/StartPage.vue';
   import Scoring from './components/Scoring.vue';
-
-  import quizData from './data/quiz-data.js';
 
   export default {
     name: 'Quiz-a-tron',
 
     components: {
       FinishPage,
+      Loading,
       ProgressBar,
       Questions,
       StartPage,
@@ -48,18 +52,44 @@
     },
 
     data() {
-      return quizData.data;
+      return {
+        quiz: {
+          loaded: false,
+        }
+      };
     },
 
     methods: {
 
       /**
+       * Load data from JSONBIN.
+       */
+      loadData() {
+        if (localStorage.getItem('quiz') !== null) {
+          this.quiz = JSON.parse(localStorage.getItem('quiz'));
+          return;
+        }
+
+        fetch('https://api.jsonbin.io/b/5dfcd5a02c714135cda4b6d5/latest')
+          .then((response) => {
+            return response.json();
+          })
+          .then((response) => {
+            localStorage.setItem('quiz', JSON.stringify(response));
+            this.quiz = response;
+          })
+          .catch((error) => {
+            throw new Error('Data load', error);
+          })
+      },
+
+      /**
        * Calculate progress bar.
        * @param {Number} step - Current step.
        */
-      calculateProgress(step = this.step) {
-        const totalQuestions = this.questions.length;
-        this.progress = Math.round(((step - 1) / totalQuestions) * 100);
+      calculateProgress(step = this.quiz.step) {
+        const totalQuestions = this.quiz.questions.length;
+        this.quiz.progress = Math.round(((step - 1) / totalQuestions) * 100);
       },
 
       /**
@@ -67,8 +97,8 @@
        * @param {Number} step - Current step.
        */
       navigateNextQuestion(step) {
-        this.step = (step + 1);
-        this.focusFirstInput(this.step);
+        this.quiz.step = (step + 1);
+        this.focusFirstInput(this.quiz.step);
         this.scrollToTop();
       },
 
@@ -98,7 +128,7 @@
        * @param {Number} data.group - The input group.
        */
       handleAnswerInput(data) {
-        this.questions[data.step - 1].choices[data.group].answered = true;
+        this.quiz.questions[data.step - 1].choices[data.group].answered = true;
       },
 
       /**
@@ -108,7 +138,7 @@
        * @param {Number} data.group - The input group.
        */
       handleQuestionDisable(data) {
-        this.questions[data.step - 1].choices[data.group].answered = false;
+        this.quiz.questions[data.step - 1].choices[data.group].answered = false;
       },
 
       /**
@@ -119,7 +149,7 @@
         this.saveAnswer(questionNumber);
         this.calculateProgress(questionNumber + 1);
 
-        if (questionNumber === this.questions.length) {
+        if (questionNumber === this.quiz.questions.length) {
           this.handleQuizFinish();
           return;
         }
@@ -143,11 +173,11 @@
             switch (type) {
               case 'radio':
                 if (!input.checked) { return; }
-                this.questions[questionNumber - 1].givenAnswers.push(index);
+                this.quiz.questions[questionNumber - 1].givenAnswers.push(index);
                 break;
 
               case 'text':
-                this.questions[questionNumber - 1].givenAnswers.push(input.value);
+                this.quiz.questions[questionNumber - 1].givenAnswers.push(input.value);
                 break;
             }
           });
@@ -159,12 +189,12 @@
        */
       handleQuizFinish() {
         this.scrollToTop();
-        this.finished = true;
+        this.quiz.finished = true;
       },
     },
 
     mounted() {
-      this.calculateProgress();
+      this.loadData();
 
       window.VueEventBus.$on('Quiz:Start', () => {
         this.navigateNextQuestion(0);
@@ -187,7 +217,7 @@
       });
 
       window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.unlocked = true;
+        this.quiz.unlocked = true;
       });
     },
   }
@@ -215,6 +245,7 @@
     --timing-m: 0.6s;
     --easing: ease;
 
+    --gutter-2xs: 5px;
     --gutter-xs: 10px;
     --gutter-s: 20px;
     --gutter-m: 30px;
