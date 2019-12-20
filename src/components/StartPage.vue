@@ -33,12 +33,34 @@
       </ul>
     </div>
 
-    <button
-      class="button"
-      @click="handleStart"
+    <form
+      class="start__form text-field"
+      @submit.prevent="handleStart"
     >
-      Start
-    </button>
+      <label
+        class="start__label text-field__label label"
+        for="name"
+      >
+        Name/Team name
+      </label>
+
+      <input
+        id="name"
+        class="start__input text-field__input"
+        placeholder="Name"
+        type="text"
+        @keyup="handleNameInput"
+      >
+
+      <button
+        class="button"
+        :disabled="isDisabled"
+        type="submit"
+        @click="handleStart"
+      >
+        Start
+      </button>
+    </form>
 
     <small class="start__footer">
       Built by <a href="https://craigbaldwin.com" target="blank">Craig Baldwin</a> 2020.
@@ -48,7 +70,19 @@
 
 <script>
   export default {
+    props: {
+      name: String,
+    },
+
     methods: {
+
+      /**
+       * Handle name input.
+       * @param {Event} event - Keyup event.
+       */
+      handleNameInput(event) {
+        window.VueEventBus.$emit('Quiz:SetName', event.target.value);
+      },
 
       /**
        * Start the quiz.
@@ -56,6 +90,17 @@
       handleStart() {
         window.VueEventBus.$emit('Quiz:Start');
       },
+    },
+
+    computed: {
+
+      /**
+       * Calculate if disabled as no name.
+       * @returns {Boolean}
+       */
+      isDisabled() {
+        return this.name === '';
+      }
     },
   }
 </script>
@@ -91,6 +136,10 @@
       + li {
         margin-top: var(--gutter-xs);
       }
+    }
+
+    &__input {
+      margin-bottom: var(--gutter-s);
     }
 
     &__footer {

@@ -9,7 +9,10 @@
     <div v-else>
       <ProgressBar :progress="quiz.progress" />
 
-      <StartPage v-if="quiz.step === 0" />
+      <StartPage
+        v-if="quiz.step === 0"
+        :name="quiz.name"
+      />
 
       <Questions
         v-if="!quiz.finished"
@@ -208,6 +211,10 @@
 
       window.VueEventBus.$on('Quiz:Start', () => {
         this.navigateNextQuestion(0);
+      });
+
+      window.VueEventBus.$on('Quiz:SetName', (name) => {
+        this.quiz.name = name;
       });
 
       window.VueEventBus.$on('Question:Input', (data) => {
