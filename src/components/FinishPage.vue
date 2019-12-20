@@ -26,6 +26,7 @@
           class="finish__input text-field__input"
           placeholder="Password"
           type="password"
+          data-lpignore="true"
         >
 
         <button
