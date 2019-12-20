@@ -21,7 +21,7 @@
     />
 
     <Scoring
-      v-if="debug && step > 0"
+      v-if="debug && step > 0 && !unlocked"
       :questions="questions"
     />
   </div>
@@ -52,17 +52,29 @@
     },
 
     methods: {
-      calculateProgress() {
+
+      /**
+       * Calculate progress bar.
+       * @param {Number} step - Current step.
+       */
+      calculateProgress(step = this.step) {
         const totalQuestions = this.questions.length;
-        this.progress = Math.round(((this.step - 1) / totalQuestions) * 100);
+        this.progress = Math.round(((step - 1) / totalQuestions) * 100);
       },
 
+      /**
+       * Navigate to the next question.
+       * @param {Number} step - Current step.
+       */
       navigateNextQuestion(step) {
         this.step = (step + 1);
-        this.calculateProgress();
         this.focusFirstInput(this.step);
       },
 
+      /**
+       * Focus on the first input.
+       * @param {Number} step - Current step.
+       */
       focusFirstInput(step) {
         const activeQuestion = document.querySelector(`[js-question="${step}"]`);
         const choices = activeQuestion.querySelector('[js-choices="group"]');
@@ -71,14 +83,46 @@
         input.focus();
       },
 
+      /**
+       * When answer is given, set data.
+       * @param {Object} data - Data object.
+       * @param {Number} data.step - Current step.
+       * @param {Number} data.group - The input group.
+       */
       handleAnswerInput(data) {
         this.questions[data.step - 1].choices[data.group].answered = true;
       },
 
+      /**
+       * Disable the question next button if text field is emptied.
+       * @param {Object} data - Data object.
+       * @param {Number} data.step - Current step.
+       * @param {Number} data.group - The input group.
+       */
       handleQuestionDisable(data) {
         this.questions[data.step - 1].choices[data.group].answered = false;
       },
 
+      /**
+       * Handle a question submit event.
+       * @param {Number} questionNumber - Question's number, must be reduced to match array index.
+       */
+      handleQuestionSubmit(questionNumber) {
+        this.saveAnswer(questionNumber);
+        this.calculateProgress(questionNumber + 1);
+
+        if (questionNumber === this.questions.length) {
+          this.handleQuizFinish();
+          return;
+        }
+
+        this.navigateNextQuestion(questionNumber);
+      },
+
+      /**
+       * Save the answer when question is submitted.
+       * @param {Number} questionNumber - Question's number, must be reduced to match array index.
+       */
       saveAnswer(questionNumber) {
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
 
@@ -102,6 +146,9 @@
         });
       },
 
+      /**
+       * Finish the quiz.
+       */
       handleQuizFinish() {
         this.finished = true;
       },
@@ -123,13 +170,7 @@
       });
 
       window.VueEventBus.$on('Question:Submit', (questionNumber) => {
-        if (questionNumber === this.questions.length) {
-          this.handleQuizFinish();
-          return;
-        }
-
-        this.navigateNextQuestion(questionNumber);
-        this.saveAnswer(questionNumber);
+        this.handleQuestionSubmit(questionNumber);
       });
 
       window.VueEventBus.$on('Quiz:Finish', () => {
