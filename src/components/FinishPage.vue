@@ -11,6 +11,7 @@
     <form
       v-if="!unlocked"
       class="finish__password text-field"
+      js-password="container"
       @submit.prevent="handleSubmit"
     >
       <label
@@ -26,18 +27,29 @@
           class="finish__input text-field__input"
           placeholder="Password"
           type="password"
+          aria-invalid="false"
           data-lpignore="true"
+          @click="handlePasswordClick"
+          @keyup="handlePasswordInput"
         >
 
         <button
           class="finish__reveal"
+          role="switch"
           type="button"
-          aria-pressed="false"
+          aria-checked="false"
           @click="revealPassword"
         >
           Reveal
         </button>
       </div>
+
+      <span
+        class="finish__error"
+        role="status"
+        aria-live="polite"
+        js-password="error"
+      ></span>
 
       <button
         class="button"
@@ -70,6 +82,30 @@
     methods: {
 
       /**
+       * Handle password input click.
+       * @param {Event} event - Click event.
+       */
+      handlePasswordClick(event) {
+        const element = event.target;
+        element.setSelectionRange(0, element.value.length);
+      },
+
+      /**
+       * Handle password field input.
+       * @param {Event} event - Key up event.
+       */
+      handlePasswordInput(event) {
+        const element = event.target;
+        const passwordInput = element;
+        const passwordContainer = element.closest('[js-password="container"]');
+        const passwordError = passwordContainer.querySelector('[js-password="error"]');
+
+        passwordError.innerText = '';
+        passwordContainer.classList.remove('has-error');
+        passwordInput.setAttribute('aria-invalid', false);
+      },
+
+      /**
        * Reveal the password value.
        * @param {Event} event - Click event.
        */
@@ -78,13 +114,13 @@
 
         if (!element.classList.contains('is-active')) {
           element.classList.add('is-active');
-          element.setAttribute('aria-pressed', true);
+          element.setAttribute('aria-checked', true);
           element.previousElementSibling.setAttribute('type', 'text');
           return;
         }
 
         element.classList.remove('is-active');
-        element.setAttribute('aria-pressed', false);
+        element.setAttribute('aria-checked', false);
         element.previousElementSibling.setAttribute('type', 'password');
       },
 
@@ -94,12 +130,19 @@
        */
       handleSubmit(event) {
         const element = event.target;
-        const passwordInput = element.querySelector('input').value;
-        window.console.log('test', passwordInput);
+        const passwordInput = element.querySelector('input');
+        const passwordValue = passwordInput.value;
+        const passwordContainer = element.closest('[js-password="container"]');
+        const passwordError = passwordContainer.querySelector('[js-password="error"]');
 
-        if (passwordInput === 'password') {
+        if (passwordValue === 'password') {
           window.VueEventBus.$emit('Quiz:Unlock');
+          return;
         }
+
+        passwordInput.setAttribute('aria-invalid', true);
+        passwordContainer.classList.add('has-error');
+        passwordError.innerText = 'You\'ve enter the password incorrectly';
       }
     }
   }
@@ -107,6 +150,22 @@
 
 <style lang="scss" scoped>
   .finish {
+    $parent: &;
+
+    &__password.has-error {
+      #{$parent}__label {
+        background-color: var(--colour-error);
+      }
+
+      #{$parent}__input {
+        border-color: var(--colour-error);
+      }
+
+      #{$parent}__error {
+        display: block;
+      }
+    }
+
     &__input-group {
       margin-bottom: var(--gutter-s);
       position: relative;
@@ -136,6 +195,14 @@
         background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODYiIGhlaWdodD0iMzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTc1Ljc1IDJjMCAyLTE0Ljc3MyAxNi0zMyAxNi0xOC4yMjUgMC0zMy0xNC0zMy0xNk05Ljc1IDJsLTcuNSA2LjVNMTYuNzUgMTBsLTYuNSA3LjVNMjcuNzUgMTVsLTUuNSA4LjVNNzYuMjUgMmw3LjUgNi41TTY5LjI1IDEwbDYuNSA3LjVNNTguMjUgMTVsNS41IDguNU0zOC4yNSAxOGwtMiAxME00OC4yNSAxOGwyIDEwIiBzdHJva2U9IiMzNDQ5NUUiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=);
         background-position: 50% 70%;
       }
+    }
+
+    &__error {
+      color: var(--colour-error);
+      display: none;
+      font-size: var(--font-s);
+      margin-bottom: var(--gutter-s);
+      margin-top: -10px;
     }
   }
 </style>

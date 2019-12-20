@@ -197,7 +197,8 @@
   :root {
     --colour-background: rgb(236, 240, 241);
     --colour-text: rgb(52, 73, 94);
-    --colour-text-inverse: rgb(236, 240, 241);
+    --colour-text-inverse: rgb(255, 255, 255);
+    --colour-error: rgb(231, 76, 60);
 
     --colour-green: rgb(46, 204, 113);
     --colour-dark-green: rgb(39, 174, 96);
@@ -310,6 +311,8 @@
     font-weight: 700;
     margin-bottom: -3px;
     padding: var(--gutter-xs) var(--gutter-s);
+    position: relative;
+    z-index: 2;
   }
 
   .outlined-group {
