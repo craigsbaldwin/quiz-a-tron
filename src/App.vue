@@ -62,6 +62,15 @@
     methods: {
 
       /**
+       * Add navigation warnings.
+       */
+      navigationWarnings() {
+        window.onbeforeunload = function() {
+          return 'Refreshing this page will lose all progress';
+        };
+      },
+
+      /**
        * Load data from JSONBIN.
        */
       loadData() {
@@ -194,6 +203,7 @@
     },
 
     mounted() {
+      this.navigationWarnings();
       this.loadData();
 
       window.VueEventBus.$on('Quiz:Start', () => {
