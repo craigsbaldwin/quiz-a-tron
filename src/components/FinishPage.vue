@@ -32,6 +32,7 @@
         <button
           class="finish__reveal"
           type="button"
+          aria-pressed="false"
           @click="revealPassword"
         >
           Reveal
@@ -77,12 +78,14 @@
 
         if (!element.classList.contains('is-active')) {
           element.classList.add('is-active');
+          element.setAttribute('aria-pressed', true);
           element.previousElementSibling.setAttribute('type', 'text');
           return;
         }
 
-        element.previousElementSibling.setAttribute('type', 'password');
         element.classList.remove('is-active');
+        element.setAttribute('aria-pressed', false);
+        element.previousElementSibling.setAttribute('type', 'password');
       },
 
       /**
