@@ -135,6 +135,7 @@
         position: absolute;
         top: 6px;
         transform: scale(0);
+        transition: transform var(--timing-s) var(--easing);
         width: 24px;
       }
     }
