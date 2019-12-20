@@ -44,6 +44,15 @@
       navigateNextQuestion(step) {
         this.step = (step + 1);
         this.calculateProgress();
+        this.focusFirstInput(this.step);
+      },
+
+      focusFirstInput(step) {
+        const activeQuestion = document.querySelector(`[js-question="${step}"]`);
+        const choices = activeQuestion.querySelector('[js-choices="group"]');
+        const input = choices.querySelector('input');
+
+        input.focus();
       },
 
       handleAnswerInput(data) {
