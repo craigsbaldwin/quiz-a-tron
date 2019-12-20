@@ -13,7 +13,7 @@
       </span>
 
       <span
-        v-text="(step === length) ? 'Finish' : 'Next question'"
+        v-text="(step !== length) ? 'Next question' : 'Finish'"
         class="button__text button__next"
         :class="{ 'is-active': !isDisabled }"
       ></span>

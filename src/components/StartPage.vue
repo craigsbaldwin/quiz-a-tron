@@ -41,7 +41,7 @@
         class="start__label text-field__label label"
         for="name"
       >
-        Name/Team name
+        Name
       </label>
 
       <input
@@ -53,13 +53,12 @@
       >
 
       <button
+        v-text="(!isDisabled) ? 'Start quiz' : 'Enter name'"
         class="button"
         :disabled="isDisabled"
         type="submit"
         @click="handleStart"
-      >
-        Start
-      </button>
+      ></button>
     </form>
 
     <small class="start__footer">
