@@ -77,7 +77,10 @@
     }
 
     &__group:not(:last-child) {
-      margin-bottom: var(--gutter-s);
+      #{$parent}__label {
+        height: calc(36px + var(--gutter-s));
+        padding-bottom: var(--gutter-s);
+      }
     }
 
     &__input {
