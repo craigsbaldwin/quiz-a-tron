@@ -47,9 +47,8 @@
     border: 3px solid var(--colour-green);
     color: var(--colour-text-inverse);
     cursor: pointer;
-    font-size: 18px;
     font-weight: 700;
-    min-height: 80px;
+    min-height: 76px;
     overflow: hidden;
     position: relative;
     transition: background-color var(--timing-s) var(--easing),

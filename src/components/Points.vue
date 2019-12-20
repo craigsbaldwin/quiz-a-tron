@@ -33,6 +33,7 @@
     align-items: center;
     border: 3px solid var(--colour-grey);
     display: flex;
+    font-size: var(--font-s);
     margin-bottom: var(--gutter-s);
     padding: var(--gutter-s);
 
@@ -43,7 +44,6 @@
     }
 
     strong {
-      font-size: 20px;
       margin-left: auto;
     }
   }

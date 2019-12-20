@@ -5,7 +5,8 @@
   >
     <div
       class="progress-bar__bar"
-      :style="{ paddingRight: (progress > 0) ? '10px' : 0, width: progress + '%'}"
+      :class="{ 'is-active': progress > 0 }"
+      :style="{ width: progress + '%'}"
     >
       <span
         v-if="progress > 0"
@@ -47,6 +48,14 @@
       top: 0;
       transition: padding-right var(--timing-s) var(--easing), width var(--timing-s) var(--easing);
       width: 0;
+
+      &.is-active {
+        padding-right: var(--gutter-s);
+      }
+    }
+
+    &__text {
+      font-size: var(--font-s);
     }
 
     &.is-active {

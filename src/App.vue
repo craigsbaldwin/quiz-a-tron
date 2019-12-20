@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header class="header">
-      Quiz-a-tron
+      <h1>Quiz-a-tron</h1>
     </header>
 
     <ProgressBar :progress="progress" />
@@ -130,6 +130,11 @@
     --colour-dark-grey: rgb(52, 73, 94);
     --colour-yellow: rgb(241, 196, 15);
 
+    --font-xs: 14px;
+    --font-s: 16px;
+    --font-m: 20px;
+    --font-l: 24px;
+
     --timing-s: 0.4s;
     --timing-m: 0.6s;
     --easing: ease;
@@ -142,16 +147,20 @@
     --progress-bar: 50px;
   }
 
+  /**
+   * Standard.
+   */
   * {
     box-sizing: border-box;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-size: var(--font-m);
     margin: 0;
     padding: 0;
   }
 
   html, body {
     background-color: var(--colour-background);
-    font-size: 100%;
+    line-height: 1.5;
   }
 
   #app {
@@ -175,5 +184,35 @@
     top: 0;
     width: 100%;
     z-index: 1;
+  }
+
+  /**
+   * Typography.
+   */
+  h2, p, img {
+    margin-bottom: var(--gutter-s);
+  }
+
+  h2 {
+    font-size: var(--font-l);
+  }
+
+  /**
+   * Helpers.
+   */
+  .label {
+    background-color: var(--colour-dark-grey);
+    color: var(--colour-text-inverse);
+    display: inline-block;
+    font-size: var(--font-xs);
+    font-weight: 700;
+    margin-bottom: -3px;
+    padding: var(--gutter-xs) var(--gutter-s);
+  }
+
+  .outlined-group {
+    border: 3px solid var(--colour-dark-grey);
+    padding: var(--gutter-m);
+    position: relative;
   }
 </style>

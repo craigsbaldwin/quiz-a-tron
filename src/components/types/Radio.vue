@@ -4,9 +4,9 @@
     :class="{ 'radio--no-padding': !choices.label }"
     js-choices="group"
   >
-    <div class="radio__container">
+    <div class="radio__container outlined-group">
       <legend
-        class="radio__legend"
+        class="radio__legend label"
         v-if="choices.label"
       >
         {{ choices.label }}
@@ -68,22 +68,9 @@
     // Pushes radio group down so margin is correct
     padding-top: 33px;
 
-    &__container {
-      border: 3px solid var(--colour-dark-grey);
-      padding: var(--gutter-s);
-      position: relative;
-
-    }
-
     &__legend {
-      background-color: var(--colour-dark-grey);
-      color: var(--colour-text-inverse);
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
       left: -3px;
       margin-bottom: -3px;
-      padding: var(--gutter-xs) var(--gutter-s);
       position: absolute;
       top: 0;
       transform: translateY(-100%);
@@ -111,7 +98,6 @@
       cursor: pointer;
       display: flex;
       height: 36px;
-      font-size: 18px;
       margin-left: 36px;
       padding-left: var(--gutter-s);
       position: relative;
@@ -157,7 +143,8 @@
       }
     }
 
-    &:focus-within {
+    &:focus-within,
+    &:active {
       #{$parent}__container {
         border-color: var(--colour-green);
       }

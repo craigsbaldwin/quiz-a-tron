@@ -1,8 +1,30 @@
 <template>
   <div class="start-page">
-    <p class="start-page__text">
-      Start quiz text goes here
+    <p>
+      Welcome to the <strong>Quiz-a-tron</strong>, a Vue-powered quiz app.
     </p>
+
+    <p>
+      It's time to test all aspects of your knowledge, from music and movies, to geography and language.
+    </p>
+
+    <h2>Prize</h2>
+
+    <img
+      alt="Minipresso"
+      src=""
+    >
+
+    <div class="start-page__container">
+      <h2 class="start-page__label label">Rules</h2>
+
+      <ul class="start-page__group outlined-group">
+        <li>One minute for each question, unless it's a media question</li>
+        <li>The points value for each question is shown on the question</li>
+        <li>You must provide an answer to proceed</li>
+        <li>You will not be able to go back once you've answered a question</li>
+      </ul>
+    </div>
 
     <button
       class="button"
@@ -25,9 +47,32 @@
 
 <style lang="scss" scoped>
   .start-page {
-    &__text {
-      font-size: 18px;
-      margin-bottom: var(--gutter-s);
+    &__label {
+      clear: both;
+    }
+
+    &__group {
+      margin-bottom: var(--gutter-l);
+    }
+
+    li {
+      list-style: none;
+      padding-left: var(--gutter-m);
+      position: relative;
+
+      &::before {
+        background-color: var(--colour-green);
+        content: '';
+        height: 0.5em;
+        left: 0;
+        position: absolute;
+        top: 0.45em;
+        width: 0.5em;
+      }
+
+      + li {
+        margin-top: var(--gutter-xs);
+      }
     }
   }
 </style>

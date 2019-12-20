@@ -97,9 +97,12 @@
 
     &__number {
       align-items: center;
-      background-color: var(--colour-yellow);
+      border: 3px solid var(--colour-green);
       border-radius: 100%;
+      color: var(--colour-green);
       display: flex;
+      font-size: var(--font-l);
+      font-weight: bold;
       height: var(--progress-bar);
       justify-content: center;
       margin-right: var(--gutter-s);
@@ -107,7 +110,7 @@
     }
 
     &__question-text {
-      font-size: 24px;
+      margin-bottom: 0;
     }
 
     &__choices {

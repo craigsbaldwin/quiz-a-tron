@@ -5,7 +5,7 @@ const data = {
   finished: false,
   questions: [
     {
-      question: "Give me some text",
+      question: "What is the song and artist?",
       type: 'text',
       choices: [
         {
