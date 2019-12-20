@@ -69,6 +69,7 @@
       navigateNextQuestion(step) {
         this.step = (step + 1);
         this.focusFirstInput(this.step);
+        this.scrollToTop();
       },
 
       /**
@@ -81,6 +82,13 @@
         const input = choices.querySelector('input');
 
         input.focus();
+      },
+
+      /**
+       * Scroll to top of page.
+       */
+      scrollToTop() {
+        window.scrollTo(0, 0);
       },
 
       /**
@@ -150,6 +158,7 @@
        * Finish the quiz.
        */
       handleQuizFinish() {
+        this.scrollToTop();
         this.finished = true;
       },
     },
@@ -235,7 +244,7 @@
     margin-top: var(--progress-bar);
     padding: var(--gutter-l) var(--gutter-m);
     max-width: 580px;
-    min-height: 100vh;
+    min-height: calc(100vh - var(--progress-bar));
   }
 
   .header {
