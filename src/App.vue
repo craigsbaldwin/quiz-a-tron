@@ -50,6 +50,10 @@
         this.questions[data.step - 1].choices[data.choiceGroup].answered = true;
       },
 
+      handleQuestionDisable(data) {
+        this.questions[data.step - 1].choices[data.choiceGroup].answered = false;
+      },
+
       saveAnswer(questionNumber) {
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
 
@@ -87,6 +91,10 @@
 
       window.VueEventBus.$on('Question:Input', (data) => {
         this.handleAnswerInput(data);
+      });
+
+      window.VueEventBus.$on('Question:Disable', (data) => {
+        this.handleQuestionDisable(data);
       });
 
       window.VueEventBus.$on('Question:Submit', (questionNumber) => {

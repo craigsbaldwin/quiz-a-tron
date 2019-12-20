@@ -15,7 +15,7 @@
       class="text-field__input"
       :placeholder="label"
       type="text"
-      @keyup="handleInput()"
+      @keyup="handleInput"
     >
   </div>
 </template>
@@ -29,10 +29,16 @@
     },
 
     methods: {
-      handleInput() {
+      handleInput(event) {
+        const element = event.target;
         const data = {
           step: this.step,
           choiceGroup: this.choiceGroup,
+        }
+
+        if (element.getAttribute('type') === 'text' && element.value === '') {
+          window.VueEventBus.$emit('Question:Disable', data);
+          return;
         }
 
         window.VueEventBus.$emit('Question:Input', data);
