@@ -271,9 +271,16 @@
     border-bottom: 1px solid currentColor;
     color: currentColor;
     text-decoration: none;
+    transition: color var(--timing-s) var(--easing);
 
     &:hover {
       color: var(--colour-green);
+    }
+
+    &:focus {
+      border-bottom-color: transparent;
+      color: var(--colour-green);
+      outline: 3px solid var(--colour-green);
     }
   }
 
