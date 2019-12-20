@@ -1,5 +1,7 @@
 <template>
   <div class="scoring">
+    <h2>Your score</h2>
+
     <div
       class="scoring__score"
       :key="index"
@@ -71,6 +73,6 @@
 
 <style lang="scss" scoped>
   .scoring {
-    margin-top: var(--gutter-l);
+
   }
 </style>

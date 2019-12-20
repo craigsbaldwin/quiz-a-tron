@@ -1,5 +1,5 @@
 <template>
-  <div class="start-page">
+  <div class="start">
     <p>
       Welcome to the <strong>Quiz-a-tron</strong>, a Vue-powered quiz app.
     </p>
@@ -15,10 +15,10 @@
       src=""
     >
 
-    <div class="start-page__container">
-      <h2 class="start-page__label label">Rules</h2>
+    <div class="start__container">
+      <h2 class="start__label label">Rules</h2>
 
-      <ul class="start-page__group outlined-group">
+      <ul class="start__group outlined-group">
         <li>One minute for each question, unless it's a media question</li>
         <li>The points value for each question is shown on the question</li>
         <li>You must provide an answer to proceed</li>
@@ -46,7 +46,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .start-page {
+  .start {
     &__label {
       clear: both;
     }

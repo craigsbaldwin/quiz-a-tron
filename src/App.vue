@@ -8,16 +8,31 @@
 
     <StartPage v-if="step === 0" />
 
-    <Questions :step="step" :questions="questions" />
-    <Scoring :questions="questions" />
+    <Questions
+      v-if="!finished"
+      :step="step"
+      :questions="questions"
+    />
+
+    <FinishPage
+      v-if="finished"
+      :questions="questions"
+      :unlocked="unlocked"
+    />
+
+    <Scoring
+      v-if="debug && step > 0"
+      :questions="questions"
+    />
   </div>
 </template>
 
 <script>
+  import FinishPage from './components/FinishPage.vue';
   import ProgressBar from './components/ProgressBar.vue';
   import Questions from './components/Questions.vue';
-  import Scoring from './components/Scoring.vue';
   import StartPage from './components/StartPage.vue';
+  import Scoring from './components/Scoring.vue';
 
   import quizData from './data/quiz-data.js';
 
@@ -25,10 +40,11 @@
     name: 'Quiz-a-tron',
 
     components: {
+      FinishPage,
       ProgressBar,
       Questions,
-      Scoring,
       StartPage,
+      Scoring,
     },
 
     data() {
@@ -107,12 +123,21 @@
       });
 
       window.VueEventBus.$on('Question:Submit', (questionNumber) => {
+        if (questionNumber === this.questions.length) {
+          this.handleQuizFinish();
+          return;
+        }
+
         this.navigateNextQuestion(questionNumber);
         this.saveAnswer(questionNumber);
       });
 
       window.VueEventBus.$on('Quiz:Finish', () => {
         this.handleQuizFinish();
+      });
+
+      window.VueEventBus.$on('Quiz:Unlock', () => {
+        this.unlocked = true;
       });
     },
   }
@@ -191,6 +216,10 @@
    */
   h2, p, img {
     margin-bottom: var(--gutter-s);
+  }
+
+  h1 {
+    line-height: 1;
   }
 
   h2 {

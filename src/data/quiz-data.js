@@ -1,8 +1,10 @@
 const data = {
+  debug: true,
   progress: 0,
   step: 0,
   score: 0,
   finished: false,
+  unlocked: false,
   questions: [
     {
       question: "What is the song and artist?",

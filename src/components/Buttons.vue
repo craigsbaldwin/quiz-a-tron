@@ -16,9 +16,7 @@
         v-text="(step === length) ? 'Finish' : 'Next question'"
         class="button__text button__next"
         :class="{ 'is-active': !isDisabled }"
-      >
-        Next question
-      </span>
+      ></span>
     </button>
   </div>
 </template>

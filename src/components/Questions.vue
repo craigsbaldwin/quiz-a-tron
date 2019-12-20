@@ -63,10 +63,6 @@
       submitAnswer(questionNumber) {
         window.VueEventBus.$emit('Question:Submit', questionNumber);
       },
-
-      // finish() {
-      //   window.VueEventBus.$emit('Quiz:Finished');
-      // },
     },
   }
 </script>

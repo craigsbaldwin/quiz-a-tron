@@ -47,7 +47,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .text-field {
     $parent: &;
 
@@ -75,8 +75,14 @@
       }
     }
 
-    &:focus-within #{$parent}__label {
-      background-color: var(--colour-green);
+    &:focus-within {
+      #{$parent}__label {
+        background-color: var(--colour-green);
+      }
+
+      #{$parent}__input {
+        border-color: var(--colour-green);
+      }
     }
   }
 </style>
