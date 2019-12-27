@@ -4,7 +4,7 @@
  * Global typographic styles.
  *
  */
-h2:not(:last-child),
+h2:not(:last-child):not(.label),
 p:not(:last-child),
 img:not(:last-child) {
   margin-bottom: var(--gutter-s);
