@@ -13,9 +13,9 @@
       "type": "text",
       "choices": [
         {
+          "label": "Song",
           "points": 2,
-          "answered": false,
-          "label": "Song"
+          "answered": false
         },
         {
           "label": "Artist",

@@ -15,6 +15,8 @@
       class="text-field__input"
       :placeholder="label"
       type="text"
+      data-type="text"
+      js-choices="input"
       @keyup="handleInput"
     >
   </div>

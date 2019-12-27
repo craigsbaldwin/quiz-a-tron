@@ -22,6 +22,8 @@
           class="radio__input"
           :name="`${step}-${radioGroup}`"
           type="radio"
+          data-type="radio"
+          js-choices="input"
           @change="handleInput"
         >
 

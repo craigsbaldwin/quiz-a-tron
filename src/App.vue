@@ -128,7 +128,7 @@
       focusFirstInput(step) {
         const activeQuestion = document.querySelector(`[js-question="${step}"]`);
         const choices = activeQuestion.querySelector('[js-choices="group"]');
-        const input = choices.querySelector('input');
+        const input = choices.querySelector('[js-choices="input"]');
 
         input.focus();
       },
@@ -184,10 +184,10 @@
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
 
         choices.forEach((group) => {
-          const inputs = [...group.querySelectorAll('input')];
+          const inputs = [...group.querySelectorAll('[js-choices="input"]')];
 
           inputs.forEach((input, index) => {
-            const type = input.getAttribute('type');
+            const type = input.getAttribute('data-type');
 
             switch (type) {
               case 'radio':
@@ -195,6 +195,7 @@
                 this.quiz.questions[questionNumber - 1].givenAnswers.push(index);
                 break;
 
+              case 'select':
               case 'text':
                 this.quiz.questions[questionNumber - 1].givenAnswers.push(input.value);
                 break;

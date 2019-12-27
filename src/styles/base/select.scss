@@ -1,0 +1,64 @@
+/**
+ * Base: Select
+ * ------------------------------------------------------------------------------
+ * Select dropdown styles.
+ *
+ */
+.select {
+  --arrow-width: 11px;
+  $parent: &;
+
+  &__input-container {
+    position: relative;
+
+    &::after {
+      @include transition(border-top-color);
+      border-top: var(--arrow-width) solid var(--colour-dark-grey);
+      border-left: var(--arrow-width) solid transparent;
+      border-right: var(--arrow-width) solid transparent;
+      content: '';
+      height: 0;
+      position: absolute;
+      right: var(--gutter-s);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+    }
+  }
+
+  &__input {
+    @include transition(border-color, box-shadow);
+    appearance: none;
+    border: 3px solid var(--colour-dark-grey);
+    border-radius: 0;
+    display: block;
+    padding: var(--gutter-s);
+    // Standard padding + width of dropdown arrow + further padding
+    padding-right: calc(var(--gutter-s) + var(--arrow-width) + var(--gutter-m));
+    width: 100%;
+
+    &:focus {
+      border-color: var(--colour-green);
+      box-shadow: var(--focus-shadow);
+      outline: none;
+    }
+  }
+
+  option:disabled {
+    color: #fff;
+  }
+
+  &:focus-within {
+    #{$parent}__label {
+      background-color: var(--colour-green);
+    }
+
+    #{$parent}__input-container::after {
+      border-top-color: var(--colour-green);
+    }
+
+    #{$parent}__input {
+      border-color: var(--colour-green);
+    }
+  }
+}

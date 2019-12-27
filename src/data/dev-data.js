@@ -1,7 +1,7 @@
 const data = {
   loaded: true,
   name: '',
-  debug: false,
+  debug: true,
   progress: 0,
   step: 0,
   score: 0,
@@ -9,13 +9,51 @@ const data = {
   unlocked: false,
   questions: [
     {
+      question: 'Match things with other things',
+      type: 'select',
+      choices: [
+        {
+          label: 'Building 1',
+          points: 2,
+          answered: false,
+          answers: [
+            { label: 'Address A' },
+            { label: 'Address B' },
+            { label: 'Address C' },
+          ]
+        },
+        {
+          label: 'Building 2',
+          points: 2,
+          answered: false,
+          answers: [
+            { label: 'Address A' },
+            { label: 'Address B' },
+            { label: 'Address C' },
+          ]
+        },
+        {
+          label: 'Building 3',
+          points: 2,
+          answered: false,
+          answers: [
+            { label: 'Address A' },
+            { label: 'Address B' },
+            { label: 'Address C' },
+          ]
+        },
+      ],
+      answers: ['Address A', 'Address B', 'Address C'],
+      givenAnswers: [],
+    },
+    {
       question: 'What is the song and artist?',
       type: 'text',
       choices: [
         {
+          label: 'Song',
           points: 2,
-          answered: false,
-          label: 'Song'
+          answered: false
         },
         {
           label: 'Artist',
@@ -24,7 +62,7 @@ const data = {
         }
       ],
       answers: ['Song', 'Artist'],
-      givenAnswers: []
+      givenAnswers: [],
     },
     {
       question: 'This is a test?',
@@ -42,7 +80,7 @@ const data = {
         }
       ],
       answers: [2],
-      givenAnswers: []
+      givenAnswers: [],
     },
     {
       question: 'This is a test?',
@@ -70,7 +108,7 @@ const data = {
         }
       ],
       answers: [0, 1],
-      givenAnswers: []
+      givenAnswers: [],
     }
   ]
 }
