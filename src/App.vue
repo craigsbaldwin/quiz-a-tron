@@ -206,7 +206,7 @@
     },
 
     mounted() {
-      this.navigationWarnings();
+      // this.navigationWarnings();
       this.loadData();
 
       window.VueEventBus.$on('Quiz:Start', () => {
