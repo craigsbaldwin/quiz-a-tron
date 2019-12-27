@@ -35,11 +35,13 @@
       "
       :key="index"
     >
-      <span class="score-table__cell">{{ question.answers[index] }}</span>
+      <span class="score-table__cell score-table__answer">
+        {{ question.answers[index] }}
+      </span>
 
       <span
-        v-text="(question.givenAnswers[index] !== blank) ? question.givenAnswers[index] : 'Not answered'"
-        class="score-table__cell score-table__answer"
+        v-text="(question.givenAnswers[index] !== false) ? question.givenAnswers[index] : 'Not answered'"
+        class="score-table__cell score-table__given-answer"
       ></span>
 
       <span

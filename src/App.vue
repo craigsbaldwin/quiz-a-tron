@@ -187,7 +187,7 @@
       saveAnswer(questionNumber) {
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
 
-        choices.forEach((group) => {
+        choices.forEach((group, groupIndex) => {
           const inputs = [...group.querySelectorAll('[js-choices="input"]')];
 
           inputs.forEach((input, index) => {
@@ -196,12 +196,12 @@
             switch (type) {
               case 'radio':
                 if (!input.checked) { return; }
-                this.quiz.questions[questionNumber - 1].givenAnswers.push(index);
+                this.quiz.questions[questionNumber - 1].givenAnswers[groupIndex] = index;
                 break;
 
               case 'select':
               case 'text':
-                this.quiz.questions[questionNumber - 1].givenAnswers.push(input.value);
+                this.quiz.questions[questionNumber - 1].givenAnswers[groupIndex] = input.value;
                 break;
             }
           });

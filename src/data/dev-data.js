@@ -25,7 +25,7 @@ const data = {
         },
       ],
       answers: ['Address A'],
-      givenAnswers: [],
+      givenAnswers: [false],
     },
     {
       question: 'What is the song and artist?',
@@ -45,7 +45,7 @@ const data = {
         }
       ],
       answers: ['Song', 'Artist'],
-      givenAnswers: [],
+      givenAnswers: [false, false],
     },
     {
       question: 'This is a test?',
@@ -94,7 +94,7 @@ const data = {
         }
       ],
       answers: [0, 1],
-      givenAnswers: [],
+      givenAnswers: [false, false],
     }
   ]
 }
