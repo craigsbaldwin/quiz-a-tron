@@ -5,6 +5,7 @@
  *
  */
 .label {
+  @include transition(background-color);
   background-color: var(--colour-dark-grey);
   color: var(--colour-text-inverse);
   display: inline-block;
