@@ -42,6 +42,8 @@
   import StartPage from './components/StartPage.vue';
   import Scoring from './components/Scoring.vue';
 
+  import devData from './data/dev-data.js';
+
   export default {
     name: 'Quiz-a-tron',
 
@@ -77,6 +79,11 @@
        * Load data from JSONBIN.
        */
       loadData() {
+        if (window.dev) {
+          this.quiz = devData.data;
+          return;
+        }
+
         if (localStorage.getItem('quiz') !== null) {
           this.quiz = JSON.parse(localStorage.getItem('quiz'));
           return;
@@ -206,7 +213,10 @@
     },
 
     mounted() {
-      // this.navigationWarnings();
+      if (!window.dev) {
+        this.navigationWarnings();
+      }
+
       this.loadData();
 
       window.VueEventBus.$on('Quiz:Start', () => {

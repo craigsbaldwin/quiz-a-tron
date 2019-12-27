@@ -11,6 +11,8 @@ window.reset = function() {
   localStorage.removeItem('quiz');
 }
 
+window.dev = true;
+
 /**
  * Vue instance.
  */
