@@ -35,12 +35,13 @@
       "
       :key="index"
     >
-      <span class="score-table__cell score-table__answer">
-        {{ question.answers[index] }}
-      </span>
+      <span
+        v-text="answerValue(index)"
+        class="score-table__cell score-table__answer"
+      ></span>
 
       <span
-        v-text="(question.givenAnswers[index] !== false) ? question.givenAnswers[index] : 'Not answered'"
+        v-text="givenAnswerValue(index)"
         class="score-table__cell score-table__given-answer"
       ></span>
 
@@ -61,7 +62,43 @@
 
     methods: {
 
+      /**
+       * Get the plain text answer value.
+       * @param {Number} index - Choice index.
+       */
+      answerValue(index) {
+        switch (this.question.type) {
+          case 'radio':
+            return this.question.choices[index].answers[this.question.answers[index]].label;
 
+          case 'select':
+            return this.question.answers[index];
+
+          case 'text':
+            return this.question.answers[index];
+        }
+      },
+
+      /**
+       * Get the plain text given answer value.
+       * @param {Number} index - Choice index.
+       */
+      givenAnswerValue(index) {
+        if (this.question.givenAnswers[index] === false) {
+          return 'Not answered';
+        }
+
+        switch (this.question.type) {
+          case 'radio':
+            return this.question.choices[index].answers[this.question.givenAnswers[index]].label;
+
+          case 'select':
+            return this.question.givenAnswers[index];
+
+          case 'text':
+            return this.question.givenAnswers[index];
+        }
+      },
 
       /**
        * Mark the question choice.
@@ -128,6 +165,10 @@
         let total = 0;
 
         this.question.choices.forEach((choice) => {
+          if (!choice.correct) {
+            return;
+          }
+
           total += choice.points;
         });
 

@@ -64,7 +64,7 @@ const data = {
         }
       ],
       answers: [2],
-      givenAnswers: [],
+      givenAnswers: [false],
     },
     {
       question: 'This is a test?',
