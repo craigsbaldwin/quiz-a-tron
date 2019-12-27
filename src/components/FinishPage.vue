@@ -61,22 +61,11 @@
         Submit
       </button>
     </form>
-
-    <Scoring
-      v-if="unlocked"
-      :questions="questions"
-    />
   </div>
 </template>
 
 <script>
-  import Scoring from './Scoring.vue';
-
   export default {
-    components: {
-      Scoring,
-    },
-
     props: {
       questions: Array,
       unlocked: Boolean,

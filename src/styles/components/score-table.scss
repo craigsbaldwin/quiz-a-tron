@@ -1,0 +1,97 @@
+/**
+ * Component: Score table
+ * ------------------------------------------------------------------------------
+ * Question score table.
+ *
+ */
+.score-table {
+  $parent: &;
+  border: 3px solid var(--colour-dark-grey);
+
+  &:not(:last-child) {
+    margin-bottom: var(--gutter-s);
+  }
+
+  &__heading {
+    background-color: var(--colour-dark-grey);
+    color: var(--colour-text-inverse);
+    display: flex;
+    font-weight: var(--weight-bold);
+    line-height: 1;
+    padding: var(--gutter-s);
+  }
+
+  &__question-total {
+    margin-left: auto;
+  }
+
+  &__row,
+  &__legend {
+    border-bottom: 3px solid var(--colour-background);
+    display: grid;
+    grid-column: span 3;
+    grid-template-columns: 1fr 1fr 200px;
+  }
+
+  &__row {
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &.is-correct {
+      #{$parent}__points {
+        background-color: var(--colour-green);
+      }
+    }
+
+    &.is-wrong {
+      #{$parent}__answer {
+        text-decoration: line-through;
+      }
+
+      #{$parent}__points {
+        background-color: var(--colour-red);
+      }
+    }
+  }
+
+  &__cell,
+  &__key {
+    font-size: var(--font-xs);
+    padding: var(--gutter-xs) var(--gutter-s);
+  }
+
+  &__key {
+    background-color: var(--colour-grey);
+  }
+
+  &__points {
+    background-color: var(--colour-grey);
+    text-align: right;
+  }
+
+  &.is-correct {
+    border-color: var(--colour-green);
+
+    #{$parent}__heading {
+      background-color: var(--colour-green);
+    }
+  }
+
+  &.is-mixed {
+    border-color: var(--colour-yellow);
+
+    #{$parent}__heading {
+      background-color: var(--colour-yellow);
+      color: var(--colour-text);
+    }
+  }
+
+  &.is-wrong {
+    border-color: var(--colour-red);
+
+    #{$parent}__heading {
+      background-color: var(--colour-red);
+    }
+  }
+}

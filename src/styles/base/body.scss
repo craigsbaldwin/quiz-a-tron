@@ -15,13 +15,13 @@
 html, body {
   background-color: var(--colour-background);
   line-height: 1.5;
+  min-height: calc(100vh - var(--progress-bar));
 }
 
-#app {
+.container {
   color: var(--colour-text);
   margin: 0 auto;
   margin-top: var(--progress-bar);
   padding: var(--gutter-l) var(--gutter-m);
   max-width: 580px;
-  min-height: calc(100vh - var(--progress-bar));
 }

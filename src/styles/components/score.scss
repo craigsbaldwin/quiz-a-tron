@@ -5,7 +5,9 @@
  *
  */
 .scoring {
-  margin-top: var(--gutter-m);
+  margin: var(--gutter-m) auto 0;
+  max-width: 80%;
+  min-width: 600px;
 
   .finish & {
     margin-top: 0;

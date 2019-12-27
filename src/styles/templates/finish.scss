@@ -13,11 +13,11 @@
 
   &__password.has-error {
     #{$parent}__label {
-      background-color: var(--colour-error);
+      background-color: var(--colour-red);
     }
 
     #{$parent}__input {
-      border-color: var(--colour-error);
+      border-color: var(--colour-red);
     }
 
     #{$parent}__error {
@@ -57,7 +57,7 @@
   }
 
   &__error {
-    color: var(--colour-error);
+    color: var(--colour-red);
     display: none;
     font-size: var(--font-s);
     margin-bottom: var(--gutter-s);

@@ -1,36 +1,38 @@
 <template>
   <div id="app">
-    <header class="header">
-      <h1>Quiz-a-tron</h1>
-    </header>
+    <div class="container">
+      <header class="header">
+        <h1>Quiz-a-tron</h1>
+      </header>
 
-    <Loading v-if="!quiz.loaded" />
+      <Loading v-if="!quiz.loaded" />
 
-    <div v-else>
-      <ProgressBar :progress="quiz.progress" />
+      <div v-else>
+        <ProgressBar :progress="quiz.progress" />
 
-      <StartPage
-        v-if="quiz.step === 0"
-        :name="quiz.name"
-      />
+        <StartPage
+          v-if="quiz.step === 0"
+          :name="quiz.name"
+        />
 
-      <Questions
-        v-if="!quiz.finished"
-        :step="quiz.step"
-        :questions="quiz.questions"
-      />
+        <Questions
+          v-if="!quiz.finished"
+          :step="quiz.step"
+          :questions="quiz.questions"
+        />
 
-      <FinishPage
-        v-if="quiz.finished"
-        :questions="quiz.questions"
-        :unlocked="quiz.unlocked"
-      />
-
-      <Scoring
-        v-if="quiz.debug && quiz.step > 0 && !quiz.unlocked"
-        :questions="quiz.questions"
-      />
+        <FinishPage
+          v-if="quiz.finished"
+          :questions="quiz.questions"
+          :unlocked="quiz.unlocked"
+        />
+      </div>
     </div>
+
+    <Score
+      v-if="quiz.debug && quiz.step > 0 || quiz.unlocked"
+      :questions="quiz.questions"
+    />
   </div>
 </template>
 
@@ -40,7 +42,7 @@
   import ProgressBar from './components/ProgressBar.vue';
   import Questions from './components/Questions.vue';
   import StartPage from './components/StartPage.vue';
-  import Scoring from './components/Scoring.vue';
+  import Score from './components/Score.vue';
 
   import devData from './data/dev-data.js';
 
@@ -53,7 +55,7 @@
       ProgressBar,
       Questions,
       StartPage,
-      Scoring,
+      Score,
     },
 
     data() {
@@ -167,6 +169,7 @@
       handleQuestionSubmit(questionNumber) {
         this.saveAnswer(questionNumber);
         this.calculateProgress(questionNumber + 1);
+        this.markAnswer(questionNumber - 1);
 
         if (questionNumber === this.quiz.questions.length) {
           this.handleQuizFinish();
@@ -178,7 +181,8 @@
 
       /**
        * Save the answer when question is submitted.
-       * @param {Number} questionNumber - Question's number, must be reduced to match array index.
+       * @param {Number} questionNumber - Question's number, must be reduced
+       * to match array index when saving.
        */
       saveAnswer(questionNumber) {
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
@@ -202,6 +206,25 @@
             }
           });
         });
+      },
+
+      /**
+       * Marks the answer when question is submitted.
+       * @param {Number} questionIndex - Question's index number.
+       */
+      markAnswer(questionIndex) {
+        const question = this.quiz.questions[questionIndex];
+
+        question.givenAnswers.forEach((givenAnswer, index) => {
+          let answer = question.answers[index];
+
+          if (typeof answer === 'string') {
+            answer = answer.toLowerCase();
+            givenAnswer = givenAnswer.toLowerCase();
+          }
+
+          question.choices[index].correct = (answer === givenAnswer);
+        })
       },
 
       /**
