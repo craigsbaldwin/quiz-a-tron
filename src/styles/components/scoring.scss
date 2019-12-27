@@ -6,4 +6,8 @@
  */
 .scoring {
   margin-top: var(--gutter-m);
+
+  .finish & {
+    margin-top: 0;
+  }
 }

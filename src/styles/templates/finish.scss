@@ -7,6 +7,10 @@
 .finish {
   $parent: &;
 
+  &__intro {
+    margin-bottom: var(--gutter-m);
+  }
+
   &__password.has-error {
     #{$parent}__label {
       background-color: var(--colour-error);

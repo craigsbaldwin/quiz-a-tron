@@ -1,6 +1,9 @@
 <template>
   <div class="finish">
-    <div v-if="!unlocked">
+    <div
+      v-if="!unlocked"
+      class="finish__intro"
+    >
       <h2>That's a wrap</h2>
 
       <p>
