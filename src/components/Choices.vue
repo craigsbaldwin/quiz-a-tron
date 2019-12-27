@@ -36,11 +36,3 @@
     },
   }
 </script>
-
-<style lang="scss" scoped>
-  .choices {
-    &__type {
-      margin-bottom: var(--gutter-l);
-    }
-  }
-</style>

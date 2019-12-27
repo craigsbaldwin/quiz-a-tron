@@ -1,0 +1,62 @@
+/**
+ * Template: Start page
+ * ------------------------------------------------------------------------------
+ * The first page of the quiz (after loading).
+ *
+ */
+.start {
+  &__content,
+  &__prize {
+    margin-bottom: var(--gutter-l);
+  }
+
+  &__warning {
+    background-color: var(--colour-yellow);
+    font-weight: 700;
+    padding: var(--gutter-s);
+  }
+
+  &__prize {
+    align-items: center;
+    display: flex;
+
+    img {
+      margin-right: var(--gutter-m);
+      width: 30%;
+    }
+  }
+
+  &__group {
+    margin-bottom: var(--gutter-l);
+  }
+
+  li {
+    font-size: var(--font-s);
+    list-style: none;
+    padding-left: var(--gutter-m);
+    position: relative;
+
+    &::before {
+      background-color: var(--colour-green);
+      content: '';
+      height: 0.5em;
+      left: 0;
+      position: absolute;
+      top: 0.45em;
+      width: 0.5em;
+    }
+
+    + li {
+      margin-top: var(--gutter-xs);
+    }
+  }
+
+  &__input {
+    margin-bottom: var(--gutter-s);
+  }
+
+  &__footer {
+    display: block;
+    margin-top: var(--gutter-l);
+  }
+}

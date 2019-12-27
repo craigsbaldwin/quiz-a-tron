@@ -1,0 +1,35 @@
+/**
+ * Component: Question
+ * ------------------------------------------------------------------------------
+ * Individual question, contains answers too.
+ *
+ */
+.question {
+  &__header {
+    align-items: center;
+    display: flex;
+    margin-bottom: var(--gutter-l);
+  }
+
+  &__number {
+    align-items: center;
+    border: 3px solid var(--colour-green);
+    border-radius: 100%;
+    color: var(--colour-green);
+    display: flex;
+    font-size: var(--font-l);
+    font-weight: bold;
+    height: var(--progress-bar);
+    justify-content: center;
+    margin-right: var(--gutter-s);
+    width: var(--progress-bar);
+  }
+
+  &__question-text {
+    margin-bottom: 0;
+  }
+
+  &__choices {
+    margin-bottom: var(--gutter-l);
+  }
+}

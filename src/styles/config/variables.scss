@@ -1,0 +1,51 @@
+/**
+ * Config: Variables
+ * ------------------------------------------------------------------------------
+ * CSS variables.
+ *
+ */
+:root {
+
+  /**
+   * Colours.
+   */
+  --colour-background: rgb(236, 240, 241);
+  --colour-text: rgb(52, 73, 94);
+  --colour-text-inverse: rgb(255, 255, 255);
+  --colour-error: rgb(231, 76, 60);
+
+  --colour-green: rgb(46, 204, 113);
+  --colour-dark-green: rgb(39, 174, 96);
+  --colour-grey: rgb(189, 195, 199);
+  --colour-dark-grey: rgb(52, 73, 94);
+  --colour-yellow: rgb(241, 196, 15);
+
+  /**
+   * Font sizes.
+   */
+  --font-xs: 14px;
+  --font-s: 16px;
+  --font-m: 20px;
+  --font-l: 24px;
+
+  /**
+   * Animation.
+   */
+  --timing-s: 0.4s;
+  --timing-m: 0.6s;
+  --easing: ease;
+
+  /**
+   * Spacing.
+   */
+  --gutter-2xs: 5px;
+  --gutter-xs: 10px;
+  --gutter-s: 20px;
+  --gutter-m: 30px;
+  --gutter-l: 40px;
+
+  /**
+   * Layout.
+   */
+  --progress-bar: 60px;
+}

@@ -1,0 +1,19 @@
+/**
+ * Component: Header
+ * ------------------------------------------------------------------------------
+ * Global site header.
+ *
+ */
+.header {
+  align-items: center;
+  background-color: var(--colour-dark-grey);
+  color: var(--colour-text-inverse);
+  display: flex;
+  height: var(--progress-bar);
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}

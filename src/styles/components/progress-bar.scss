@@ -1,0 +1,41 @@
+/**
+ * Component: Progress bar
+ * ------------------------------------------------------------------------------
+ * Header progress bar.
+ *
+ */
+.progress-bar {
+  left: 0;
+  height: var(--progress-bar);
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+
+  &__bar {
+    align-items: center;
+    background-color: var(--colour-green);
+    color: var(--colour-text-inverse);
+    display: flex;
+    height: 100%;
+    justify-content: flex-end;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: padding-right var(--timing-s) var(--easing), width var(--timing-s) var(--easing);
+    width: 0;
+
+    &.is-active {
+      padding-right: var(--gutter-s);
+    }
+  }
+
+  &__text {
+    font-size: var(--font-s);
+  }
+
+  &.is-active {
+    transform: translateY(0);
+  }
+}

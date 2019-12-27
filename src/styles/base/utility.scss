@@ -1,0 +1,23 @@
+/**
+ * Base: Utility
+ * ------------------------------------------------------------------------------
+ * Utility classes.
+ *
+ */
+.label {
+  background-color: var(--colour-dark-grey);
+  color: var(--colour-text-inverse);
+  display: inline-block;
+  font-size: var(--font-xs);
+  font-weight: 700;
+  margin-bottom: -3px;
+  padding: var(--gutter-xs) var(--gutter-s);
+  position: relative;
+  z-index: 2;
+}
+
+.outlined-group {
+  border: 3px solid var(--colour-dark-grey);
+  padding: var(--gutter-m);
+  position: relative;
+}
