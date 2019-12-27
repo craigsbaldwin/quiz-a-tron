@@ -9,6 +9,8 @@
  * Config.
  */
 @import './config/variables';
+@import './config/mixins';
+@import './config/utility';
 
 /**
  * Base.
@@ -17,7 +19,6 @@
 @import './base/radio';
 @import './base/text-field';
 @import './base/typography';
-@import './base/utility';
 
 /**
  * Components.

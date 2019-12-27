@@ -18,15 +18,15 @@
   }
 
   &__input {
+    @include transition(box-shadow);
     border: 3px solid var(--colour-dark-grey);
     display: block;
     padding: var(--gutter-s);
-    transition: box-shadow var(--timing-s) var(--easing);
     width: 100%;
 
     &:focus {
       border-color: var(--colour-green);
-      box-shadow: 0 0 20px 0 var(--colour-grey);
+      box-shadow: var(--focus-shadow);
       outline: none;
     }
   }

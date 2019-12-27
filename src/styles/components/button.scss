@@ -5,6 +5,7 @@
  *
  */
 .button {
+  @include transition(background-color, border-color, box-shadow, color);
   background-color: var(--colour-green);
   border: 3px solid var(--colour-green);
   color: var(--colour-text-inverse);
@@ -13,31 +14,27 @@
   min-height: 76px;
   overflow: hidden;
   position: relative;
-  transition: background-color var(--timing-s) var(--easing),
-    border-color var(--timing-s) var(--easing),
-    box-shadow var(--timing-s) var(--easing),
-    color var(--timing-s) var(--easing);
   width: 100%;
   z-index: 1;
 
   &::before {
+    @include transition(border-color);
     border: 3px solid transparent;
     content: '';
     height: calc(100% - 6px);
     left: 0;
     position: absolute;
     top: 0;
-    transition: border-color var(--timing-s) var(--easing);
     width: calc(100% - 6px);
   }
 
   &__text {
+    @include transition(transform var(--timing-m));
     display: block;
     left: 50%;
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
-    transition: transform var(--timing-m) var(--easing);
     width: 100%;
   }
 
@@ -63,7 +60,7 @@
   }
 
   &:focus {
-    box-shadow: 0 0 20px 0 var(--colour-grey);
+    box-shadow: var(--focus-shadow);
     outline: none;
 
     &::before {
