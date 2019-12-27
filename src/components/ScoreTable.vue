@@ -5,7 +5,7 @@
       [
         { 'is-correct': questionCorrect },
         { 'is-wrong': questionWrong },
-        { 'is-mixed': !questionCorrect && !questionWrong },
+        { 'is-mixed': questionMixed },
       ]
     "
   >
@@ -38,7 +38,7 @@
       <span class="score-table__cell">{{ question.answers[index] }}</span>
 
       <span
-        v-text="(question.givenAnswers[index]) ? question.givenAnswers[index] : 'Not answered'"
+        v-text="(question.givenAnswers[index] !== blank) ? question.givenAnswers[index] : 'Not answered'"
         class="score-table__cell score-table__answer"
       ></span>
 
@@ -86,9 +86,10 @@
        * Question correct-ness.
        */
       questionCorrect() {
-        const wrongAnswers = this.question.choices.filter((choice) => choice.answered && choice.correct === false);
+        const notAnswered = this.question.choices.filter((choice) => choice.answered === false);
+        const wrongAnswers = this.question.choices.filter((choice) => choice.correct === false);
 
-        return (wrongAnswers.length === 0);
+        return (notAnswered.length === 0 && wrongAnswers.length === 0);
       },
 
       /**
@@ -98,6 +99,23 @@
         const wrongAnswers = this.question.choices.filter((choice) => choice.answered && choice.correct === false);
 
         return (wrongAnswers.length === this.question.answers.length);
+      },
+
+      /**
+       * Question isn't totally correct or wrong.
+       */
+      questionMixed() {
+        const notAnswered = this.question.choices.filter((choice) => choice.answered === false);
+        const wrongAnswers = this.question.choices.filter((choice) => choice.answered && choice.correct === false);
+
+        /**
+         * Check that the question has been answered first.
+         */
+        if (notAnswered.length !== 0) {
+          return false;
+        }
+
+        return (wrongAnswers.length !== 0 && wrongAnswers.length !== this.question.answers.length);
       },
 
       /**
