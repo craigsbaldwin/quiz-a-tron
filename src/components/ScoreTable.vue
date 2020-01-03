@@ -62,6 +62,7 @@
       /**
        * Get the plain text given answer value.
        * @param {Number} index - Choice index.
+       * @returns {String}
        */
       givenAnswerValue(index) {
         if (this.question.choices[index].saved === false) {
@@ -83,6 +84,7 @@
       /**
        * Get the plain text answer value.
        * @param {Number} index - Choice index.
+       * @returns {String}
        */
       answerValue(index) {
         switch (this.question.type) {
@@ -120,6 +122,7 @@
 
       /**
        * Question correct-ness.
+       * @returns {Boolean}
        */
       questionCorrect() {
         const notSaved = this.question.choices.filter((choice) => choice.saved === false);
@@ -130,6 +133,7 @@
 
       /**
        * Question wrong-ness.
+       * @returns {Boolean}
        */
       questionWrong() {
         const wrongAnswers = this.question.choices.filter((choice) => choice.saved && choice.correct === false);
@@ -139,6 +143,7 @@
 
       /**
        * Question isn't totally correct or wrong.
+       * @returns {Boolean}
        */
       questionMixed() {
         const notSaved = this.question.choices.filter((choice) => choice.saved === false);
