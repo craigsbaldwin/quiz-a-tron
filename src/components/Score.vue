@@ -35,45 +35,8 @@
 
     props: {
       questions: Array,
+      totalAvailable: Number,
+      totalScore: Number,
     },
-
-    computed: {
-
-      /**
-       * Calculate the total score by iterating over all questions.
-       * @returns {Number}
-       */
-      totalScore() {
-        let score = 0;
-
-        this.questions.forEach((question) => {
-          question.choices.forEach((choice) => {
-            if (!choice.answered || !choice.correct) {
-              return;
-            }
-
-            score += choice.points;
-          });
-        });
-
-        return score;
-      },
-
-      /**
-       * Calculate total available points.
-       * @returns {Number}
-       */
-      totalAvailable() {
-        let total = 0;
-
-        this.questions.forEach((question) => {
-          question.choices.forEach((choice) => {
-            total += choice.points;
-          });
-        });
-
-        return total;
-      }
-    }
   }
 </script>

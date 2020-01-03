@@ -8,10 +8,8 @@ window.VueEventBus = new Vue();
  * Debugging tools.
  */
 window.reset = function() {
-  localStorage.removeItem('quiz');
+  localStorage.removeItem('questions-jan');
 }
-
-window.dev = true;
 
 /**
  * Vue instance.

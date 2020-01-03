@@ -1,38 +1,40 @@
 <template>
   <div
     id="app"
-    :class="{ 'is-finished': quiz.finished }"
+    :class="{ 'is-finished': finished }"
   >
     <div class="container">
       <header class="header">
         <h1>Quiz-a-tron</h1>
       </header>
 
-      <Loading v-if="!quiz.loaded" />
+      <Loading v-if="!loaded" />
 
       <div v-else>
-        <ProgressBar :progress="quiz.progress" />
+        <ProgressBar :progress="progress" />
 
         <StartPage
-          v-if="quiz.step === 0"
+          v-if="step === 0"
         />
 
         <Questions
-          v-if="!quiz.finished"
-          :step="quiz.step"
-          :questions="quiz.questions"
+          v-if="!finished"
+          :step="step"
+          :questions="questions"
         />
 
         <FinishPage
-          v-if="quiz.finished"
-          :questions="quiz.questions"
-          :unlocked="quiz.unlocked"
+          v-if="finished"
+          :questions="questions"
+          :unlocked="unlocked"
         />
       </div>
 
       <Score
-        v-if="quiz.debug && quiz.step > 0 || quiz.unlocked"
-        :questions="quiz.questions"
+        v-if="debug && step > 0 || unlocked"
+        :questions="questions"
+        :total-available="totalAvailable"
+        :total-score="totalScore"
       />
     </div>
   </div>
@@ -62,9 +64,21 @@
 
     data() {
       return {
-        quiz: {
-          loaded: false,
-        }
+        binId: '5dfcd5a02c714135cda4b6d5',
+        date: 'jan',
+        debug: true,
+        finished: false,
+        loaded: false,
+        progress: 0,
+        questions: [],
+        score: 0,
+        step: 0,
+        submission: {
+          name: '',
+          id: '',
+          score: 0,
+        },
+        unlocked: false,
       };
     },
 
@@ -83,23 +97,26 @@
        * Load data from JSONBIN.
        */
       loadData() {
-        if (window.dev) {
-          this.quiz = devData.data;
+        if (this.debug) {
+          this.questions = devData.data;
+          this.loaded = true;
           return;
         }
 
-        if (localStorage.getItem('quiz') !== null) {
-          this.quiz = JSON.parse(localStorage.getItem('quiz'));
+        if (localStorage.getItem(`questions-${this.date}`) !== null) {
+          this.questions = JSON.parse(localStorage.getItem(`questions-${this.date}`));
+          this.loaded = true;
           return;
         }
 
-        fetch('https://api.jsonbin.io/b/5dfcd5a02c714135cda4b6d5/latest')
+        fetch(`https://api.jsonbin.io/b/${this.binId}/latest`)
           .then((response) => {
             return response.json();
           })
           .then((response) => {
-            localStorage.setItem('quiz', JSON.stringify(response));
-            this.quiz = response;
+            localStorage.setItem(`questions-${this.date}`, JSON.stringify(response));
+            this.questions = response;
+            this.loaded = true;
           })
           .catch((error) => {
             throw new Error('Data load', error);
@@ -110,9 +127,9 @@
        * Calculate progress bar.
        * @param {Number} step - Current step.
        */
-      calculateProgress(step = this.quiz.step) {
-        const totalQuestions = this.quiz.questions.length;
-        this.quiz.progress = Math.round(((step - 1) / totalQuestions) * 100);
+      calculateProgress(step = this.step) {
+        const totalQuestions = this.questions.length;
+        this.progress = Math.round(((step - 1) / totalQuestions) * 100);
       },
 
       /**
@@ -120,8 +137,8 @@
        * @param {Number} step - Current step.
        */
       navigateNextQuestion(step) {
-        this.quiz.step = (step + 1);
-        this.focusFirstInput(this.quiz.step);
+        this.step = (step + 1);
+        this.focusFirstInput(this.step);
         this.scrollToTop();
       },
 
@@ -151,7 +168,7 @@
        * @param {Number} data.group - The input group.
        */
       handleAnswerInput(data) {
-        this.quiz.questions[data.step - 1].choices[data.group].answered = true;
+        this.questions[data.step - 1].choices[data.group].answered = true;
       },
 
       /**
@@ -161,7 +178,7 @@
        * @param {Number} data.group - The input group.
        */
       handleQuestionDisable(data) {
-        this.quiz.questions[data.step - 1].choices[data.group].answered = false;
+        this.questions[data.step - 1].choices[data.group].answered = false;
       },
 
       /**
@@ -173,7 +190,7 @@
         this.calculateProgress(questionNumber + 1);
         this.markAnswer(questionNumber - 1);
 
-        if (questionNumber === this.quiz.questions.length) {
+        if (questionNumber === this.questions.length) {
           this.handleQuizFinish();
           return;
         }
@@ -198,18 +215,18 @@
             switch (type) {
               case 'radio':
                 if (!input.checked) { return; }
-                this.quiz.questions[questionNumber - 1].givenAnswers[groupIndex] = index;
+                this.questions[questionNumber - 1].givenAnswers[groupIndex] = index;
                 break;
 
               case 'select':
               case 'text':
-                this.quiz.questions[questionNumber - 1].givenAnswers[groupIndex] = input.value;
+                this.questions[questionNumber - 1].givenAnswers[groupIndex] = input.value;
                 break;
             }
           });
         });
 
-        this.quiz.questions[questionNumber - 1].choices.forEach((choice) => {
+        this.questions[questionNumber - 1].choices.forEach((choice) => {
           choice.saved = true;
         });
       },
@@ -219,7 +236,7 @@
        * @param {Number} questionIndex - Question's index number.
        */
       markAnswer(questionIndex) {
-        const question = this.quiz.questions[questionIndex];
+        const question = this.questions[questionIndex];
 
         question.givenAnswers.forEach((givenAnswer, index) => {
           let answer = question.answers[index];
@@ -230,7 +247,7 @@
           }
 
           question.choices[index].correct = (answer === givenAnswer);
-        })
+        });
       },
 
       /**
@@ -238,23 +255,26 @@
        */
       handleQuizFinish() {
         this.scrollToTop();
-        this.quiz.finished = true;
+        this.finished = true;
       },
     },
 
     mounted() {
-      if (!window.dev) {
+      if (!this.debug) {
         this.navigationWarnings();
       }
 
       this.loadData();
 
+      /**
+       * EventBus.
+       */
       window.VueEventBus.$on('Quiz:Start', () => {
         this.navigateNextQuestion(0);
       });
 
       window.VueEventBus.$on('Quiz:SetName', (name) => {
-        this.quiz.name = name;
+        this.submission.name = name;
       });
 
       window.VueEventBus.$on('Question:Input', (data) => {
@@ -274,16 +294,48 @@
       });
 
       window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.quiz.unlocked = true;
+        this.unlocked = true;
       });
     },
 
     computed: {
 
-      isFinished() {
-        return this.quiz.finished;
-      }
-    }
+      /**
+       * Calculate the total score by iterating over all questions.
+       * @returns {Number}
+       */
+      totalScore() {
+        let score = 0;
+
+        this.questions.forEach((question) => {
+          question.choices.forEach((choice) => {
+            if (!choice.answered || !choice.correct) {
+              return;
+            }
+
+            score += choice.points;
+          });
+        });
+
+        return score;
+      },
+
+      /**
+       * Calculate total available points.
+       * @returns {Number}
+       */
+      totalAvailable() {
+        let total = 0;
+
+        this.questions.forEach((question) => {
+          question.choices.forEach((choice) => {
+            total += choice.points;
+          });
+        });
+
+        return total;
+      },
+    },
   }
 </script>
 
