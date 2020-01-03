@@ -18,12 +18,6 @@
       ></span>
     </div>
 
-    <div class="score-table__legend">
-      <span class="score-table__key">Correct answer</span>
-      <span class="score-table__key">Your answer</span>
-      <span class="score-table__key text-right">Points</span>
-    </div>
-
     <div
       v-for="(singleChoice, index) in question.choices"
       class="score-table__row"
@@ -35,15 +29,18 @@
       "
       :key="index"
     >
-      <span
-        v-text="answerValue(index)"
-        class="score-table__cell score-table__answer"
-      ></span>
+      <div class="score-table__cell">
+        <span
+          v-text="givenAnswerValue(index)"
+          class="score-table__given-answer"
+        ></span>
 
-      <span
-        v-text="givenAnswerValue(index)"
-        class="score-table__cell score-table__given-answer"
-      ></span>
+        <span
+          v-if="question.givenAnswers[index] !== false"
+          v-text="answerValue(index)"
+          class="score-table__answer"
+        ></span>
+      </div>
 
       <span
         v-text="markQuestion(question, index)"
@@ -63,23 +60,6 @@
     methods: {
 
       /**
-       * Get the plain text answer value.
-       * @param {Number} index - Choice index.
-       */
-      answerValue(index) {
-        switch (this.question.type) {
-          case 'radio':
-            return this.question.choices[index].answers[this.question.answers[index]].label;
-
-          case 'select':
-            return this.question.answers[index];
-
-          case 'text':
-            return this.question.answers[index];
-        }
-      },
-
-      /**
        * Get the plain text given answer value.
        * @param {Number} index - Choice index.
        */
@@ -97,6 +77,23 @@
 
           case 'text':
             return this.question.givenAnswers[index];
+        }
+      },
+
+      /**
+       * Get the plain text answer value.
+       * @param {Number} index - Choice index.
+       */
+      answerValue(index) {
+        switch (this.question.type) {
+          case 'radio':
+            return this.question.choices[index].answers[this.question.answers[index]].label;
+
+          case 'select':
+            return this.question.answers[index];
+
+          case 'text':
+            return this.question.answers[index];
         }
       },
 

@@ -1,5 +1,8 @@
 <template>
-  <div id="app">
+  <div
+    id="app"
+    :class="{ 'is-finished': quiz.finished }"
+  >
     <div class="container">
       <header class="header">
         <h1>Quiz-a-tron</h1>
@@ -12,7 +15,6 @@
 
         <StartPage
           v-if="quiz.step === 0"
-          :name="quiz.name"
         />
 
         <Questions
@@ -27,12 +29,12 @@
           :unlocked="quiz.unlocked"
         />
       </div>
-    </div>
 
-    <Score
-      v-if="quiz.debug && quiz.step > 0 || quiz.unlocked"
-      :questions="quiz.questions"
-    />
+      <Score
+        v-if="quiz.debug && quiz.step > 0 || quiz.unlocked"
+        :questions="quiz.questions"
+      />
+    </div>
   </div>
 </template>
 
@@ -271,6 +273,13 @@
         this.quiz.unlocked = true;
       });
     },
+
+    computed: {
+
+      isFinished() {
+        return this.quiz.finished;
+      }
+    }
   }
 </script>
 
