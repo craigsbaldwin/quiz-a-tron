@@ -7,6 +7,31 @@
 .scoring {
   margin-top: var(--gutter-m);
 
+  &__total {
+    align-items: center;
+    border: 3px solid var(--colour-dark-grey);
+    display: flex;
+    font-weight: var(--weight-bold);
+    padding: var(--gutter-s);
+  }
+
+  &__total-display {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+  }
+
+  &__total-value {
+    border-bottom: 3px solid var(--colour-dark-grey);
+    padding-bottom: var(--gutter-2xs);
+    text-align: center;
+    width: 100%;
+  }
+
+  &__total-available {
+    padding-top: var(--gutter-2xs);
+  }
+
   .is-finished & {
     margin-top: 0;
   }

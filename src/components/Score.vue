@@ -10,7 +10,17 @@
     />
 
     <div class="scoring__total">
-      Total: {{ totalScore }}
+      Total
+
+      <div class="scoring__total-display">
+        <div class="scoring__total-value">
+          {{ totalScore }}pt{{ (totalScore === 0 || totalScore > 1) ? 's' : '' }}
+        </div>
+
+        <div class="scoring__total-available">
+          {{ totalAvailable }}pt{{ (totalAvailable === 0 || totalAvailable > 1) ? 's' : '' }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,6 +57,22 @@
         });
 
         return score;
+      },
+
+      /**
+       * Calculate total available points.
+       * @returns {Number}
+       */
+      totalAvailable() {
+        let total = 0;
+
+        this.questions.forEach((question) => {
+          question.choices.forEach((choice) => {
+            total += choice.points;
+          });
+        });
+
+        return total;
       }
     }
   }
