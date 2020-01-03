@@ -7,7 +7,7 @@
       <h2>That's a wrap</h2>
 
       <p>
-        To review your score you must first enter a password, which I'll be providing.
+        Your answers have been submitted. To review your score you must first enter a password, which I'll be providing after announcing who's won.
       </p>
     </div>
 

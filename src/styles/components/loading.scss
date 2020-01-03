@@ -16,16 +16,21 @@
 }
 
 .loading {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  grid-gap: var(--gutter-2xs);
-  height: 80px;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - var(--progress-bar) - var(--gutter-l) - var(--gutter-l));
+  position: relative;
+
+  &__animation {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: var(--gutter-2xs);
+    height: 80px;
+    width: 80px;
+  }
 
   &__square {
     animation: loading 1.8s infinite ease-in-out;
@@ -54,5 +59,9 @@
     &#{&}--3 {
       animation-delay: 0.6s;
     }
+  }
+
+  &__text {
+    margin-top: var(--gutter-m);
   }
 }

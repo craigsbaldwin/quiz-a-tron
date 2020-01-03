@@ -8,7 +8,10 @@
         <h1>Quiz-a-tron</h1>
       </header>
 
-      <Loading v-if="!loaded" />
+      <Loading
+        v-if="!loaded"
+        text="Loading data"
+      />
 
       <div v-else>
         <ProgressBar :progress="progress" />
@@ -23,8 +26,14 @@
           :questions="questions"
         />
 
+        <SubmissionPage
+          v-if="finished && !submission.submitted"
+          :submission="submission"
+          :submitted="submitted"
+        />
+
         <FinishPage
-          v-if="finished"
+          v-if="finished && submission.submitted"
           :questions="questions"
           :unlocked="unlocked"
         />
@@ -45,8 +54,9 @@
   import Loading from './components/Loading.vue';
   import ProgressBar from './components/ProgressBar.vue';
   import Questions from './components/Questions.vue';
-  import StartPage from './components/StartPage.vue';
   import Score from './components/Score.vue';
+  import StartPage from './components/StartPage.vue';
+  import SubmissionPage from './components/SubmissionPage.vue';
 
   import devData from './data/dev-data.js';
 
@@ -58,8 +68,9 @@
       Loading,
       ProgressBar,
       Questions,
-      StartPage,
       Score,
+      StartPage,
+      SubmissionPage,
     },
 
     data() {
@@ -74,10 +85,13 @@
         score: 0,
         step: 0,
         submission: {
-          name: '',
+          available: 0,
           id: '',
+          name: '',
           score: 0,
+          timestamp: '',
         },
+        submitted: false,
         unlocked: false,
       };
     },
@@ -110,16 +124,14 @@
         }
 
         fetch(`https://api.jsonbin.io/b/${this.binId}/latest`)
-          .then((response) => {
-            return response.json();
-          })
+          .then(response => response.json())
           .then((response) => {
             localStorage.setItem(`questions-${this.date}`, JSON.stringify(response));
             this.questions = response;
             this.loaded = true;
           })
           .catch((error) => {
-            throw new Error('Data load', error);
+            throw new Error('JSON bin load', error);
           })
       },
 
@@ -248,6 +260,8 @@
 
           question.choices[index].correct = (answer === givenAnswer);
         });
+
+        this.submission.score = this.totalScore;
       },
 
       /**
@@ -265,6 +279,7 @@
       }
 
       this.loadData();
+      this.submission.available = this.totalAvailable;
 
       /**
        * EventBus.
@@ -274,7 +289,14 @@
       });
 
       window.VueEventBus.$on('Quiz:SetName', (name) => {
-        this.submission.name = name;
+        const escapedName = name
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+
+        this.submission.name = escapedName;
       });
 
       window.VueEventBus.$on('Question:Input', (data) => {
@@ -291,6 +313,10 @@
 
       window.VueEventBus.$on('Quiz:Finish', () => {
         this.handleQuizFinish();
+      });
+
+      window.VueEventBus.$on('Quiz:Submitted', () => {
+        this.submitted = true;
       });
 
       window.VueEventBus.$on('Quiz:Unlock', () => {
