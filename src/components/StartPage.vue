@@ -58,21 +58,22 @@
         class="start__label text-field__label label"
         for="name"
       >
-        Name
+        Name ({{ this.characterLimit }} characters maximum)
       </label>
 
       <input
         id="name"
         class="start__input text-field__input"
+        :max="characterLimit"
         placeholder="Name"
         type="text"
         @keyup="handleNameInput"
       >
 
       <button
-        v-text="(!isDisabled) ? 'Start quiz' : 'Enter name to start'"
+        v-text="(startEnabled) ? 'Start quiz' : 'Enter name to start'"
         class="button"
-        :disabled="isDisabled"
+        :disabled="!startEnabled"
         type="submit"
         @click="handleStart"
       ></button>
@@ -86,8 +87,11 @@
 
 <script>
   export default {
-    props: {
-      name: String,
+    data() {
+      return {
+        characterLimit: 128,
+        startEnabled: false,
+      }
     },
 
     methods: {
@@ -97,7 +101,13 @@
        * @param {Event} event - Keyup event.
        */
       handleNameInput(event) {
+        if (event.target.value.length > this.characterLimit) {
+          this.startEnabled = false;
+          return;
+        }
+
         window.VueEventBus.$emit('Quiz:SetName', event.target.value);
+        this.startEnabled = true;
       },
 
       /**
@@ -106,17 +116,6 @@
       handleStart() {
         window.VueEventBus.$emit('Quiz:Start');
       },
-    },
-
-    computed: {
-
-      /**
-       * Calculate if disabled as no name.
-       * @returns {Boolean}
-       */
-      isDisabled() {
-        return this.name === '';
-      }
     },
   }
 </script>
