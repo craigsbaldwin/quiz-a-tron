@@ -38,10 +38,6 @@
     }
 
     &.is-correct {
-      #{$parent}__answer {
-        display: none;
-      }
-
       #{$parent}__points {
         background-color: var(--colour-green);
         color: var(--colour-text-inverse);

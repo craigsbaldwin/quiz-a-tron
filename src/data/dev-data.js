@@ -16,6 +16,19 @@ const data = {
           label: 'Building 1',
           points: 2,
           answered: false,
+          saved: false,
+          correct: false,
+          answers: [
+            { label: 'Address A' },
+            { label: 'Address B' },
+            { label: 'Address C' },
+          ]
+        },
+        {
+          label: 'Building 2',
+          points: 2,
+          answered: false,
+          saved: false,
           correct: false,
           answers: [
             { label: 'Address A' },
@@ -24,8 +37,8 @@ const data = {
           ]
         },
       ],
-      answers: ['Address A'],
-      givenAnswers: [false],
+      answers: ['Address A', 'Address B'],
+      givenAnswers: [false, false],
     },
     {
       question: 'What is the song and artist?',
@@ -35,12 +48,14 @@ const data = {
           label: 'Song',
           points: 2,
           answered: false,
+          saved: false,
           correct: false,
         },
         {
           label: 'Artist',
           points: 1,
           answered: false,
+          saved: false,
           correct: false,
         }
       ],
@@ -55,6 +70,7 @@ const data = {
           label: 'A label goes here',
           points: 1,
           answered: false,
+          saved: false,
           correct: false,
           answers: [
             { label: 'This is answer A' },
@@ -73,6 +89,7 @@ const data = {
         {
           points: 1,
           answered: false,
+          saved: false,
           correct: false,
           answers: [
             { label: '1 This is answer A' },
@@ -84,6 +101,7 @@ const data = {
         {
           points: 1,
           answered: false,
+          saved: false,
           correct: false,
           answers: [
             { label: '2 This is answer A' },

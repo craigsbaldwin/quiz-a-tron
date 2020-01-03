@@ -208,6 +208,10 @@
             }
           });
         });
+
+        this.quiz.questions[questionNumber - 1].choices.forEach((choice) => {
+          choice.saved = true;
+        });
       },
 
       /**

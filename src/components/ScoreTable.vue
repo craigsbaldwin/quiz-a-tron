@@ -23,8 +23,8 @@
       class="score-table__row"
       :class="
         [
-          { 'is-correct': singleChoice.answered && singleChoice.correct },
-          { 'is-wrong': singleChoice.answered && !singleChoice.correct },
+          { 'is-correct': singleChoice.saved && singleChoice.correct },
+          { 'is-wrong': singleChoice.saved && !singleChoice.correct },
         ]
       "
       :key="index"
@@ -36,7 +36,7 @@
         ></span>
 
         <span
-          v-if="question.givenAnswers[index] !== false"
+          v-if="singleChoice.saved && !singleChoice.correct"
           v-text="answerValue(index)"
           class="score-table__answer"
         ></span>
@@ -64,7 +64,7 @@
        * @param {Number} index - Choice index.
        */
       givenAnswerValue(index) {
-        if (this.question.givenAnswers[index] === false) {
+        if (this.question.choices[index].saved === false) {
           return 'Not answered';
         }
 
@@ -104,12 +104,12 @@
        * @returns {String}
        */
       markQuestion(question, choiceIndex) {
-        if (!question.choices[choiceIndex].answered) {
+        if (!question.choices[choiceIndex].saved) {
           return ''
         }
 
         if (question.choices[choiceIndex].correct) {
-          return `${question.choices[choiceIndex].points}pts`;
+          return `${question.choices[choiceIndex].points}pt${(question.choices[choiceIndex].points > 1) ? 's' : ''}`;
         }
 
         return '0pts';
@@ -122,17 +122,17 @@
        * Question correct-ness.
        */
       questionCorrect() {
-        const notAnswered = this.question.choices.filter((choice) => choice.answered === false);
+        const notSaved = this.question.choices.filter((choice) => choice.saved === false);
         const wrongAnswers = this.question.choices.filter((choice) => choice.correct === false);
 
-        return (notAnswered.length === 0 && wrongAnswers.length === 0);
+        return (notSaved.length === 0 && wrongAnswers.length === 0);
       },
 
       /**
        * Question wrong-ness.
        */
       questionWrong() {
-        const wrongAnswers = this.question.choices.filter((choice) => choice.answered && choice.correct === false);
+        const wrongAnswers = this.question.choices.filter((choice) => choice.saved && choice.correct === false);
 
         return (wrongAnswers.length === this.question.answers.length);
       },
@@ -141,17 +141,10 @@
        * Question isn't totally correct or wrong.
        */
       questionMixed() {
-        const notAnswered = this.question.choices.filter((choice) => choice.answered === false);
-        const wrongAnswers = this.question.choices.filter((choice) => choice.answered && choice.correct === false);
+        const notSaved = this.question.choices.filter((choice) => choice.saved === false);
+        const wrongAnswers = this.question.choices.filter((choice) => choice.saved && choice.correct === false);
 
-        /**
-         * Check that the question has been answered first.
-         */
-        if (notAnswered.length !== 0) {
-          return false;
-        }
-
-        return (wrongAnswers.length !== 0 && wrongAnswers.length !== this.question.answers.length);
+        return (notSaved.length === 0 && wrongAnswers.length !== 0 && wrongAnswers.length !== this.question.answers.length);
       },
 
       /**
