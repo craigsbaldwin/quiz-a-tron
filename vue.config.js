@@ -1,6 +1,20 @@
 const path = require('path');
 
 module.exports = {
+  pages: {
+    'index': {
+      entry: './src/pages/home/main.js',
+      template: 'public/index.html',
+      title: 'Home',
+      chunks: ['chunk-vendors', 'chunk-common', 'index'],
+    },
+    'results': {
+      entry: './src/pages/results/main.js',
+      template: 'public/index.html',
+      title: 'Results',
+      chunks: ['chunk-vendors', 'chunk-common', 'results'],
+    },
+  },
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',

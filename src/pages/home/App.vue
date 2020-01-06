@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="app"
-    :class="{ 'is-finished': finished && submitted === 'true' }"
-  >
+  <div :class="{ 'is-finished': finished && submitted === 'true' }">
     <div class="container">
       <header class="header">
         <h1>Quiz-a-tron</h1>
@@ -50,15 +47,15 @@
 </template>
 
 <script>
-  import FinishPage from './components/FinishPage.vue';
-  import Loading from './components/Loading.vue';
-  import ProgressBar from './components/ProgressBar.vue';
-  import Questions from './components/Questions.vue';
-  import Scoring from './components/Scoring.vue';
-  import StartPage from './components/StartPage.vue';
-  import SubmissionPage from './components/SubmissionPage.vue';
+  import FinishPage from '../../components/FinishPage.vue';
+  import Loading from '../../components/Loading.vue';
+  import ProgressBar from '../../components/ProgressBar.vue';
+  import Questions from '../../components/Questions.vue';
+  import Scoring from '../../components/Scoring.vue';
+  import StartPage from '../../components/StartPage.vue';
+  import SubmissionPage from '../../components/SubmissionPage.vue';
 
-  import devData from './data/dev-data.js';
+  import devData from '../../data/dev-data.js';
 
   export default {
     name: 'Quiz-a-tron',
@@ -94,6 +91,65 @@
         submitted: 'false',
         unlocked: false,
       };
+    },
+
+    mounted() {
+      if (!this.debug) {
+        this.navigationWarnings();
+      }
+
+      this.loadData();
+      this.submission.available = this.totalAvailable;
+
+      /**
+       * EventBus.
+       */
+      window.VueEventBus.$on('Quiz:Start', () => {
+        this.navigateNextQuestion(0);
+      });
+
+      window.VueEventBus.$on('Quiz:SetName', (name) => {
+        const escapedName = name
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+
+        this.submission.name = escapedName;
+      });
+
+      window.VueEventBus.$on('Question:Input', (data) => {
+        this.handleAnswerInput(data);
+      });
+
+      window.VueEventBus.$on('Question:Disable', (data) => {
+        this.handleQuestionDisable(data);
+      });
+
+      window.VueEventBus.$on('Question:Submit', (questionNumber) => {
+        this.handleQuestionSubmit(questionNumber);
+      });
+
+      window.VueEventBus.$on('Quiz:Finish', () => {
+        this.handleQuizFinish();
+      });
+
+      window.VueEventBus.$on('Submission:Submitted', () => {
+        this.submitted = 'true';
+      });
+
+      window.VueEventBus.$on('Submission:Retry', () => {
+        this.submitted = 'false';
+      });
+
+      window.VueEventBus.$on('Submission:Error', () => {
+        this.submitted = 'error';
+      });
+
+      window.VueEventBus.$on('Quiz:Unlock', () => {
+        this.unlocked = true;
+      });
     },
 
     methods: {
@@ -273,65 +329,6 @@
       },
     },
 
-    mounted() {
-      if (!this.debug) {
-        this.navigationWarnings();
-      }
-
-      this.loadData();
-      this.submission.available = this.totalAvailable;
-
-      /**
-       * EventBus.
-       */
-      window.VueEventBus.$on('Quiz:Start', () => {
-        this.navigateNextQuestion(0);
-      });
-
-      window.VueEventBus.$on('Quiz:SetName', (name) => {
-        const escapedName = name
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-
-        this.submission.name = escapedName;
-      });
-
-      window.VueEventBus.$on('Question:Input', (data) => {
-        this.handleAnswerInput(data);
-      });
-
-      window.VueEventBus.$on('Question:Disable', (data) => {
-        this.handleQuestionDisable(data);
-      });
-
-      window.VueEventBus.$on('Question:Submit', (questionNumber) => {
-        this.handleQuestionSubmit(questionNumber);
-      });
-
-      window.VueEventBus.$on('Quiz:Finish', () => {
-        this.handleQuizFinish();
-      });
-
-      window.VueEventBus.$on('Submission:Submitted', () => {
-        this.submitted = 'true';
-      });
-
-      window.VueEventBus.$on('Submission:Retry', () => {
-        this.submitted = 'false';
-      });
-
-      window.VueEventBus.$on('Submission:Error', () => {
-        this.submitted = 'error';
-      });
-
-      window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.unlocked = true;
-      });
-    },
-
     computed: {
 
       /**
@@ -374,5 +371,5 @@
 </script>
 
 <style lang="scss">
-  @import 'styles/theme';
+  @import '../../styles/theme';
 </style>
