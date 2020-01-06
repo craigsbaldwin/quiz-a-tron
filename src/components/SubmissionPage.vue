@@ -75,15 +75,14 @@
        * @param {Number} start - Start timing value.
        */
       submitForm(start) {
-        window.console.log('body', JSON.stringify(this.submission));
-
         fetch('https://api.jsonbin.io/b', {
           method: 'post',
           headers: {
-            'Content-Type': 'application/json',
-            'secret-key': '$2b$10$//.FQ70G0YQb6oFpN7RwMeb1RJS95U1tjzSrDCTXM/42M.l8ztAZi',
             'collection-id': '5e0f71c2fadb735054fc987c',
-            'name': this.submission.name
+            'Content-Type': 'application/json',
+            'name': this.submission.name,
+            'private': false,
+            'secret-key': '$2b$10$//.FQ70G0YQb6oFpN7RwMeb1RJS95U1tjzSrDCTXM/42M.l8ztAZi',
           },
           body: JSON.stringify(this.submission),
         })
