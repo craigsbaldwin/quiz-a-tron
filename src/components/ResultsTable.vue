@@ -9,7 +9,16 @@
       v-if="unlocked"
       class="results-table"
     >
-      <div v-if="show === 1">
+      <div
+        v-if="show === 1"
+        class="results-table__people results-table__people--first"
+      >
+        <Medal
+          :available="places.first[0].available"
+          place="1"
+          :score="places.first[0].score"
+        />
+
         <Person
           v-for="(person, index) in places.first"
           :index="index"
@@ -19,7 +28,16 @@
         />
       </div>
 
-      <div v-if="show === 2">
+      <div
+        v-if="show === 2"
+        class="results-table__people results-table__people--second"
+      >
+        <Medal
+          :available="places.second[0].available"
+          place="2"
+          :score="places.second[0].score"
+        />
+
         <Person
           v-for="(person, index) in places.second"
           :index="index"
@@ -29,7 +47,16 @@
         />
       </div>
 
-      <div v-if="show === 3">
+      <div
+        v-if="show === 3"
+        class="results-table__people results-table__people--third"
+      >
+        <Medal
+          :available="places.third[0].available"
+          place="3"
+          :score="places.third[0].score"
+        />
+
         <Person
           v-for="(person, index) in places.third"
           :index="index"
@@ -52,11 +79,13 @@
 </template>
 
 <script>
+  import Medal from './Medal.vue';
   import PasswordForm from './PasswordForm.vue';
   import Person from './Person.vue';
 
   export default {
     components: {
+      Medal,
       PasswordForm,
       Person,
     },

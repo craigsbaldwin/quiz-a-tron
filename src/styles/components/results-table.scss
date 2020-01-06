@@ -1,0 +1,11 @@
+/**
+ * Component: Results table
+ * ------------------------------------------------------------------------------
+ * Contains person components.
+ *
+ */
+.results-table {
+  &__people {
+    margin-bottom: var(--gutter-l);
+  }
+}

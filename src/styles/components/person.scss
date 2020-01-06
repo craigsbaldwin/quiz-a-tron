@@ -1,0 +1,35 @@
+/**
+ * Component: Person
+ * ------------------------------------------------------------------------------
+ * The winner and runners up.
+ *
+ */
+.person {
+  $parent: &;
+  margin-bottom: var(--gutter-s);
+  padding: var(--gutter-m);
+  position: relative;
+
+  &__name {
+    color: var(--colour-text-inverse);
+    font-size: var(--font-l);
+    font-weight: var(--weight-bold);
+    text-align: center;
+  }
+
+  &#{&}--first {
+    background-color: var(--colour-first);
+
+    #{$parent}__name {
+      color: var(--colour-text);
+    }
+  }
+
+  &#{&}--second {
+    background-color: var(--colour-second);
+  }
+
+  &#{&}--third {
+    background-color: var(--colour-third);
+  }
+}
