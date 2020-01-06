@@ -5,6 +5,7 @@
  *
  */
 .button {
+  $parent: &;
   @include transition(background-color, border-color, box-shadow, color);
   background-color: var(--colour-green);
   border: 3px solid var(--colour-green);
@@ -71,5 +72,22 @@
   &:hover:not([disabled]) {
     background-color: var(--colour-dark-green);
     border-color: var(--colour-dark-green);
+  }
+
+  + #{$parent} {
+    margin-top: var(--gutter-s);
+  }
+
+  &#{&}--secondary {
+    background-color: transparent;
+    color: var(--colour-green);
+
+    &:focus::before {
+      border-color: var(--colour-green);
+    }
+
+    &:hover:not([disabled]) {
+      color: Var(--colour-text-inverse);
+    }
   }
 }

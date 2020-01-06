@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    :class="{ 'is-finished': finished }"
+    :class="{ 'is-finished': finished && submitted === 'true' }"
   >
     <div class="container">
       <header class="header">
@@ -27,19 +27,19 @@
         />
 
         <SubmissionPage
-          v-if="finished && !submission.submitted"
+          v-if="finished && submitted !== 'true'"
           :submission="submission"
           :submitted="submitted"
         />
 
         <FinishPage
-          v-if="finished && submission.submitted"
+          v-if="finished && submitted === 'true'"
           :questions="questions"
           :unlocked="unlocked"
         />
       </div>
 
-      <Score
+      <Scoring
         v-if="debug && step > 0 || unlocked"
         :questions="questions"
         :total-available="totalAvailable"
@@ -54,7 +54,7 @@
   import Loading from './components/Loading.vue';
   import ProgressBar from './components/ProgressBar.vue';
   import Questions from './components/Questions.vue';
-  import Score from './components/Score.vue';
+  import Scoring from './components/Scoring.vue';
   import StartPage from './components/StartPage.vue';
   import SubmissionPage from './components/SubmissionPage.vue';
 
@@ -68,7 +68,7 @@
       Loading,
       ProgressBar,
       Questions,
-      Score,
+      Scoring,
       StartPage,
       SubmissionPage,
     },
@@ -91,7 +91,7 @@
           score: 0,
           timestamp: '',
         },
-        submitted: false,
+        submitted: 'false',
         unlocked: false,
       };
     },
@@ -315,8 +315,16 @@
         this.handleQuizFinish();
       });
 
-      window.VueEventBus.$on('Quiz:Submitted', () => {
-        this.submitted = true;
+      window.VueEventBus.$on('Submission:Submitted', () => {
+        this.submitted = 'true';
+      });
+
+      window.VueEventBus.$on('Submission:Retry', () => {
+        this.submitted = 'false';
+      });
+
+      window.VueEventBus.$on('Submission:Error', () => {
+        this.submitted = 'error';
       });
 
       window.VueEventBus.$on('Quiz:Unlock', () => {
