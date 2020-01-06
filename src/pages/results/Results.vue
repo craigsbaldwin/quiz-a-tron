@@ -12,6 +12,7 @@
     <ResultsTable
       v-if="loaded"
       :results="results"
+      :unlocked="unlocked"
     />
   </div>
 </template>
@@ -30,14 +31,23 @@
 
     data() {
       return {
-        bins: [],
+        binIds: [],
         collectionId: '5e0f71c2fadb735054fc987c',
         loaded: false,
+        results: [],
+        unlocked: false,
       }
     },
 
     mounted() {
       this.loadCollection();
+
+      /**
+       * EventBus.
+       */
+      window.VueEventBus.$on('Quiz:Unlock', () => {
+        this.unlocked = true;
+      });
     },
 
     methods: {
@@ -55,9 +65,8 @@
           .then(response => response.json())
           .then((response) => {
             const records = response.records.map(record => record.id);
-            this.bins = records;
-
-            this.loadAllBins(records);
+            this.binIds = records;
+            this.loadAllBins();
           })
           .catch((error) => {
             throw new Error ('jsonbin collection', error);
@@ -66,10 +75,16 @@
 
       /**
        * Goes through each bin ID and loads it.
-       * @param {Array} binIds - Array of bin IDs.
        */
-      loadAllBins(binIds) {
+      loadAllBins() {
+        if (this.binIds.length === 0) {
+          this.results.sort(this.compare);
+          this.loaded = true;
+          return;
+        }
 
+        const binId = this.binIds.shift();
+        this.loadBin(binId);
       },
 
       /**
@@ -77,7 +92,25 @@
        * @param {String} binId - Single bin ID.
        */
       loadBin(binId) {
+        fetch(`https://api.jsonbin.io/b/${binId}/latest`)
+          .then(response => response.json())
+          .then((response) => {
+            this.results.push(response);
+            this.loadAllBins();
+          })
+          .catch((error) => {
+            throw new Error('JSON bin load', error);
+          })
+      },
 
+      /**
+       * Compare function for sorting array.
+       */
+      compare(a, b) {
+        if (a.score > b.score) return -1;
+        if (b.score > a.score) return 1;
+
+        return 0;
       }
     },
   }
