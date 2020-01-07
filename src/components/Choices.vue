@@ -1,9 +1,20 @@
 <template>
-  <div v-if="question.type === 'radio'">
+<div v-if="question.type === 'number'">
+    <NumberField
+      v-for="(part, index) in question.choices"
+      :accuracy="part.accuracy"
+      :number-group="index"
+      :key="index"
+      :label="part.label"
+      :step="step"
+    />
+  </div>
+
+  <div v-else-if="question.type === 'radio'">
     <Radio
       v-for="(part, index) in question.choices"
       :choices="part"
-      :radioGroup="index"
+      :radio-group="index"
       :key="index"
       :step="step"
     />
@@ -13,7 +24,7 @@
     <Select
       v-for="(part, index) in question.choices"
       :choices="part"
-      :selectGroup="index"
+      :select-group="index"
       :key="index"
       :step="step"
     />
@@ -22,7 +33,7 @@
   <div v-else-if="question.type === 'text'">
     <TextField
       v-for="(part, index) in question.choices"
-      :textGroup="index"
+      :text-group="index"
       :key="index"
       :label="part.label"
       :step="step"
@@ -31,12 +42,14 @@
 </template>
 
 <script>
+  import NumberField from './types/NumberField.vue';
   import Radio from './types/Radio.vue';
   import Select from './types/Select.vue';
   import TextField from './types/TextField.vue';
 
   export default {
     components: {
+      NumberField,
       Radio,
       Select,
       TextField,

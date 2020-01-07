@@ -36,9 +36,21 @@
         ></span>
 
         <span
-          v-if="singleChoice.saved && !singleChoice.correct"
+          v-if="singleChoice.saved && !singleChoice.correct && question.type !== 'number'"
           v-text="answerValue(index)"
           class="score-table__answer"
+        ></span>
+
+        <span
+          v-else-if="singleChoice.saved && !singleChoice.correct && question.type === 'number'"
+          v-text="`${answerValue(index)} ± ${singleChoice.accuracy}`"
+          class="score-table__answer score-table__answer--number"
+        ></span>
+
+        <span
+          v-else-if="singleChoice.saved && singleChoice.correct && question.type === 'number'"
+          v-text="`(${answerValue(index)} ± ${singleChoice.accuracy})`"
+          class="score-table__answer score-table__answer--number"
         ></span>
       </div>
 
@@ -70,6 +82,9 @@
         }
 
         switch (this.question.type) {
+          case 'number':
+            return this.question.givenAnswers[index];
+
           case 'radio':
             return this.question.choices[index].answers[this.question.givenAnswers[index]].label;
 
@@ -88,6 +103,9 @@
        */
       answerValue(index) {
         switch (this.question.type) {
+          case 'number':
+            return this.question.answers[index];
+
           case 'radio':
             return this.question.choices[index].answers[this.question.answers[index]].label;
 
@@ -111,7 +129,7 @@
         }
 
         if (question.choices[choiceIndex].correct) {
-          return `${question.choices[choiceIndex].points}pt${(question.choices[choiceIndex].points > 1) ? 's' : ''}`;
+          return `${question.choices[choiceIndex].points}pt${(question.choices[choiceIndex].points === 1) ? '' : 's'}`;
         }
 
         return '0pts';
@@ -167,7 +185,7 @@
           total += choice.points;
         });
 
-        return `${total}pts`;
+        return `${total}pt${(total === 1) ? '' : 's'}`;
       },
     }
   }

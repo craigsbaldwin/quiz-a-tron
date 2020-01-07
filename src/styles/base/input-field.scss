@@ -1,10 +1,10 @@
 /**
- * Base: Text field
+ * Base: Input field
  * ------------------------------------------------------------------------------
  * Basic text input field.
  *
  */
-.text-field {
+.input-field {
   $parent: &;
 
   &__label {
@@ -17,18 +17,36 @@
     padding: var(--gutter-xs) var(--gutter-s);
   }
 
+  &__input-group {
+    position: relative;
+  }
+
   &__input {
     @include transition(border-color, box-shadow);
+    -moz-appearance: textfield;
     border: 3px solid var(--colour-green);
     display: block;
     padding: var(--gutter-s);
     width: 100%;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
 
     &:focus {
       border-color: var(--colour-purple);
       box-shadow: var(--focus-shadow);
       outline: none;
     }
+  }
+
+  &__accuracy {
+    position: absolute;
+    right: var(--gutter-s);
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   &:focus-within {

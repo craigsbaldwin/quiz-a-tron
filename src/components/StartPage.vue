@@ -51,11 +51,11 @@
     </div>
 
     <form
-      class="start__form text-field"
+      class="start__form input-field"
       @submit.prevent="handleStart"
     >
       <label
-        class="start__label text-field__label label"
+        class="start__label input-field__label label"
         for="name"
       >
         Name ({{ this.characterLimit }} characters maximum)
@@ -63,7 +63,7 @@
 
       <input
         id="name"
-        class="start__input text-field__input"
+        class="start__input input-field__input"
         :max="characterLimit"
         placeholder="Name"
         type="text"

@@ -5,42 +5,49 @@
   >
     <label
       class="input-field__label label"
-      :for="`${step}-${textGroup}-Text`"
+      :for="`${step}-${numberGroup}-Number`"
     >
       {{ label }}
     </label>
 
-    <input
-      :id="`${step}-${textGroup}-Text`"
-      class="input-field__input"
-      :placeholder="label"
-      type="text"
-      data-type="text"
-      js-choices="input"
-      @keyup="handleInput"
-    >
+    <div class="input-field__input-group">
+      <input
+        :id="`${step}-${numberGroup}-Number`"
+        class="input-field__input"
+        :placeholder="label"
+        type="number"
+        data-type="number"
+        js-choices="input"
+        @keyup="handleInput"
+      >
+
+      <span class="input-field__accuracy">
+        ±{{ accuracy }}
+      </span>
+    </div>
   </div>
 </template>
 
 <script>
   export default {
     props: {
+      accuracy: Number,
       label: String,
       step: Number,
-      textGroup: Number,
+      numberGroup: Number,
     },
 
     methods: {
 
       /**
-       * Handle text input.
+       * Handle number input.
        * @param {Event} event - Key up event.
        */
       handleInput(event) {
         const element = event.target;
         const data = {
           step: this.step,
-          group: this.textGroup,
+          group: this.numberGroup,
         }
 
         if (element.value === '') {

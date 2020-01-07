@@ -12,13 +12,13 @@
     background-color: var(--colour-purple);
     color: var(--colour-text-inverse);
     display: flex;
-    font-weight: var(--weight-bold);
     line-height: 1;
     padding: var(--gutter-s);
   }
 
   &__question-total {
     margin-left: auto;
+    font-weight: var(--weight-bold);
   }
 
   &__row {
@@ -26,9 +26,7 @@
     display: grid;
     grid-column: span 3;
     grid-template-columns: 70% 30%;
-  }
 
-  &__row {
     &:last-child {
       border-bottom: 0;
     }
@@ -45,10 +43,6 @@
         text-decoration: line-through;
       }
 
-      #{$parent}__answer {
-        padding-left: var(--gutter-xs);
-      }
-
       #{$parent}__points {
         background-color: var(--colour-red);
         color: var(--colour-text-inverse);
@@ -63,6 +57,10 @@
   &__points {
     background-color: var(--colour-grey);
     text-align: right;
+  }
+
+  &__answer {
+    margin-left: var(--gutter-xs);
   }
 
   &.is-correct {

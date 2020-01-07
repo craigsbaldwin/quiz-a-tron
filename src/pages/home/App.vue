@@ -86,7 +86,7 @@
       return {
         binId: '5dfcd5a02c714135cda4b6d5',
         date: 'jan',
-        debug: false,
+        debug: true,
         finished: false,
         loaded: false,
         progress: 0,
@@ -106,9 +106,9 @@
     },
 
     mounted() {
-      // if (!this.debug) {
-      //   this.navigationWarnings();
-      // }
+      if (!this.debug) {
+        this.navigationWarnings();
+      }
 
       this.loadData();
       this.submission.available = this.totalAvailable;
@@ -293,6 +293,10 @@
             const type = input.getAttribute('data-type');
 
             switch (type) {
+               case 'number':
+                this.questions[questionNumber - 1].givenAnswers[groupIndex] = Number(input.value);
+                break;
+
               case 'radio':
                 if (!input.checked) { return; }
                 this.questions[questionNumber - 1].givenAnswers[groupIndex] = index;
@@ -324,6 +328,16 @@
           if (typeof answer === 'string') {
             answer = answer.toLowerCase();
             givenAnswer = givenAnswer.toLowerCase();
+          }
+
+          /**
+           * Number questions have an accuracy threshold.
+           */
+          if (question.type === 'number') {
+            const accuracy = question.choices[index].accuracy;
+            question.choices[index].correct = (givenAnswer >= (answer - accuracy) && givenAnswer <= (answer + accuracy));
+
+            return;
           }
 
           question.choices[index].correct = (answer === givenAnswer);
