@@ -13,7 +13,9 @@
     />
 
     <div v-else>
-      <ProgressBar :progress="progress" />
+      <ProgressBar
+        :progress="progress"
+      />
 
       <div
         v-if="!unlocked"

@@ -4,7 +4,9 @@
       <h1>Results</h1>
     </header>
 
-    <ProgressBar progress="100" />
+    <ProgressBar
+      :progress="100"
+    />
 
     <Loading
       v-if="!loaded"
