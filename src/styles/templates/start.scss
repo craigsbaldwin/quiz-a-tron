@@ -5,6 +5,8 @@
  *
  */
 .start {
+  animation: intro var(--timing-l) var(--easing);
+
   &__content,
   &__prize {
     margin-bottom: var(--gutter-l);

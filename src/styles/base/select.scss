@@ -29,6 +29,7 @@
   &__input {
     @include transition(border-color, box-shadow);
     appearance: none;
+    background-color: var(--colour-white);
     border: 3px solid var(--colour-green);
     border-radius: 0;
     display: block;

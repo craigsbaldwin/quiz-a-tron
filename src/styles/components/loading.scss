@@ -4,19 +4,9 @@
  * Loading screen animation.
  *
  */
-@keyframes loading {
-  0%, 70%, 100% {
-    transform: scale3D(1, 1, 1);
-  }
-
-  35% {
-    background-color: var(--colour-purple);
-    transform: scale3D(0, 0, 1);
-  }
-}
-
 .loading {
   align-items: center;
+  animation: intro var(--timing-l) var(--easing);
   display: flex;
   flex-direction: column;
   justify-content: center;

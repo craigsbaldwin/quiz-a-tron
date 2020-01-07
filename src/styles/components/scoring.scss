@@ -5,6 +5,7 @@
  *
  */
 .scoring {
+  animation: intro var(--timing-l) var(--easing);
   margin-top: var(--gutter-m);
 
   &__table:not(:last-child) {

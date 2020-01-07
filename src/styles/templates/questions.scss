@@ -8,12 +8,4 @@
   &__container {
     position: relative;
   }
-
-  &__question {
-    display: none;
-
-    &.is-active {
-      display: block;
-    }
-  }
 }

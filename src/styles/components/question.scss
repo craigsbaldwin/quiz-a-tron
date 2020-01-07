@@ -5,6 +5,8 @@
  *
  */
 .question {
+  display: none;
+
   &__header {
     align-items: center;
     display: flex;
@@ -31,5 +33,10 @@
 
   &__choices {
     margin-bottom: var(--gutter-l);
+  }
+
+  &.is-active {
+    animation: intro var(--timing-l) var(--easing);
+    display: block;
   }
 }
