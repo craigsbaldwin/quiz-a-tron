@@ -33,6 +33,7 @@
       return {
         binIds: [],
         collectionId: '5e0f71c2fadb735054fc987c',
+        date: 'jan',
         loaded: false,
         results: [],
         unlocked: false,
@@ -80,6 +81,7 @@
         if (this.binIds.length === 0) {
           this.results.sort(this.compare);
           this.loaded = true;
+          localStorage.setItem(`submissions-${this.date}`, JSON.stringify(this.results));
           return;
         }
 
