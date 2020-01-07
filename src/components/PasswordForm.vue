@@ -1,11 +1,11 @@
 <template>
   <form
-    class="password text-field"
+    class="password input-field"
     js-password="container"
     @submit.prevent="handleSubmit"
   >
     <label
-      class="password__label text-field__label label"
+      class="password__label input-field__label label"
       for="password"
     >
       Password
@@ -14,7 +14,7 @@
     <div class="password__input-group">
       <input
         id="password"
-        class="password__input text-field__input"
+        class="password__input input-field__input"
         placeholder="Password"
         type="password"
         aria-invalid="false"
