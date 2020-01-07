@@ -86,7 +86,7 @@
       return {
         binId: '5dfcd5a02c714135cda4b6d5',
         date: 'jan',
-        debug: true,
+        debug: false,
         finished: false,
         loaded: false,
         progress: 0,
