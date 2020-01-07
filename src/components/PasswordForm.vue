@@ -1,20 +1,20 @@
 <template>
   <form
-    class="finish__password text-field"
+    class="password text-field"
     js-password="container"
     @submit.prevent="handleSubmit"
   >
     <label
-      class="finish__label text-field__label label"
+      class="password__label text-field__label label"
       for="password"
     >
       Password
     </label>
 
-    <div class="finish__input-group">
+    <div class="password__input-group">
       <input
         id="password"
-        class="finish__input text-field__input"
+        class="password__input text-field__input"
         placeholder="Password"
         type="password"
         aria-invalid="false"
@@ -24,7 +24,7 @@
       >
 
       <button
-        class="finish__reveal"
+        class="password__reveal"
         role="switch"
         type="button"
         aria-checked="false"
@@ -35,7 +35,7 @@
     </div>
 
     <span
-      class="finish__error"
+      class="password__error"
       role="status"
       aria-live="polite"
       js-password="error"
