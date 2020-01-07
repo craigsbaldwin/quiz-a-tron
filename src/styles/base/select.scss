@@ -13,7 +13,7 @@
 
     &::after {
       @include transition(border-top-color);
-      border-top: var(--arrow-width) solid var(--colour-dark-grey);
+      border-top: var(--arrow-width) solid var(--colour-green);
       border-left: var(--arrow-width) solid transparent;
       border-right: var(--arrow-width) solid transparent;
       content: '';
@@ -29,7 +29,7 @@
   &__input {
     @include transition(border-color, box-shadow);
     appearance: none;
-    border: 3px solid var(--colour-dark-grey);
+    border: 3px solid var(--colour-green);
     border-radius: 0;
     display: block;
     padding: var(--gutter-s);
@@ -38,7 +38,7 @@
     width: 100%;
 
     &:focus {
-      border-color: var(--colour-green);
+      border-color: var(--colour-purple);
       box-shadow: var(--focus-shadow);
       outline: none;
     }
@@ -50,15 +50,15 @@
 
   &:focus-within {
     #{$parent}__label {
-      background-color: var(--colour-green);
+      background-color: var(--colour-purple);
     }
 
     #{$parent}__input-container::after {
-      border-top-color: var(--colour-green);
+      border-top-color: var(--colour-purple);
     }
 
     #{$parent}__input {
-      border-color: var(--colour-green);
+      border-color: var(--colour-purple);
     }
   }
 }

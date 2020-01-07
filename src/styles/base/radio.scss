@@ -39,7 +39,7 @@
     position: relative;
 
     &::before {
-      border: 3px solid var(--colour-dark-grey);
+      border: 3px solid var(--colour-green);
       content: '';
       display: block;
       height: 30px;
@@ -51,7 +51,7 @@
 
     &::after {
       @include transition(transform);
-      background-color: var(--colour-dark-grey);
+      background-color: var(--colour-green);
       content: '';
       height: 24px;
       left: -30px;
@@ -64,13 +64,13 @@
 
   &__input:focus ~ #{$parent}__label {
     &::before {
-      border-color: var(--colour-green);
+      border-color: var(--colour-purple);
       box-shadow: var(--focus-shadow);
       outline: none;
     }
 
     &::after {
-      background-color: var(--colour-green);
+      background-color: var(--colour-purple);
     }
   }
 
@@ -83,11 +83,11 @@
   &:focus-within,
   &:active {
     #{$parent}__container {
-      border-color: var(--colour-green);
+      border-color: var(--colour-purple);
     }
 
     #{$parent}__legend {
-      background-color: var(--colour-green);
+      background-color: var(--colour-purple);
     }
   }
 

@@ -11,7 +11,8 @@
   }
 
   &__warning {
-    background-color: var(--colour-yellow);
+    background-image: linear-gradient(to right, var(--colour-purple), var(--colour-green));
+    color: var(--colour-text-inverse);
     font-weight: var(--weight-bold);
     padding: var(--gutter-s);
   }

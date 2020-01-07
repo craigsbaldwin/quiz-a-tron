@@ -14,6 +14,20 @@
       </p>
     </div>
 
+    <div class="start__container">
+      <h2 class="start__label label">Rules</h2>
+
+      <ul class="start__group outlined-group">
+        <li>30 seconds for each question, unless otherwise stated</li>
+        <li>The questions are not in this app, you will not be able to finish the quiz without the presentation</li>
+        <li>Questions are scored on their difficulty and shown underneath each question</li>
+        <li>You must provide an answer to proceed</li>
+        <li>You will not be able to go back once you've answered a question, no do-overs</li>
+        <li>A password is required to unlock your score at the end, we will not be going through the answers one at a time</li>
+        <li>If you try to debug the code to find the answers you are immediately disqualified</li>
+      </ul>
+    </div>
+
     <h2>Prize</h2>
 
     <div class="start__prize">
@@ -34,20 +48,6 @@
           </p>
         </small>
       </div>
-    </div>
-
-    <div class="start__container">
-      <h2 class="start__label label">Rules</h2>
-
-      <ul class="start__group outlined-group">
-        <li>30 seconds for each question, unless otherwise stated</li>
-        <li>The questions are not in this app, you will not be able to finish the quiz without the presentation</li>
-        <li>Questions are scored on their difficulty and shown underneath each question</li>
-        <li>You must provide an answer to proceed</li>
-        <li>You will not be able to go back once you've answered a question, no do-overs</li>
-        <li>A password is required to unlock your score at the end, we will not be going through the answers one at a time</li>
-        <li>If you try to debug the code to find the answers you are immediately disqualified</li>
-      </ul>
     </div>
 
     <form

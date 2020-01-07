@@ -1,18 +1,18 @@
 <template>
   <div :class="{ 'is-finished': finished && submitted === 'true' }">
-    <div class="container">
-      <header class="header">
-        <h1>Quiz-a-tron</h1>
-      </header>
+    <header class="header">
+      <h1>Quiz-a-tron</h1>
+    </header>
 
-      <Loading
-        v-if="!loaded"
-        text="Loading data"
-      />
+    <Loading
+      v-if="!loaded"
+      text="Loading data"
+    />
 
-      <div v-else>
-        <ProgressBar :progress="progress" />
+    <div v-else>
+      <ProgressBar :progress="progress" />
 
+      <div class="container">
         <StartPage
           v-if="step === 0"
         />
@@ -35,9 +35,13 @@
           :unlocked="unlocked"
         />
       </div>
+    </div>
 
+    <div
+      v-if="debug && step > 0 || unlocked"
+      class="container"
+    >
       <Scoring
-        v-if="debug && step > 0 || unlocked"
         :questions="questions"
         :total-available="totalAvailable"
         :total-score="totalScore"
@@ -74,7 +78,7 @@
       return {
         binId: '5dfcd5a02c714135cda4b6d5',
         date: 'jan',
-        debug: true,
+        debug: false,
         finished: false,
         loaded: false,
         progress: 0,
@@ -94,9 +98,9 @@
     },
 
     mounted() {
-      if (!this.debug) {
-        this.navigationWarnings();
-      }
+      // if (!this.debug) {
+      //   this.navigationWarnings();
+      // }
 
       this.loadData();
       this.submission.available = this.totalAvailable;

@@ -6,7 +6,7 @@
     <div
       class="progress-bar__bar"
       :class="{ 'is-active': progress > 0 }"
-      :style="{ width: progress + '%'}"
+      :style="{ transform: `translateX(-${100 - progress}%)`}"
     >
       <span
         v-if="progress > 0"

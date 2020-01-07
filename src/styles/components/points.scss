@@ -6,11 +6,23 @@
  */
 .points {
   align-items: center;
-  border: 3px solid var(--colour-grey);
+  background-color: var(--colour-light-grey);
+  border: 3px solid var(--colour-light-grey);
   display: flex;
   font-size: var(--font-s);
   margin-bottom: var(--gutter-s);
   padding: var(--gutter-s);
+  position: relative;
+
+  &::before {
+    border: 3px solid var(--colour-background);
+    content: '';
+    height: calc(100% - 6px);
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: calc(100% - 6px);
+  }
 
   &__icon {
     height: 36px;

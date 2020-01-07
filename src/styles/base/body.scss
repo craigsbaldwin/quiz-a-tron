@@ -6,22 +6,23 @@
  */
 * {
   box-sizing: border-box;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-size: var(--font-m);
+  font-weight: var(--weight-regular);
   margin: 0;
   padding: 0;
 }
 
 html, body {
   background-color: var(--colour-background);
+  font-size: 100%;
   line-height: 1.5;
-  min-height: calc(100vh - var(--progress-bar));
+  min-height: calc(100vh - var(--header));
 }
 
 .container {
   color: var(--colour-text);
   margin: 0 auto;
-  margin-top: var(--progress-bar);
   padding: var(--gutter-l) var(--gutter-m);
   max-width: 580px;
 }

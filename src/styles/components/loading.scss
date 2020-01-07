@@ -10,7 +10,7 @@
   }
 
   35% {
-    background-color: var(--colour-dark-green);
+    background-color: var(--colour-purple);
     transform: scale3D(0, 0, 1);
   }
 }
@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: calc(100vh - var(--progress-bar) - var(--gutter-l) - var(--gutter-l));
+  min-height: calc(100vh - var(--header) - var(--gutter-l) - var(--gutter-l));
   position: relative;
 
   &__animation {
@@ -34,7 +34,7 @@
 
   &__square {
     animation: loading 1.8s infinite ease-in-out;
-    background-color: var(--colour-dark-grey);
+    background-color: var(--colour-green);
 
     &#{&}--7 {
       animation-delay: 0s;

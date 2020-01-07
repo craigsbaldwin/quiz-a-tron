@@ -6,7 +6,7 @@
  */
 .label {
   @include transition(background-color);
-  background-color: var(--colour-dark-grey);
+  background-color: var(--colour-green);
   color: var(--colour-text-inverse);
   display: inline-block;
   font-size: var(--font-xs);
@@ -18,7 +18,8 @@
 }
 
 .outlined-group {
-  border: 3px solid var(--colour-dark-grey);
+  @include transition(border-color);
+  border: 3px solid var(--colour-green);
   padding: var(--gutter-m);
   position: relative;
 }

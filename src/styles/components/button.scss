@@ -61,6 +61,8 @@
   }
 
   &:focus {
+    background-color: var(--colour-purple);
+    border-color: var(--colour-purple);
     box-shadow: var(--focus-shadow);
     outline: none;
 
@@ -70,8 +72,8 @@
   }
 
   &:hover:not([disabled]) {
-    background-color: var(--colour-dark-green);
-    border-color: var(--colour-dark-green);
+    background-color: var(--colour-purple);
+    border-color: var(--colour-purple);
   }
 
   + #{$parent} {

@@ -13,16 +13,16 @@
 
   &__number {
     align-items: center;
-    border: 3px solid var(--colour-green);
+    background-color: var(--colour-green);
     border-radius: 100%;
-    color: var(--colour-green);
+    color: var(--colour-text-inverse);
     display: flex;
     font-size: var(--font-l);
     font-weight: bold;
-    height: var(--progress-bar);
+    height: var(--header);
     justify-content: center;
     margin-right: var(--gutter-s);
-    width: var(--progress-bar);
+    width: var(--header);
   }
 
   &__question-text {

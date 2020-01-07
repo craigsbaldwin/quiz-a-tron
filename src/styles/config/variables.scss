@@ -9,16 +9,18 @@
   /**
    * Colours.
    */
-  --colour-background: rgb(236, 240, 241);
+  --colour-background: rgb(246, 250, 251);
   --colour-text: rgb(52, 73, 94);
   --colour-text-inverse: rgb(255, 255, 255);
 
-  --colour-green: rgb(46, 204, 113);
-  --colour-dark-green: rgb(39, 174, 96);
+  --colour-green: rgb(69, 212, 198);
+  --colour-light-grey: rgb(225, 225, 225);
   --colour-grey: rgb(189, 195, 199);
-  --colour-dark-grey: rgb(52, 73, 94);
   --colour-yellow: rgb(241, 196, 15);
   --colour-red: rgb(231, 76, 60);
+  --colour-purple: rgb(70, 46, 180);
+
+  --colour-white: rgb(255, 255, 255);
 
   --colour-third: rgb(205, 127, 50);
   --colour-second: rgb(192, 192, 192);
@@ -27,13 +29,14 @@
   /**
    * Typography.
    */
-  --font-xs: 14px;
-  --font-s: 16px;
-  --font-m: 20px;
-  --font-l: 24px;
-  --font-xl: 30px;
-  --font-2xl: 36px;
+  --font-xs: 0.875rem;
+  --font-s: 1rem;
+  --font-m: 1.25rem;
+  --font-l: 1.5rem;
+  --font-xl: 1.875rem;
+  --font-2xl: 2.25rem;
 
+  --weight-regular: 400;
   --weight-bold: 700;
 
   /**
@@ -55,7 +58,8 @@
   /**
    * Layout.
    */
-  --progress-bar: 60px;
+  --header: 60px;
+  --border-radius: 15px;
 
   /**
    * Styles.

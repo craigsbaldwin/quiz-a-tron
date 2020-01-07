@@ -8,7 +8,7 @@
   $parent: &;
 
   &__label {
-    background-color: var(--colour-dark-grey);
+    background-color: var(--colour-green);
     color: var(--colour-text-inverse);
     display: inline-block;
     font-size: var(--font-xs);
@@ -19,13 +19,13 @@
 
   &__input {
     @include transition(border-color, box-shadow);
-    border: 3px solid var(--colour-dark-grey);
+    border: 3px solid var(--colour-green);
     display: block;
     padding: var(--gutter-s);
     width: 100%;
 
     &:focus {
-      border-color: var(--colour-green);
+      border-color: var(--colour-purple);
       box-shadow: var(--focus-shadow);
       outline: none;
     }
@@ -33,11 +33,11 @@
 
   &:focus-within {
     #{$parent}__label {
-      background-color: var(--colour-green);
+      background-color: var(--colour-purple);
     }
 
     #{$parent}__input {
-      border-color: var(--colour-green);
+      border-color: var(--colour-purple);
     }
   }
 }
