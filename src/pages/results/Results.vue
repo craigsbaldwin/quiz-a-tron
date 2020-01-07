@@ -1,24 +1,32 @@
 <template>
-  <div class="container">
+  <div class="page page--results">
     <header class="header">
       <h1>Results</h1>
     </header>
+
+    <ProgressBar progress="100" />
 
     <Loading
       v-if="!loaded"
       text="Loading results"
     />
 
-    <ResultsTable
-      v-if="loaded"
-      :results="results"
-      :unlocked="unlocked"
-    />
+    <div
+      v-else
+      class="container"
+    >
+      <ResultsTable
+        v-if="loaded"
+        :results="results"
+        :unlocked="unlocked"
+      />
+    </div>
   </div>
 </template>
 
 <script>
   import Loading from '../../components/Loading.vue';
+  import ProgressBar from '../../components/ProgressBar.vue';
   import ResultsTable from '../../components/ResultsTable.vue';
 
   export default {
@@ -26,6 +34,7 @@
 
     components: {
       Loading,
+      ProgressBar,
       ResultsTable,
     },
 

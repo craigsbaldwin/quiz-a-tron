@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ 'is-finished': finished && submitted === 'true' }">
+  <div
+    class="page page--quiz"
+    :class="{ 'is-finished': finished && submitted === 'true' }"
+  >
     <header class="header">
       <h1>Quiz-a-tron</h1>
     </header>
