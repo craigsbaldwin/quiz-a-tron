@@ -101,7 +101,7 @@
        * @param {Event} event - Keyup event.
        */
       handleNameInput(event) {
-        if (event.target.value.length > this.characterLimit) {
+        if (event.target.value.length > this.characterLimit || event.target.value.length === 0) {
           this.startEnabled = false;
           return;
         }
