@@ -6,14 +6,10 @@
  */
 .score-table {
   $parent: &;
-  border: 3px solid var(--colour-dark-grey);
-
-  &:not(:last-child) {
-    margin-bottom: var(--gutter-s);
-  }
+  border: 3px solid var(--colour-purple);
 
   &__heading {
-    background-color: var(--colour-dark-grey);
+    background-color: var(--colour-purple);
     color: var(--colour-text-inverse);
     display: flex;
     font-weight: var(--weight-bold);

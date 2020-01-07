@@ -1,6 +1,6 @@
 <template>
   <div
-    class="score-table"
+    class="scoring__table score-table"
     :class="
       [
         { 'is-correct': questionCorrect },

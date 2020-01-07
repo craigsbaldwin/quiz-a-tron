@@ -12,7 +12,10 @@
     <div v-else>
       <ProgressBar :progress="progress" />
 
-      <div class="container">
+      <div
+        v-if="!unlocked"
+        class="container"
+      >
         <StartPage
           v-if="step === 0"
         />
@@ -35,17 +38,17 @@
           :unlocked="unlocked"
         />
       </div>
-    </div>
 
-    <div
-      v-if="debug && step > 0 || unlocked"
-      class="container"
-    >
-      <Scoring
-        :questions="questions"
-        :total-available="totalAvailable"
-        :total-score="totalScore"
-      />
+      <div
+        v-if="debug && step > 0 || unlocked"
+        class="container"
+      >
+        <Scoring
+          :questions="questions"
+          :total-available="totalAvailable"
+          :total-score="totalScore"
+        />
+      </div>
     </div>
   </div>
 </template>
