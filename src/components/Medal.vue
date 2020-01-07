@@ -8,11 +8,11 @@
 
     <div class="medal__total-display">
       <div class="medal__total-value">
-        {{ score }}pt{{ (score === 0 || score > 1) ? 's' : '' }}
+        {{ score }}pt{{ (score === 1) ? '' : 's' }}
       </div>
 
       <div class="medal__total-available">
-        {{ available }}pt{{ (available === 0 || available > 1) ? 's' : '' }}
+        {{ available }}pt{{ (available === 1) ? '' : 's' }}
       </div>
     </div>
   </div>

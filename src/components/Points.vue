@@ -3,7 +3,7 @@
     This question is worth
 
     <strong>
-      {{ points }}pt<span v-if="points > 1">s</span>
+      {{ points }}pt<span v-if="points !== 1">s</span>
     </strong>
   </div>
 </template>

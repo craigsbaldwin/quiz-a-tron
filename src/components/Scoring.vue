@@ -14,11 +14,11 @@
 
       <div class="scoring__total-display">
         <div class="scoring__total-value">
-          {{ totalScore }}pt{{ (totalScore === 0 || totalScore > 1) ? 's' : '' }}
+          {{ totalScore }}pt{{ (totalScore === 1) ? '' : 's' }}
         </div>
 
         <div class="scoring__total-available">
-          {{ totalAvailable }}pt{{ (totalAvailable === 0 || totalAvailable > 1) ? 's' : '' }}
+          {{ totalAvailable }}pt{{ (totalAvailable === 1) ? '' : 's' }}
         </div>
       </div>
     </div>
