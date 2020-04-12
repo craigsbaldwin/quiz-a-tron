@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import Loading from './Loading.vue';
   import ScoreTable from './ScoreTable';
   import {isCorrect} from './utils.js';
 
@@ -41,6 +42,7 @@
 
   export default {
     components: {
+      Loading,
       ScoreTable,
     },
 
@@ -84,6 +86,12 @@
 
         return score;
       }
+    },
+
+    mounted() {
+      window.setTimeout(() => {
+        window.VueEventBus.$emit('Quiz:Marked', this.totalScore);
+      }, 3000);
     },
   }
 </script>

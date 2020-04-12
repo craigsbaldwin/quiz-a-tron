@@ -45,6 +45,7 @@
         <ScoringPage
           v-if="state.finished && state.scoring"
           :choices="choices"
+          :display="false"
           :questions="questions"
           :total-available="totalAvailable"
         />
@@ -62,16 +63,16 @@
         />
       </div>
 
-      <!-- <div
-        v-if="state.debug && step > 0 || state.unlocked"
+      <div
+        v-if="state.unlocked"
         class="container"
       >
-        <Scoring
+        <ScoringPage
+          :choices="choices"
           :questions="questions"
           :total-available="totalAvailable"
-          :total-score="totalScore"
         />
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -183,6 +184,11 @@
         this.handleQuestionSubmit(questionNumber);
       });
 
+      window.VueEventBus.$on('Quiz:Marked', (score) => {
+        this.submission.score = score;
+        this.state.scoring = false;
+      });
+
       window.VueEventBus.$on('Submission:Submitted', () => {
         this.state.submitted = 'submitted';
       });
@@ -215,13 +221,13 @@
        * Load data from local data.
        */
       loadData() {
-        let timeout = 1500;
+        let timeout = 3000;
 
         if (this.state.debug) {
           timeout = 0;
         }
 
-        setTimeout(() => {
+        window.setTimeout(() => {
           this.state.loaded = true;
         }, timeout);
       },
