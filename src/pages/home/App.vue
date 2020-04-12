@@ -1,7 +1,7 @@
 <template>
   <div
     class="page page--quiz"
-    :class="{ 'is-finished': state.finished && state.submitted === 'true' }"
+    :class="{ 'is-finished': state.finished && state.submission === 'submitted' }"
   >
     <header class="header">
       <h1>Quiz-a-tron</h1>
@@ -51,15 +51,15 @@
         />
 
         <SubmissionPage
-          v-if="state.finished && !state.scoring && state.submitted !== 'submitted'"
+          v-if="state.finished && !state.scoring && state.submission !== 'submitted'"
+          :state="state"
           :submission="submission"
-          :submitted="state.submitted"
         />
 
         <FinishPage
-          v-if="state.finished && !state.scoring && state.submitted === 'submitted'"
+          v-if="state.finished && !state.scoring && (state.submission === 'submitted' || state.submission === 'skipped' )"
           :questions="questions"
-          :unlocked="state.unlocked"
+          :state="state"
         />
       </div>
 
@@ -114,7 +114,7 @@
           finished: false,
           loaded: false,
           scoring: false,
-          submitted: 'not-submitted',
+          submission: 'not-submitted',
           unlocked: false,
         },
         submission: {
@@ -190,15 +190,19 @@
       });
 
       window.VueEventBus.$on('Submission:Submitted', () => {
-        this.state.submitted = 'submitted';
+        this.state.submission = 'submitted';
+      });
+
+      window.VueEventBus.$on('Submission:Skipped', () => {
+        this.state.submission = 'skipped';
       });
 
       window.VueEventBus.$on('Submission:Retry', () => {
-        this.state.submitted = 'not-submitted';
+        this.state.submission = 'not-submitted';
       });
 
       window.VueEventBus.$on('Submission:Error', () => {
-        this.state.submitted = 'error';
+        this.state.submission = 'error';
       });
 
       window.VueEventBus.$on('Quiz:Unlock', () => {

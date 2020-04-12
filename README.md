@@ -2,7 +2,7 @@
 
 The Quiz-a-tron is a Vue-powered quiz app designed for We Make Website's wind downs.
 
-It pulls its data from an external JSONBIN. At the end of the quiz a user's answers are submitted to a different JSONBIN and reviewed on a custom dashboard.
+Questions, answers, and choices are stored locally throughout the quiz. At the end of the quiz a user's answers are submitted to a different JSONBIN and reviewed on a custom dashboard.
 
 ## Commands
 `yarn install` - Setup project

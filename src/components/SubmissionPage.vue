@@ -1,12 +1,12 @@
 <template>
   <div class="submission">
-    <span v-if="submitted === 'not-submitted'">
+    <span v-if="state.submission === 'not-submitted'">
       <Loading
         text="Submitting answers"
       />
     </span>
 
-    <span v-else-if="submitted === 'error'">
+    <span v-else-if="state.submission === 'error'">
       <h2>Error</h2>
 
       <p>There was an error submitting, please try again. If submitting fails again then please proceed to your score.</p>
@@ -39,8 +39,8 @@
     },
 
     props: {
+      state: Object,
       submission: Object,
-      submitted: String,
     },
 
     mounted() {
@@ -64,7 +64,7 @@
             this.submitForm(start);
           })
           .catch((error) => {
-            // this.submission.id = 'Error';
+            // this.submission.id = 'Blocked';
             // this.submission.timestamp = this.getTimestamp();
 
             // this.submitForm(start);
@@ -188,7 +188,7 @@
        * If all else fails then skip submission.
        */
       skipSubmission() {
-        window.VueEventBus.$emit('Submission:Submitted');
+        window.VueEventBus.$emit('Submission:Skipped');
       },
     },
   }
