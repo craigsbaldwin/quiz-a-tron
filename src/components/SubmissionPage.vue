@@ -69,7 +69,7 @@
 
             this.submitForm(start);
 
-            throw new Error ('IP lookup', error);
+            throw new Error ('IP lookup error', error);
           });
       },
 
@@ -96,7 +96,7 @@
           .catch((error) => {
             this.displayError(start);
 
-            throw new Error ('jsonbin submission failed', error);
+            throw new Error ('JSON bin submission error', error);
           });
       },
 

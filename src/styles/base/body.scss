@@ -27,4 +27,9 @@ html, body {
   margin: 0 auto;
   padding: var(--gutter-l) var(--gutter-m);
   max-width: 660px;
+  width: 100%;
+
+  &#{&}--wide {
+    max-width: 900px;
+  }
 }

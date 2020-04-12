@@ -1,0 +1,34 @@
+/**
+ * Component: Leaderboard
+ * ------------------------------------------------------------------------------
+ * Contains all results from all quizzes.
+ *
+ */
+.leaderboard {
+  $parent: &;
+  animation: intro var(--timing-l) var(--easing);
+  width: 100%;
+
+  &__row {
+    border-bottom: 3px solid var(--colour-purple);
+    display: grid;
+    gap: var(--gutter-s);
+    grid-template-columns: 1fr 100px;
+    padding: var(--gutter-s);
+
+    &#{&}--header {
+      background-color: var(--colour-purple);
+      border-bottom-width: 0;
+      color: var(--colour-text-inverse);
+      padding: var(--gutter-s);
+
+      #{$parent}__cell {
+        font-weight: var(--weight-bold);
+      }
+    }
+  }
+
+  abbr {
+    text-decoration: none;
+  }
+}
