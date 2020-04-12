@@ -2,7 +2,7 @@
   <div class="start">
     <div class="start__content">
       <p>
-        Welcome to the <strong>Quiz-a-tron</strong>, a Vue-powered quiz app.
+        Welcome to the <strong>Quiz-a-tron 1000</strong>, a Vue-powered quiz robot.
       </p>
 
       <p>
@@ -19,7 +19,7 @@
 
       <ul class="start__group outlined-group">
         <li>30 seconds for each question, unless otherwise stated</li>
-        <li>The questions are not in this app, you will not be able to finish the quiz without the presentation</li>
+        <li>You will not be able to finish the quiz without the quiz presentation</li>
         <li>Questions are scored on their difficulty and shown underneath each question</li>
         <li>You must provide an answer to proceed</li>
         <li>You will not be able to go back once you've answered a question, no do-overs</li>

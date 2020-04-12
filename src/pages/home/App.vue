@@ -4,7 +4,11 @@
     :class="{ 'is-finished': state.finished && state.submission === 'submitted' }"
   >
     <header class="header">
-      <h1>Quiz-a-tron</h1>
+      <div class="header__icon">
+        <img src="../../assets/icon.svg" role="presentation">
+      </div>
+
+      <h1 class="header__title">Quiz-a-tron 1000</h1>
     </header>
 
     <Loading
