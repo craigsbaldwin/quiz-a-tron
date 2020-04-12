@@ -182,10 +182,16 @@
        * Load data from local data.
        */
       loadData() {
+        let timeout = 1500;
+
+        if (this.state.debug) {
+          timeout = 0;
+        }
+
         setTimeout(() => {
           this.questions = quizData.data;
           this.state.loaded = true;
-        }, 1500);
+        }, timeout);
       },
 
       /**
