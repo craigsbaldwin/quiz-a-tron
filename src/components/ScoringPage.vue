@@ -6,7 +6,7 @@
     />
 
     <div v-else>
-      <h2>Your score</h2>
+      <h2>Your results</h2>
 
       <ScoreTable
         v-for="(question, index) in questions"

@@ -64,10 +64,10 @@
             this.submitForm(start);
           })
           .catch((error) => {
-            // this.submission.id = 'Blocked';
-            // this.submission.timestamp = this.getTimestamp();
+            this.submission.id = 'Blocked';
+            this.submission.timestamp = this.getTimestamp();
 
-            // this.submitForm(start);
+            this.submitForm(start);
 
             throw new Error ('IP lookup', error);
           });
