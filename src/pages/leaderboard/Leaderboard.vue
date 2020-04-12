@@ -9,15 +9,41 @@
     />
 
     <Loading
-      v-if="!state.loaded"
+      v-if="!loaded"
       text="Loading leaderboard"
     />
 
-    <div v-else>
-      <LeaderboardTable
-        v-if="state.loaded"
-        :results="results"
-      />
+    <div
+      v-else
+      class="container container--wide"
+    >
+      <div class="leaderboard">
+        <div class="leaderboard__row leaderboard__row--header">
+          <div class="leaderboard__cell">
+            Name
+          </div>
+
+          <div class="leaderboard__cell text-right">
+            Average
+          </div>
+        </div>
+
+        <div
+          v-for="(individual, index) in individualResults"
+          class="leaderboard__row"
+          :key="`Result${index}`"
+        >
+          <div class="leaderboard__cell">
+            {{ individual.name }}
+          </div>
+
+          <div class="leaderboard__cell text-right">
+            <abbr :title="individual.average">
+              {{ Math.round(individual.average) }}%
+            </abbr>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -25,7 +51,6 @@
 <script>
   import Loading from '../../components/Loading.vue';
   import ProgressBar from '../../components/ProgressBar.vue';
-  import LeaderboardTable from '../../components/LeaderboardTable.vue';
 
   export default {
     name: 'Results',
@@ -33,29 +58,65 @@
     components: {
       Loading,
       ProgressBar,
-      LeaderboardTable,
     },
 
     data() {
       return {
         binIds: [],
         collectionId: '5e0f71c2fadb735054fc987c',
-        state: {
-          loaded: false,
-        },
+        loaded: false,
         results: [],
       }
     },
 
-    mounted() {
-      this.loadCollection();
+    computed: {
 
       /**
-       * EventBus.
+       * Results by individual.
        */
-      window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.state.unlocked = true;
-      });
+      individualResults() {
+        let individualResults = {};
+
+        /**
+         * Sort results into each person.
+         */
+        this.results.forEach((result) => {
+          if (individualResults[result.name]) {
+            individualResults[result.name].push(result);
+            return;
+          }
+
+          individualResults[result.name] = [
+            result,
+          ]
+        });
+
+        /**
+         * Take average of two highest scoring rounds.
+         */
+        individualResults = Object.keys(individualResults).map((individual) => {
+          const array = individualResults[individual];
+          const firstPercent = ((array[0].score / array[0].available) * 100);
+          let average = firstPercent;
+
+          if (array.length > 1) {
+            const secondPercent = ((array[1].score / array[0].available) * 100);
+            average = ((firstPercent + secondPercent) / 2);
+          }
+
+          return {
+            average,
+            name: individual,
+            results: array,
+          }
+        });
+
+        return individualResults.sort(this.compareAverage);
+      },
+    },
+
+    mounted() {
+      this.loadCollection();
     },
 
     methods: {
@@ -86,8 +147,8 @@
        */
       loadAllBins() {
         if (this.binIds.length === 0) {
-          this.results.sort(this.compare);
-          this.state.loaded = true;
+          this.results.sort(this.compareScore);
+          this.loaded = true;
           localStorage.setItem('leaderboard', JSON.stringify(this.results));
           return;
         }
@@ -113,11 +174,21 @@
       },
 
       /**
-       * Compare function for sorting array.
+       * Compare function for sorting array by score.
        */
-      compare(a, b) {
+      compare( a, b) {
         if (a.score > b.score) return -1;
         if (b.score > a.score) return 1;
+
+        return 0;
+      },
+
+      /**
+       * Compare function for sorting array by average.
+       */
+      compareAverage(a, b) {
+        if (a.average > b.average) return -1;
+        if (b.average > a.average) return 1;
 
         return 0;
       }
