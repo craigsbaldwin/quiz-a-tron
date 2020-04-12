@@ -4,9 +4,11 @@
  * Global body styles.
  *
  */
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 * {
   box-sizing: border-box;
-  font-family: 'Avenir', sans-serif;
+  font-family: var(--font-family);
   font-size: var(--font-m);
   font-weight: var(--weight-regular);
   margin: 0;

@@ -13,7 +13,7 @@
   --colour-text: rgb(52, 73, 94);
   --colour-text-inverse: rgb(255, 255, 255);
 
-  --colour-green: rgb(69, 212, 198);
+  --colour-green: rgb(46, 204, 113);
   --colour-light-grey: rgb(225, 225, 225);
   --colour-grey: rgb(189, 195, 199);
   --colour-yellow: rgb(241, 196, 15);
@@ -29,6 +29,8 @@
   /**
    * Typography.
    */
+  --font-family: 'Inter', sans-serif;
+
   --font-xs: 0.875rem;
   --font-s: 1rem;
   --font-m: 1.25rem;

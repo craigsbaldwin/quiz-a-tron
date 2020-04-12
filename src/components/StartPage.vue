@@ -6,7 +6,7 @@
       </p>
 
       <p>
-        It's time to test all aspects of your knowledge, from music and movies, to geography and language, and everything in between. This is meant to be tricky.
+        Each week/fortnight we'll be doing a quiz in the wind down until the end of the lockdown. This is your chance to win the minipresso that has been sat on my desk for over a year.
       </p>
 
       <p class="start__warning">

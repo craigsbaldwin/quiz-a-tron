@@ -4,6 +4,8 @@
  * Global typographic styles.
  *
  */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
 h2:not(:last-child):not(.label),
 p:not(:last-child),
 img:not(:last-child) {
@@ -11,6 +13,7 @@ img:not(:last-child) {
 }
 
 h1 {
+  font-weight: var(--weight-bold);
   line-height: 1;
 }
 
@@ -40,6 +43,10 @@ a {
   }
 }
 
+strong {
+  font-weight: var(--weight-bold);
+}
+
 small,
 small a {
   font-size: var(--font-xs);
@@ -48,5 +55,5 @@ small a {
 
 small p {
   font-size: var(--font-xs);
-  line-height: 1.4;
+  line-height: 1.6;
 }
