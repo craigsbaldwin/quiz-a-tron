@@ -1,14 +1,14 @@
 <template>
   <div
     class="page page--quiz"
-    :class="{ 'is-finished': finished && submitted === 'true' }"
+    :class="{ 'is-finished': state.finished && state.submitted === 'true' }"
   >
     <header class="header">
       <h1>Quiz-a-tron</h1>
     </header>
 
     <Loading
-      v-if="!loaded"
+      v-if="!state.loaded"
       text="Loading data"
     />
 
@@ -18,7 +18,7 @@
       />
 
       <div
-        v-if="!unlocked"
+        v-if="!state.unlocked"
         class="container"
       >
         <StartPage
@@ -26,26 +26,26 @@
         />
 
         <Questions
-          v-if="!finished"
+          v-if="!state.finished"
           :step="step"
           :questions="questions"
         />
 
         <SubmissionPage
-          v-if="finished && submitted !== 'true'"
+          v-if="state.finished && state.submitted !== 'true'"
           :submission="submission"
-          :submitted="submitted"
+          :submitted="state.submitted"
         />
 
         <FinishPage
-          v-if="finished && submitted === 'true'"
+          v-if="state.finished && state.submitted === 'true'"
           :questions="questions"
-          :unlocked="unlocked"
+          :unlocked="state.unlocked"
         />
       </div>
 
       <div
-        v-if="debug && step > 0 || unlocked"
+        v-if="state.debug && step > 0 || state.unlocked"
         class="container"
       >
         <Scoring
@@ -84,14 +84,20 @@
 
     data() {
       return {
+        answers: [],
+        choices: [],
         date: 'jan',
-        debug: true,
-        finished: false,
-        loaded: false,
         progress: 0,
         questions: [],
         score: 0,
         step: 0,
+        state: {
+          debug: true,
+          finished: false,
+          loaded: false,
+          submitted: 'false',
+          unlocked: false,
+        },
         submission: {
           available: 0,
           id: '',
@@ -99,13 +105,11 @@
           score: 0,
           timestamp: '',
         },
-        submitted: 'false',
-        unlocked: false,
       };
     },
 
     mounted() {
-      if (!this.debug) {
+      if (!this.state.debug) {
         this.navigationWarnings();
       }
 
@@ -147,19 +151,19 @@
       });
 
       window.VueEventBus.$on('Submission:Submitted', () => {
-        this.submitted = 'true';
+        this.state.submitted = 'true';
       });
 
       window.VueEventBus.$on('Submission:Retry', () => {
-        this.submitted = 'false';
+        this.state.submitted = 'false';
       });
 
       window.VueEventBus.$on('Submission:Error', () => {
-        this.submitted = 'error';
+        this.state.submitted = 'error';
       });
 
       window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.unlocked = true;
+        this.state.unlocked = true;
       });
     },
 
@@ -180,7 +184,7 @@
       loadData() {
         setTimeout(() => {
           this.questions = quizData.data;
-          this.loaded = true;
+          this.state.loaded = true;
         }, 1500);
       },
 
@@ -332,7 +336,7 @@
        */
       handleQuizFinish() {
         this.scrollToTop();
-        this.finished = true;
+        this.state.finished = true;
       },
     },
 

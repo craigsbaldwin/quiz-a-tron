@@ -9,7 +9,7 @@
     />
 
     <Loading
-      v-if="!loaded"
+      v-if="!state.loaded"
       text="Loading results"
     />
 
@@ -18,9 +18,9 @@
       class="container"
     >
       <ResultsTable
-        v-if="loaded"
+        v-if="state.loaded"
         :results="results"
-        :unlocked="unlocked"
+        :unlocked="state.unlocked"
       />
     </div>
   </div>
@@ -45,9 +45,11 @@
         binIds: [],
         collectionId: '5e0f71c2fadb735054fc987c',
         date: 'jan',
-        loaded: false,
+        state: {
+          loaded: false,
+          unlocked: false,
+        },
         results: [],
-        unlocked: false,
       }
     },
 
@@ -58,7 +60,7 @@
        * EventBus.
        */
       window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.unlocked = true;
+        this.state.unlocked = true;
       });
     },
 
@@ -91,7 +93,7 @@
       loadAllBins() {
         if (this.binIds.length === 0) {
           this.results.sort(this.compare);
-          this.loaded = true;
+          this.state.loaded = true;
           localStorage.setItem(`submissions-${this.date}`, JSON.stringify(this.results));
           return;
         }
