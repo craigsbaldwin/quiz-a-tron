@@ -31,11 +31,10 @@
         >
           <div class="questions__container">
             <Question
-              v-for="(question, index) in questions"
+              v-for="(question) in questions"
               class="questions__question question"
-              :class="{ 'is-active': step === (index + 1) }"
-              :index="index"
-              :key="`Question-${index + 1}`"
+              :class="{ 'is-active': step === (question.number) }"
+              :key="`Question${question.number}`"
               :no-of-questions="questions.length"
               :step="step"
               :question="question"

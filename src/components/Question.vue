@@ -1,12 +1,12 @@
 <template>
   <form
-    :js-question="index + 1"
-    @submit.prevent="submitAnswer(index + 1)"
+    :js-question="question.number"
+    @submit.prevent="submitAnswer(question.number)"
   >
     <div class="question__container">
       <div class="question__header">
         <span class="question__number">
-          {{ index + 1 }}
+          {{ question.number }}
         </span>
 
         <h2 class="question__question-text">
@@ -28,7 +28,7 @@
       <Buttons
         :length="NoOfQuestions"
         :question="question"
-        :step="index + 1"
+        :step="question.number"
       />
     </div>
   </form>
@@ -47,7 +47,6 @@
     },
 
     props: {
-      index: Number,
       NoOfQuestions: Number,
       question: Object,
       step: Number,

@@ -4,7 +4,7 @@
       v-for="(part, index) in question.choices"
       :accuracy="part.accuracy"
       :number-group="index"
-      :key="index"
+      :key="`Question${question.number}-Choice${index}`"
       :label="part.label"
       :step="step"
     />
@@ -15,7 +15,7 @@
       v-for="(part, index) in question.choices"
       :choices="part"
       :radio-group="index"
-      :key="index"
+      :key="`Question${question.number}-Choice${index}`"
       :step="step"
     />
   </div>
@@ -25,7 +25,7 @@
       v-for="(part, index) in question.choices"
       :choices="part"
       :select-group="index"
-      :key="index"
+      :key="`Question${question.number}-Choice${index}`"
       :step="step"
     />
   </div>
@@ -34,7 +34,7 @@
     <TextField
       v-for="(part, index) in question.choices"
       :text-group="index"
-      :key="index"
+      :key="`Question${question.number}-Choice${index}`"
       :label="part.label"
       :step="step"
     />

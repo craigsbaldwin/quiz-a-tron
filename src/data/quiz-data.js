@@ -1,5 +1,6 @@
 const data = [
   {
+    number: 1,
     question: 'Number question',
     type: 'number',
     choices: [
@@ -14,6 +15,7 @@ const data = [
     answers: [100],
   },
   {
+    number: 2,
     question: 'Match things with other things',
     type: 'select',
     choices: [
@@ -43,6 +45,7 @@ const data = [
     answers: ['Address A', 'Address B'],
   },
   {
+    number: 3,
     question: 'What is the song and artist?',
     type: 'text',
     choices: [
@@ -62,6 +65,7 @@ const data = [
     answers: ['Song', 'Artist'],
   },
   {
+    number: 4,
     question: 'This is a test?',
     type: 'radio',
     choices: [
@@ -80,6 +84,7 @@ const data = [
     answers: [2],
   },
   {
+    number: 5,
     question: 'This is a test?',
     type: 'radio',
     choices: [
