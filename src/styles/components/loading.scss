@@ -13,13 +13,41 @@
   min-height: calc(100vh - var(--header) - var(--gutter-l) - var(--gutter-l));
   position: relative;
 
+  &__container {
+    max-width: 350px;
+    width: 90%;
+  }
+
+  &__robot {
+    height: 0;
+    padding-bottom: percentage(575 / 422);
+    position: relative;
+    width: 100%;
+
+    img {
+      height: 100%;
+      left: 0;
+      object-fit: contain;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  }
+
   &__animation {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     grid-gap: var(--gutter-2xs);
-    height: 80px;
-    width: 80px;
+    height: 20vw;
+    left: 50%;
+    max-height: 80px;
+    max-width: 80px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-52%, -32%);
+    width: 20vw;
+    z-index: 2;
   }
 
   &__square {
