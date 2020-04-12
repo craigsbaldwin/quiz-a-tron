@@ -7,12 +7,10 @@ const data = [
       {
         accuracy: 10,
         answered: false,
-        correct: false,
         label: 'Century',
         points: 1,
       },
     ],
-    answers: [100],
   },
   {
     number: 2,
@@ -26,7 +24,6 @@ const data = [
           { label: 'Address B' },
           { label: 'Address C' },
         ],
-        correct: false,
         label: 'Building 1',
         points: 2,
       },
@@ -37,12 +34,10 @@ const data = [
           { label: 'Address B' },
           { label: 'Address C' },
         ],
-        correct: false,
         label: 'Building 2',
         points: 2,
       },
     ],
-    answers: ['Address A', 'Address B'],
   },
   {
     number: 3,
@@ -51,18 +46,15 @@ const data = [
     choices: [
       {
         answered: false,
-        correct: false,
         label: 'Song',
         points: 2,
       },
       {
         answered: false,
-        correct: false,
         label: 'Artist',
         points: 1,
       }
     ],
-    answers: ['Song', 'Artist'],
   },
   {
     number: 4,
@@ -76,12 +68,10 @@ const data = [
           { label: 'This is answer B' },
           { label: 'This is answer C' },
         ],
-        correct: false,
         label: 'A label goes here',
         points: 1,
       }
     ],
-    answers: [2],
   },
   {
     number: 5,
@@ -96,7 +86,6 @@ const data = [
           { label: '1 This is answer C' },
           { label: '1 This is answer D' },
         ],
-        correct: false,
         points: 1,
       },
       {
@@ -107,11 +96,9 @@ const data = [
           { label: '2 This is answer C' },
           { label: '2 This is answer D' },
         ],
-        correct: false,
         points: 1,
       }
     ],
-    answers: [0, 1],
   }
 ]
 

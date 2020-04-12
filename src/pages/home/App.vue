@@ -42,14 +42,21 @@
           </div>
         </div>
 
+        <ScoringPage
+          v-if="state.finished && state.scoring"
+          :choices="choices"
+          :questions="questions"
+          :total-available="totalAvailable"
+        />
+
         <SubmissionPage
-          v-if="state.finished && state.submitted !== 'true'"
+          v-if="state.finished && !state.scoring && state.submitted !== 'submitted'"
           :submission="submission"
           :submitted="state.submitted"
         />
 
         <FinishPage
-          v-if="state.finished && state.submitted === 'true'"
+          v-if="state.finished && !state.scoring && state.submitted === 'submitted'"
           :questions="questions"
           :unlocked="state.unlocked"
         />
@@ -74,11 +81,11 @@
   import Loading from '../../components/Loading.vue';
   import ProgressBar from '../../components/ProgressBar.vue';
   import Question from '../../components/Question.vue';
-  // import Scoring from '../../components/Scoring.vue';
+  import ScoringPage from '../../components/ScoringPage.vue';
   import StartPage from '../../components/StartPage.vue';
   import SubmissionPage from '../../components/SubmissionPage.vue';
 
-  import quizData from '../../data/quiz-data.js';
+  import questions from '../../data/questions.js';
 
   export default {
     name: 'Quiz-a-tron',
@@ -88,26 +95,25 @@
       Loading,
       ProgressBar,
       Question,
-      // Scoring,
+      ScoringPage,
       StartPage,
       SubmissionPage,
     },
 
     data() {
       return {
-        answers: [],
         choices: [],
         date: 'jan',
         progress: 0,
-        questions: [],
+        questions: questions.data,
         score: 0,
         step: 0,
-        step0: -1,
         state: {
           debug: true,
           finished: false,
           loaded: false,
-          submitted: 'false',
+          scoring: false,
+          submitted: 'not-submitted',
           unlocked: false,
         },
         submission: {
@@ -118,6 +124,25 @@
           timestamp: '',
         },
       };
+    },
+
+    computed: {
+
+      /**
+       * Calculate total available points.
+       * @returns {Number}
+       */
+      totalAvailable() {
+        let total = 0;
+
+        this.questions.forEach((question) => {
+          question.choices.forEach((choice) => {
+            total += choice.points;
+          });
+        });
+
+        return total;
+      },
     },
 
     mounted() {
@@ -158,16 +183,12 @@
         this.handleQuestionSubmit(questionNumber);
       });
 
-      window.VueEventBus.$on('Quiz:Finish', () => {
-        this.handleQuizFinish();
-      });
-
       window.VueEventBus.$on('Submission:Submitted', () => {
-        this.state.submitted = 'true';
+        this.state.submitted = 'submitted';
       });
 
       window.VueEventBus.$on('Submission:Retry', () => {
-        this.state.submitted = 'false';
+        this.state.submitted = 'not-submitted';
       });
 
       window.VueEventBus.$on('Submission:Error', () => {
@@ -201,7 +222,6 @@
         }
 
         setTimeout(() => {
-          this.questions = quizData.data;
           this.state.loaded = true;
         }, timeout);
       },
@@ -271,7 +291,6 @@
       handleQuestionSubmit(questionNumber) {
         this.saveAnswer(questionNumber);
         this.calculateProgress(questionNumber + 1);
-        // this.markAnswer(questionNumber - 1);
 
         if (questionNumber === this.questions.length) {
           this.handleQuizFinish();
@@ -293,7 +312,7 @@
         choices.forEach((group, groupIndex) => {
           const inputs = [...group.querySelectorAll('[js-choices="input"]')];
 
-          inputs.forEach((input) => {
+          inputs.forEach((input, index) => {
             const type = input.getAttribute('data-type');
 
             switch (type) {
@@ -303,7 +322,7 @@
 
               case 'radio':
                 if (!input.checked) { return; }
-                saveArray.push(this.questions[questionNumber - 1].choices[groupIndex].label);
+                saveArray.push(this.questions[questionNumber - 1].choices[groupIndex].answers[index].label);
                 break;
 
               case 'select':
@@ -318,81 +337,12 @@
       },
 
       /**
-       * Marks the answer when question is submitted.
-       * @param {Number} questionIndex - Question's index number.
-       */
-      markAnswer(questionIndex) {
-        const question = this.questions[questionIndex];
-
-        question.givenAnswers.forEach((givenAnswer, index) => {
-          let answer = question.answers[index];
-
-          if (typeof answer === 'string') {
-            answer = answer.toLowerCase();
-            givenAnswer = givenAnswer.toLowerCase();
-          }
-
-          /**
-           * Number questions have an accuracy threshold.
-           */
-          if (question.type === 'number') {
-            const accuracy = question.choices[index].accuracy;
-            question.choices[index].correct = (givenAnswer >= (answer - accuracy) && givenAnswer <= (answer + accuracy));
-
-            return;
-          }
-
-          question.choices[index].correct = (answer === givenAnswer);
-        });
-
-        this.submission.score = this.totalScore;
-      },
-
-      /**
        * Finish the quiz.
        */
       handleQuizFinish() {
         this.scrollToTop();
         this.state.finished = true;
-      },
-    },
-
-    computed: {
-
-      /**
-       * Calculate the total score by iterating over all questions.
-       * @returns {Number}
-       */
-      totalScore() {
-        let score = 0;
-
-        this.questions.forEach((question) => {
-          question.choices.forEach((choice) => {
-            if (!choice.answered || !choice.correct) {
-              return;
-            }
-
-            score += choice.points;
-          });
-        });
-
-        return score;
-      },
-
-      /**
-       * Calculate total available points.
-       * @returns {Number}
-       */
-      totalAvailable() {
-        let total = 0;
-
-        this.questions.forEach((question) => {
-          question.choices.forEach((choice) => {
-            total += choice.points;
-          });
-        });
-
-        return total;
+        this.state.scoring = true;
       },
     },
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="submission">
-    <span v-if="submitted === 'false'">
+    <span v-if="submitted === 'not-submitted'">
       <Loading
         text="Submitting answers"
       />
@@ -64,7 +64,10 @@
             this.submitForm(start);
           })
           .catch((error) => {
-            this.displayError(start);
+            // this.submission.id = 'Error';
+            // this.submission.timestamp = this.getTimestamp();
+
+            // this.submitForm(start);
 
             throw new Error ('IP lookup', error);
           });
@@ -93,7 +96,7 @@
           .catch((error) => {
             this.displayError(start);
 
-            throw new Error ('jsonbin submission', error);
+            throw new Error ('jsonbin submission failed', error);
           });
       },
 

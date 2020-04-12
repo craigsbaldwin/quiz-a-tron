@@ -38,6 +38,7 @@
   &__total-available {
     font-weight: var(--weight-bold);
     padding-top: var(--gutter-2xs);
+    text-align: center;
   }
 
   .is-finished & {
