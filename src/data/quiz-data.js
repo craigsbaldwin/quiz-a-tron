@@ -9,11 +9,9 @@ const data = [
         correct: false,
         label: 'Century',
         points: 1,
-        saved: false,
       },
     ],
     answers: [100],
-    givenAnswers: [false],
   },
   {
     question: 'Match things with other things',
@@ -29,7 +27,6 @@ const data = [
         correct: false,
         label: 'Building 1',
         points: 2,
-        saved: false,
       },
       {
         answered: false,
@@ -41,11 +38,9 @@ const data = [
         correct: false,
         label: 'Building 2',
         points: 2,
-        saved: false,
       },
     ],
     answers: ['Address A', 'Address B'],
-    givenAnswers: [false, false],
   },
   {
     question: 'What is the song and artist?',
@@ -56,18 +51,15 @@ const data = [
         correct: false,
         label: 'Song',
         points: 2,
-        saved: false,
       },
       {
         answered: false,
         correct: false,
         label: 'Artist',
         points: 1,
-        saved: false,
       }
     ],
     answers: ['Song', 'Artist'],
-    givenAnswers: [false, false],
   },
   {
     question: 'This is a test?',
@@ -83,11 +75,9 @@ const data = [
         correct: false,
         label: 'A label goes here',
         points: 1,
-        saved: false,
       }
     ],
     answers: [2],
-    givenAnswers: [false],
   },
   {
     question: 'This is a test?',
@@ -103,7 +93,6 @@ const data = [
         ],
         correct: false,
         points: 1,
-        saved: false,
       },
       {
         answered: false,
@@ -115,11 +104,9 @@ const data = [
         ],
         correct: false,
         points: 1,
-        saved: false,
       }
     ],
     answers: [0, 1],
-    givenAnswers: [false, false],
   }
 ]
 

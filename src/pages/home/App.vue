@@ -25,11 +25,23 @@
           v-if="step === 0"
         />
 
-        <Questions
+        <div
           v-if="!state.finished"
-          :step="step"
-          :questions="questions"
-        />
+          class="questions"
+        >
+          <div class="questions__container">
+            <Question
+              v-for="(question, index) in questions"
+              class="questions__question question"
+              :class="{ 'is-active': step === (index + 1) }"
+              :index="index"
+              :key="`Question-${index + 1}`"
+              :no-of-questions="questions.length"
+              :step="step"
+              :question="question"
+            />
+          </div>
+        </div>
 
         <SubmissionPage
           v-if="state.finished && state.submitted !== 'true'"
@@ -44,7 +56,7 @@
         />
       </div>
 
-      <div
+      <!-- <div
         v-if="state.debug && step > 0 || state.unlocked"
         class="container"
       >
@@ -53,7 +65,7 @@
           :total-available="totalAvailable"
           :total-score="totalScore"
         />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -62,8 +74,8 @@
   import FinishPage from '../../components/FinishPage.vue';
   import Loading from '../../components/Loading.vue';
   import ProgressBar from '../../components/ProgressBar.vue';
-  import Questions from '../../components/Questions.vue';
-  import Scoring from '../../components/Scoring.vue';
+  import Question from '../../components/Question.vue';
+  // import Scoring from '../../components/Scoring.vue';
   import StartPage from '../../components/StartPage.vue';
   import SubmissionPage from '../../components/SubmissionPage.vue';
 
@@ -76,8 +88,8 @@
       FinishPage,
       Loading,
       ProgressBar,
-      Questions,
-      Scoring,
+      Question,
+      // Scoring,
       StartPage,
       SubmissionPage,
     },
@@ -91,6 +103,7 @@
         questions: [],
         score: 0,
         step: 0,
+        step0: -1,
         state: {
           debug: true,
           finished: false,
@@ -259,7 +272,7 @@
       handleQuestionSubmit(questionNumber) {
         this.saveAnswer(questionNumber);
         this.calculateProgress(questionNumber + 1);
-        this.markAnswer(questionNumber - 1);
+        // this.markAnswer(questionNumber - 1);
 
         if (questionNumber === this.questions.length) {
           this.handleQuizFinish();
@@ -276,8 +289,9 @@
        */
       saveAnswer(questionNumber) {
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
+        const saveArray = [];
 
-        choices.forEach((group, groupIndex) => {
+        choices.forEach((group) => {
           const inputs = [...group.querySelectorAll('[js-choices="input"]')];
 
           inputs.forEach((input, index) => {
@@ -285,25 +299,23 @@
 
             switch (type) {
                case 'number':
-                this.questions[questionNumber - 1].givenAnswers[groupIndex] = Number(input.value);
+                saveArray.push(Number(input.value));
                 break;
 
               case 'radio':
                 if (!input.checked) { return; }
-                this.questions[questionNumber - 1].givenAnswers[groupIndex] = index;
+                saveArray.push(index);
                 break;
 
               case 'select':
               case 'text':
-                this.questions[questionNumber - 1].givenAnswers[groupIndex] = input.value;
+                saveArray.push(input.value);
                 break;
             }
           });
         });
 
-        this.questions[questionNumber - 1].choices.forEach((choice) => {
-          choice.saved = true;
-        });
+        this.choices.push(saveArray);
       },
 
       /**
