@@ -291,10 +291,10 @@
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
         const saveArray = [];
 
-        choices.forEach((group) => {
+        choices.forEach((group, groupIndex) => {
           const inputs = [...group.querySelectorAll('[js-choices="input"]')];
 
-          inputs.forEach((input, index) => {
+          inputs.forEach((input) => {
             const type = input.getAttribute('data-type');
 
             switch (type) {
@@ -304,7 +304,7 @@
 
               case 'radio':
                 if (!input.checked) { return; }
-                saveArray.push(index);
+                saveArray.push(this.questions[questionNumber - 1].choices[groupIndex].label);
                 break;
 
               case 'select':
