@@ -264,7 +264,9 @@
         const choices = activeQuestion.querySelector('[js-choices="group"]');
         const input = choices.querySelector('[js-choices="input"]');
 
-        input.focus();
+        window.setTimeout(() => {
+          input.focus();
+        }, 0);
       },
 
       /**
