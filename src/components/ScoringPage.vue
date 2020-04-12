@@ -35,6 +35,7 @@
 
 <script>
   import ScoreTable from './ScoreTable';
+  import {isCorrect} from './utils.js';
 
   import answers from '../data/answers.js';
 
@@ -68,10 +69,12 @@
         let score = 0;
 
         this.questions.forEach((question, questionIndex) => {
-          // const type = question.type;
+          const type = question.type;
 
           question.choices.forEach((choice, choiceIndex) => {
-            if (this.choices[questionIndex][choiceIndex] !== this.answers[questionIndex][choiceIndex]) {
+            const accuracy = choice.accuracy || false;
+
+            if (!isCorrect(type, this.choices[questionIndex][choiceIndex], this.answers[questionIndex][choiceIndex]), accuracy) {
               return;
             }
 

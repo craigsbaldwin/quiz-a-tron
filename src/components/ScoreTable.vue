@@ -23,8 +23,8 @@
       class="score-table__row"
       :class="
         [
-          { 'is-correct': choice[index] === answer[index] },
-          { 'is-wrong': choice[index] !== answer[index] },
+          { 'is-correct': isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) },
+          { 'is-wrong': !isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) },
         ]
       "
       :key="`QuestionScore${question.number}-Choice${index}`"
@@ -33,21 +33,21 @@
         <span class="score-table__given-answer">{{ choice[index] }}</span>
 
         <span
-          v-if="choice[index] !== answer[index] && question.type !== 'number'"
+          v-if="!isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) && question.type !== 'number'"
           class="score-table__answer"
         >
           {{ answer[index] }}
         </span>
 
         <span
-          v-else-if="choice[index] !== answer[index] && question.type === 'number'"
+          v-else-if="!isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) && question.type === 'number'"
           class="score-table__answer score-table__answer--number"
         >
           {{ answer[index] }} ± {{ singleChoice.accuracy }}
         </span>
 
         <span
-          v-else-if="choice[index] === answer[index] && question.type === 'number'"
+          v-else-if="isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) && question.type === 'number'"
           class="score-table__answer score-table__answer--number"
         >
           {{ answer[index] }} ± {{ singleChoice.accuracy }}
@@ -63,6 +63,8 @@
 </template>
 
 <script>
+  import {isCorrect} from './utils.js';
+
   export default {
     props: {
       answer: Array,
@@ -78,7 +80,7 @@
        */
       questionCorrect() {
         const correctAnswers = this.choice.filter((choice, index) => {
-          return choice === this.answer[index];
+          return isCorrect(this.question.type, choice,  this.answer[index], this.question.choices[index].accuracy);
         });
 
         return (correctAnswers.length === this.answer.length);
@@ -90,21 +92,21 @@
        */
       questionWrong() {
         const wrongAnswers = this.choice.filter((choice, index) => {
-          return choice !== this.answer[index];
+          return !isCorrect(this.question.type, choice,  this.answer[index], this.question.choices[index].accuracy);
         });
 
         return (wrongAnswers.length === this.answer.length);
       },
 
       /**
-       * Calculate the question total points available.
+       * Calculate the question's total awarded points.
        * @returns {Number}
        */
       questionTotal() {
         let total = 0;
 
         this.question.choices.forEach((choice, index) => {
-          if (this.choice[index] !== this.answer[index]) {
+          if (!isCorrect(this.question.type, this.choice[index], this.answer[index], choice.accuracy)) {
             return;
           }
 
@@ -118,12 +120,23 @@
     methods: {
 
       /**
+       * Use util function to determine if correct.
+       * @param {String} type - Question type.
+       * @param {String|Number} choice - Given answer.
+       * @param {String|Number} answer - Actual answer.
+       * @param {Number} accuracy - Accepted accuracy.
+       */
+      isCorrect(type, choice, answer, accuracy) {
+        return isCorrect(type, choice, answer, accuracy);
+      },
+
+      /**
        * Mark the question choice.
        * @param {Number} index - Current choice index.
        * @returns {String}
        */
       markQuestion(index) {
-        if (this.choice[index] === this.answer[index]) {
+        if (isCorrect(this.question.type, this.choice[index], this.answer[index], this.question.choices[index].accuracy)) {
           const points = this.question.choices[index].points;
 
           return `
