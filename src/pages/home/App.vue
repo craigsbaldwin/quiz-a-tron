@@ -67,7 +67,7 @@
   import StartPage from '../../components/StartPage.vue';
   import SubmissionPage from '../../components/SubmissionPage.vue';
 
-  import devData from '../../data/dev-data.js';
+  import quizData from '../../data/quiz-data.js';
 
   export default {
     name: 'Quiz-a-tron',
@@ -84,9 +84,8 @@
 
     data() {
       return {
-        binId: '5dfcd5a02c714135cda4b6d5',
         date: 'jan',
-        debug: false,
+        debug: true,
         finished: false,
         loaded: false,
         progress: 0,
@@ -176,31 +175,13 @@
       },
 
       /**
-       * Load data from JSONBIN.
+       * Load data from local data.
        */
       loadData() {
-        if (this.debug) {
-          this.questions = devData.data;
+        setTimeout(() => {
+          this.questions = quizData.data;
           this.loaded = true;
-          return;
-        }
-
-        if (localStorage.getItem(`questions-${this.date}`) !== null) {
-          this.questions = JSON.parse(localStorage.getItem(`questions-${this.date}`));
-          this.loaded = true;
-          return;
-        }
-
-        fetch(`https://api.jsonbin.io/b/${this.binId}/latest`)
-          .then(response => response.json())
-          .then((response) => {
-            localStorage.setItem(`questions-${this.date}`, JSON.stringify(response));
-            this.questions = response;
-            this.loaded = true;
-          })
-          .catch((error) => {
-            throw new Error('JSON bin load', error);
-          })
+        }, 1500);
       },
 
       /**
