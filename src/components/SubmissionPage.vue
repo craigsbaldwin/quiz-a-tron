@@ -58,15 +58,21 @@
         fetch('https://ipinfo.io/json?token=eba9824532e19b')
           .then(response => response.json())
           .then((response) => {
-            this.submission.id = response.ip;
-            this.submission.timestamp = this.getTimestamp();
+            const data = {
+              ip: response.ip,
+              timestamp: this.getTimestamp(),
+            };
 
+            window.VueEventBus.$emit('Submission:Update', data);
             this.submitForm(start);
           })
           .catch((error) => {
-            this.submission.id = 'Blocked';
-            this.submission.timestamp = this.getTimestamp();
+            const data = {
+              ip: 'Blocked',
+              timestamp: this.getTimestamp(),
+            };
 
+            window.VueEventBus.$emit('Submission:Update', data);
             this.submitForm(start);
 
             throw new Error ('IP lookup error', error);
@@ -141,7 +147,7 @@
        */
       formSubmitted(response, start) {
         if (!response.success) {
-          window.VueEventBus.$emit('Submission:Error');
+          window.VueEventBus.$emit('Submission:State', 'error');
           return;
         }
 
@@ -149,11 +155,11 @@
         const duration = (finish - start);
 
         if (duration > 3000) {
-          window.VueEventBus.$emit('Submission:Submitted');
+          window.VueEventBus.$emit('Submission:State', 'submitted');
 
         } else {
           window.setTimeout(() => {
-            window.VueEventBus.$emit('Submission:Submitted');
+            window.VueEventBus.$emit('Submission:State', 'submitted');
           }, (3000 - duration));
         }
       },
@@ -167,11 +173,11 @@
         const duration = (finish - start);
 
         if (duration > 3000) {
-          window.VueEventBus.$emit('Submission:Error');
+          window.VueEventBus.$emit('Submission:State', 'error');
 
         } else {
           window.setTimeout(() => {
-            window.VueEventBus.$emit('Submission:Error');
+            window.VueEventBus.$emit('Submission:State', 'error');
           }, (3000 - duration));
         }
       },
@@ -180,7 +186,7 @@
        * Retry the submission.
        */
       retrySubmission() {
-        window.VueEventBus.$emit('Submission:Retry');
+        window.VueEventBus.$emit('Submission:State', 'not-submitted');
         this.beginSubmission();
       },
 
@@ -188,7 +194,7 @@
        * If all else fails then skip submission.
        */
       skipSubmission() {
-        window.VueEventBus.$emit('Submission:Skipped');
+        window.VueEventBus.$emit('Submission:State', 'skipped');
       },
     },
   }

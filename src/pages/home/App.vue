@@ -123,7 +123,7 @@
         },
         submission: {
           available: 0,
-          id: '',
+          ip: '',
           name: '',
           score: 0,
           timestamp: '',
@@ -193,20 +193,13 @@
         this.state.scoring = false;
       });
 
-      window.VueEventBus.$on('Submission:Submitted', () => {
-        this.state.submission = 'submitted';
+      window.VueEventBus.$on('Submission:Update', (data) => {
+        this.submission.ip = data.ip;
+        this.submission.timestamp = data.timestamp;
       });
 
-      window.VueEventBus.$on('Submission:Skipped', () => {
-        this.state.submission = 'skipped';
-      });
-
-      window.VueEventBus.$on('Submission:Retry', () => {
-        this.state.submission = 'not-submitted';
-      });
-
-      window.VueEventBus.$on('Submission:Error', () => {
-        this.state.submission = 'error';
+      window.VueEventBus.$on('Submission:State', (state) => {
+        this.state.submission = state;
       });
 
       window.VueEventBus.$on('Quiz:Unlock', () => {
