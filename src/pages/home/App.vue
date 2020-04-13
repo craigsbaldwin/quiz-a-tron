@@ -27,6 +27,7 @@
       >
         <StartPage
           v-if="step === 0"
+          :id="submission.id"
         />
 
         <div
@@ -108,7 +109,6 @@
     data() {
       return {
         choices: [],
-        date: 'jan',
         progress: 0,
         questions: questions.data,
         score: 0,
@@ -123,6 +123,7 @@
         },
         submission: {
           available: 0,
+          id: 1,
           ip: '',
           name: '',
           score: 0,

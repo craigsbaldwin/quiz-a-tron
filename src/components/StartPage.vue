@@ -79,9 +79,15 @@
       ></button>
     </form>
 
-    <small class="start__footer">
-      Built by <a href="https://craigbaldwin.com" target="blank">Craig Baldwin</a> 2020.
-    </small>
+    <div class="start__footer">
+      <small class="start__copyright">
+        Built by <a href="https://craigbaldwin.com" target="blank">Craig Baldwin</a> 2020.
+      </small>
+
+      <small class="start__id">
+        Question Set {{ id }}
+      </small>
+    </div>
   </div>
 </template>
 
@@ -92,6 +98,10 @@
         characterLimit: 128,
         startEnabled: false,
       }
+    },
+
+    props: {
+      id: Number,
     },
 
     methods: {
