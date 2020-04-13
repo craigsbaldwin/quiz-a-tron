@@ -104,8 +104,11 @@
        */
       questionTotal() {
         let total = 0;
+        let available = 0;
 
         this.question.choices.forEach((choice, index) => {
+          available += choice.points;
+
           if (!isCorrect(this.question.type, this.choice[index], this.answer[index], choice.accuracy)) {
             return;
           }
@@ -113,7 +116,7 @@
           total += choice.points;
         });
 
-        return `${total}pt${(total === 1) ? '' : 's'}`;
+        return `${total}/${available}`;
       },
     },
 
@@ -136,15 +139,14 @@
        * @returns {String}
        */
       markQuestion(index) {
-        if (isCorrect(this.question.type, this.choice[index], this.answer[index], this.question.choices[index].accuracy)) {
-          const points = this.question.choices[index].points;
+        let points = 0;
+        const available = this.question.choices[index].points;
 
-          return `
-            ${points}pt${(points === 1) ? '' : 's'}
-          `;
+        if (isCorrect(this.question.type, this.choice[index], this.answer[index], this.question.choices[index].accuracy)) {
+          points = this.question.choices[index].points;
         }
 
-        return '0pts';
+        return `${points}/${available}`;
       },
     },
   }

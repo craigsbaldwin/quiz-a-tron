@@ -77,7 +77,6 @@
             const accuracy = choice.accuracy || false;
 
             if (!isCorrect(type, this.choices[questionIndex][choiceIndex], this.answers[questionIndex][choiceIndex], accuracy)) {
-              window.console.log('wrong', this.choices[questionIndex][choiceIndex]);
               return;
             }
 
