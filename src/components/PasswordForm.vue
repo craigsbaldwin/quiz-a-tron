@@ -66,6 +66,10 @@
       password: String,
     },
 
+    mounted() {
+      this.$refs.passwordInput.focus();
+    },
+
     methods: {
 
       /**
