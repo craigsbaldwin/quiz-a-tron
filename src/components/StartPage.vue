@@ -85,7 +85,7 @@
       </small>
 
       <small class="start__id">
-        Question Set {{ id }}
+        Round {{ id }}
       </small>
     </div>
   </div>
