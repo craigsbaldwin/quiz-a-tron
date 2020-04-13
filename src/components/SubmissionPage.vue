@@ -38,6 +38,12 @@
       Loading,
     },
 
+    data() {
+      return {
+        collectionId: '5e942fdfb08d064dc025fafe',
+      };
+    },
+
     props: {
       state: Object,
       submission: Object,
@@ -87,7 +93,7 @@
         fetch('https://api.jsonbin.io/b', {
           method: 'post',
           headers: {
-            'collection-id': '5e0f71c2fadb735054fc987c',
+            'collection-id': this.collectionId,
             'Content-Type': 'application/json',
             'name': this.submission.name,
             'private': false,

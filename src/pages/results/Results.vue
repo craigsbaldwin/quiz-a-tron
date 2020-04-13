@@ -43,7 +43,7 @@
     data() {
       return {
         binIds: [],
-        collectionId: '5e0f71c2fadb735054fc987c',
+        collectionId: '5e942fdfb08d064dc025fafe',
         date: 'jan',
         state: {
           loaded: false,
