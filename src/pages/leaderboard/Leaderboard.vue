@@ -9,7 +9,7 @@
     />
 
     <Loading
-      v-if="!loaded"
+      v-if="!state.loaded"
       text="Loading leaderboard"
     />
 
@@ -30,17 +30,46 @@
 
         <div
           v-for="(individual, index) in individualResults"
-          class="leaderboard__row"
-          :key="`Result${index}`"
+          class="leaderboard__individual"
+          :key="`Individual-${index}`"
         >
-          <div class="leaderboard__cell">
-            {{ individual.name }}
-          </div>
+          <button
+            class="leaderboard__button"
+            :aria-expanded="open[individual.name].toString()"
+            @click.prevent="open[individual.name] = !open[individual.name]"
+          >
+            <div class="leaderboard__row">
+              <div class="leaderboard__cell">
+                {{ individual.name }}
+              </div>
 
-          <div class="leaderboard__cell text-right">
-            <abbr :title="individual.average">
-              {{ Math.round(individual.average) }}%
-            </abbr>
+              <div class="leaderboard__cell text-right">
+                <abbr :title="individual.average">
+                  {{ Math.round(individual.average) }}%
+                </abbr>
+              </div>
+            </div>
+          </button>
+
+          <div
+            class="leaderboard__content"
+            :class="{ 'is-active': open[individual.name] }"
+            :aria-hidden="!open[individual.name].toString()"
+          >
+            <div
+              v-for="(result) in individual.results"
+              class="leaderboard__row leaderboard__row--sub"
+              :class="{ 'is-disabled': isRowDisabled(result.id, individual.usedIds) }"
+              :key="`Results${result.id}`"
+            >
+              <div class="leaderboard__cell">
+                Round {{ result.id }}
+              </div>
+
+              <div class="leaderboard__cell text-right">
+                {{ Math.round((result.score / result.available) * 100) }}%
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -63,9 +92,13 @@
     data() {
       return {
         binIds: [],
-        collectionId: '5e0f71c2fadb735054fc987c',
-        loaded: false,
+        collectionId: '5e942fdfb08d064dc025fafe',
+        open: {},
         results: [],
+        state: {
+          debug: true,
+          loaded: false,
+        },
       }
     },
 
@@ -78,9 +111,15 @@
         let individualResults = {};
 
         /**
+         * Sort results into oldest submissions first.
+         */
+        const orderedResults = this.results;
+        orderedResults.sort(this.compareTimestamp);
+
+        /**
          * Sort results into each person.
          */
-        this.results.forEach((result) => {
+        orderedResults.forEach((result) => {
           if (individualResults[result.name]) {
             individualResults[result.name].push(result);
             return;
@@ -92,30 +131,74 @@
         });
 
         /**
-         * Take average of two highest scoring rounds.
+         * Go through each individual and remove submissions with duplicate IDs.
          */
         individualResults = Object.keys(individualResults).map((individual) => {
           const array = individualResults[individual];
-          const firstPercent = ((array[0].score / array[0].available) * 100);
-          let average = firstPercent;
+          const idArray = [];
 
-          if (array.length > 1) {
-            const secondPercent = ((array[1].score / array[0].available) * 100);
+          const filteredArray = array.filter((entry) => {
+            if (!idArray.includes(entry.id)) {
+              idArray.push(entry.id);
+              return entry;
+            }
+          });
+
+          return filteredArray;
+        });
+
+        /**
+         * Take average of two highest scoring rounds.
+         */
+        individualResults = individualResults.map((individual) => {
+          individual.sort(this.compareScore);
+          const usedIds = [];
+
+          const firstPercent = ((individual[0].score / individual[0].available) * 100);
+          let average = firstPercent;
+          usedIds.push(individual[0].id);
+
+          if (individual.length > 1) {
+            const secondPercent = ((individual[1].score / individual[1].available) * 100);
             average = ((firstPercent + secondPercent) / 2);
+            usedIds.push(individual[1].id);
           }
 
           return {
             average,
-            name: individual,
-            results: array,
-          }
+            name: individual[0].name,
+            results: individual.sort(this.compareId),
+            usedIds,
+          };
         });
 
         return individualResults.sort(this.compareAverage);
       },
     },
 
+    watch: {
+
+      /**
+       * Sets open states of all individuals when results update.
+       */
+      individualResults(individualResults) {
+        const object = {};
+
+        individualResults.forEach((individual) => {
+          return object[individual.name] = false;
+        });
+
+        this.open = object;
+      }
+    },
+
     mounted() {
+      if (this.state.debug && localStorage.getItem('leaderboard')) {
+        this.results = JSON.parse(localStorage.getItem('leaderboard'));
+        this.state.loaded = true;
+        return;
+      }
+
       this.loadCollection();
     },
 
@@ -147,8 +230,7 @@
        */
       loadAllBins() {
         if (this.binIds.length === 0) {
-          this.results.sort(this.compareScore);
-          this.loaded = true;
+          this.state.loaded = true;
           localStorage.setItem('leaderboard', JSON.stringify(this.results));
           return;
         }
@@ -174,11 +256,40 @@
       },
 
       /**
+       * Checks if current ID is in usedIds array.
+       * @param {Number} id - Current ID.
+       * @param {Array} idArray - usedIds array.
+       */
+      isRowDisabled(id, idArray) {
+        return (!idArray.includes(id));
+      },
+
+      /**
+       * Compare function for sorting array by timestamp.
+       */
+      compareTimestamp(a, b) {
+        if (a.timestamp < b.timestamp) return -1;
+        if (b.timestamp < a.timestamp) return 1;
+
+        return 0;
+      },
+
+      /**
        * Compare function for sorting array by score.
        */
-      compare( a, b) {
+      compareScore(a, b) {
         if (a.score > b.score) return -1;
         if (b.score > a.score) return 1;
+
+        return 0;
+      },
+
+      /**
+       * Compare function for sorting array by ID.
+       */
+      compareId(a, b) {
+        if (a.id < b.id) return -1;
+        if (b.id < a.id) return 1;
 
         return 0;
       },
@@ -191,7 +302,7 @@
         if (b.average > a.average) return 1;
 
         return 0;
-      }
+      },
     },
   }
 </script>
