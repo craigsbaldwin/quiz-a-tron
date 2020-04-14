@@ -48,7 +48,7 @@
       class="button"
       type="submit"
     >
-      Submit
+      Unlock
     </button>
   </form>
 </template>
@@ -63,6 +63,10 @@
     },
 
     props: {
+      event: {
+        type: String,
+        default: 'Quiz:Unlock'
+      },
       password: String,
     },
 
@@ -121,7 +125,7 @@
        */
       handleSubmit() {
         if (this.$refs.passwordInput.value === this.password) {
-          window.VueEventBus.$emit('Quiz:Unlock');
+          window.VueEventBus.$emit(this.event);
           return;
         }
 

@@ -50,7 +50,13 @@
       </div>
     </div>
 
+    <PasswordForm
+      v-if="locked"
+      password="password"
+    />
+
     <form
+      v-else
       class="start__form input-field"
       @submit.prevent="handleStart"
     >
@@ -92,7 +98,13 @@
 </template>
 
 <script>
+  import PasswordForm from './PasswordForm.vue';
+
   export default {
+    components: {
+      PasswordForm,
+    },
+
     data() {
       return {
         characterLimit: 128,
@@ -102,6 +114,7 @@
 
     props: {
       id: Number,
+      locked: Boolean,
     },
 
     methods: {

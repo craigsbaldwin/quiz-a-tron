@@ -1,9 +1,6 @@
 <template>
   <div class="finish">
-    <div
-      v-if="!state.unlocked"
-      class="finish__intro"
-    >
+    <div class="finish__intro">
       <h2>That's a wrap</h2>
 
       <p v-if="state.submission === 'submitted'">
@@ -16,7 +13,7 @@
     </div>
 
     <PasswordForm
-      v-if="!state.unlocked"
+      event="Results:Unlock"
       password="password"
     />
   </div>

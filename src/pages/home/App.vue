@@ -17,12 +17,13 @@
       />
 
       <div
-        v-if="!state.unlocked"
+        v-if="!state.showResults"
         class="container"
       >
         <StartPage
           v-if="step === 0"
           :id="submission.id"
+          :locked="state.locked"
         />
 
         <div
@@ -57,14 +58,19 @@
         />
 
         <FinishPage
-          v-if="state.finished && !state.scoring && (state.submission === 'submitted' || state.submission === 'skipped' )"
+          v-if="
+            state.finished &&
+            !state.scoring &&
+            (state.submission === 'submitted' || state.submission === 'skipped') &&
+            !state.showResults
+          "
           :questions="questions"
           :state="state"
         />
       </div>
 
       <div
-        v-if="state.unlocked"
+        v-if="state.showResults"
         class="container"
       >
         <ScoringPage
@@ -114,9 +120,10 @@
           debug: true,
           finished: false,
           loaded: false,
+          locked: true,
           scoring: false,
+          showResults: false,
           submission: 'not-submitted',
-          unlocked: false,
         },
         submission: {
           available: 0,
@@ -157,7 +164,7 @@
       this.submission.available = this.totalAvailable;
 
       /**
-       * EventBus.
+       * Quiz events.
        */
       window.VueEventBus.$on('Quiz:Start', () => {
         this.navigateNextQuestion(0);
@@ -174,6 +181,18 @@
         this.submission.name = escapedName;
       });
 
+      window.VueEventBus.$on('Quiz:Marked', (score) => {
+        this.submission.score = score;
+        this.state.scoring = false;
+      });
+
+      window.VueEventBus.$on('Quiz:Unlock', () => {
+        this.state.locked = false;
+      });
+
+      /**
+       * Question events.
+       */
       window.VueEventBus.$on('Question:Input', (data) => {
         this.handleAnswerInput(data);
       });
@@ -186,11 +205,9 @@
         this.handleQuestionSubmit(questionNumber);
       });
 
-      window.VueEventBus.$on('Quiz:Marked', (score) => {
-        this.submission.score = score;
-        this.state.scoring = false;
-      });
-
+      /**
+       * Submission events.
+       */
       window.VueEventBus.$on('Submission:Update', (data) => {
         this.submission.ip = data.ip;
         this.submission.timestamp = data.timestamp;
@@ -200,8 +217,11 @@
         this.state.submission = state;
       });
 
-      window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.state.unlocked = true;
+      /**
+       * Results events.
+       */
+      window.VueEventBus.$on('Results:Unlock', () => {
+        this.state.showResults = true;
       });
     },
 
