@@ -89,4 +89,26 @@
   abbr {
     text-decoration: none;
   }
+
+  &__footer {
+    display: flex;
+  }
+
+  &__reload {
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    margin-left: auto;
+    margin-top: var(--gutter-s);
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus {
+      background-color: var(--colour-light-grey);
+      outline: 0;
+    }
+  }
 }

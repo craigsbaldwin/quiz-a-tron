@@ -73,6 +73,15 @@
           </div>
         </div>
       </div>
+
+      <footer class="leaderboard__footer">
+        <button
+          class="leaderboard__reload"
+          @click.prevent="reloadData"
+        >
+          <small>Reload</small>
+        </button>
+      </footer>
     </div>
   </div>
 </template>
@@ -96,7 +105,6 @@
         open: {},
         results: [],
         state: {
-          debug: true,
           loaded: false,
         },
       }
@@ -193,7 +201,7 @@
     },
 
     mounted() {
-      if (this.state.debug && localStorage.getItem('leaderboard')) {
+      if (localStorage.getItem('leaderboard')) {
         this.results = JSON.parse(localStorage.getItem('leaderboard'));
         this.state.loaded = true;
         return;
@@ -262,6 +270,15 @@
        */
       isRowDisabled(id, idArray) {
         return (!idArray.includes(id));
+      },
+
+      /**
+       * Deletes localStorage and reloads.
+       */
+      reloadData() {
+        localStorage.removeItem('leaderboard');
+        this.state.loaded = false;
+        this.loadCollection();
       },
 
       /**
