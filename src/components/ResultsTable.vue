@@ -21,24 +21,33 @@
         >
           <Medal
             :available="position[0].available"
-            :class="{ 'is-active': place0 === show }"
             :place="(place0 + 1)"
             :score="position[0].score"
           />
 
           <Person
             v-for="(result, index) in position"
-            :class="{ 'is-active': place0 === show }"
+            :class="{ 'is-active': place0 === showPeople }"
             :index="index"
             :key="`Person-${index}`"
             :person="result"
             :place="(place0 + 1)"
+            :style="`transition-delay: ${1 * index}s;`"
           />
         </div>
       </div>
 
       <button
-        v-if="show !== 0"
+        v-if="showPeople !== show"
+        class="button"
+        type="button"
+        @click="showPeople -= 1"
+      >
+        Reveal
+      </button>
+
+      <button
+        v-if="show !== 0 && showPeople === show"
         class="button"
         type="button"
         @click="show -= 1"
@@ -76,6 +85,7 @@
     data() {
       return {
         show: 2,
+        showPeople: 3,
         state: {
           locked: true,
         },

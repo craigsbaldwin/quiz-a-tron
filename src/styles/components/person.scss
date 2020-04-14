@@ -7,8 +7,10 @@
 .person {
   $parent: &;
   margin-bottom: var(--gutter-s);
+  opacity: 0;
   padding: var(--gutter-m);
   position: relative;
+  transition: opacity 1s ease-in-out;
 
   &__name {
     color: var(--colour-text-inverse);
@@ -31,5 +33,9 @@
 
   &#{&}--third {
     background-color: var(--colour-third);
+  }
+
+  &.is-active {
+    opacity: 1;
   }
 }
