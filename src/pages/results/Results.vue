@@ -1,7 +1,7 @@
 <template>
-  <div class="page page--results">
+  <div>
     <header class="header">
-      <h1>Results</h1>
+      <h1>Round {{ id }} Results</h1>
     </header>
 
     <ProgressBar
@@ -18,9 +18,7 @@
       class="container"
     >
       <ResultsTable
-        v-if="state.loaded"
-        :results="results"
-        :unlocked="state.unlocked"
+        :positions="positions"
       />
     </div>
   </div>
@@ -44,24 +42,112 @@
       return {
         binIds: [],
         collectionId: '5e942fdfb08d064dc025fafe',
-        date: 'jan',
+        id: 1,
+        results: [],
         state: {
           loaded: false,
-          unlocked: false,
         },
-        results: [],
       }
     },
 
-    mounted() {
-      this.loadCollection();
+    computed: {
 
       /**
-       * EventBus.
+       * Results by individual for round only.
        */
-      window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.state.unlocked = true;
-      });
+      individualResults() {
+        let individualResults = {};
+
+        /**
+         * Sort results into oldest submissions first.
+         */
+        const orderedResults = this.results;
+        orderedResults.sort(this.compareTimestamp);
+
+        /**
+         * Filter submissions for other rounds.
+         */
+        const filteredResults = orderedResults.filter((result) => {
+          return result.id === this.id;
+        });
+
+        /**
+         * Go through each result and remove duplicate submissions.
+         */
+        filteredResults.forEach((result) => {
+          if (individualResults[result.name]) {
+            return;
+          }
+
+          individualResults[result.name] = {
+            ...result,
+          }
+        });
+
+        /**
+         * Convert to array.
+         */
+        individualResults = Object.keys(individualResults).map((individual) => {
+          return {
+            ...individualResults[individual],
+          };
+        });
+
+        return individualResults.sort(this.compareScore);
+      },
+
+      /**
+       * Calculate positions.
+       */
+      positions() {
+        let scores = [];
+        const positions = [
+          [],
+          [],
+          [],
+        ];
+
+        /**
+         * Find out scores.
+         */
+        this.individualResults.forEach((result) => {
+          scores.push(result.score);
+        });
+
+        scores = [...new Set(scores)];
+
+        /**
+         * Sort results.
+         */
+        this.individualResults.forEach((result) => {
+          if (result.score === scores[0]) {
+            positions[0].push(result);
+            return;
+          }
+
+          if (result.score === scores[1]) {
+            positions[1].push(result);
+            return;
+          }
+
+          if (result.score === scores[2]) {
+            positions[2].push(result);
+            return;
+          }
+        });
+
+        return positions;
+      },
+    },
+
+    mounted() {
+      if (localStorage.getItem(`results-${this.id}`)) {
+        this.results = JSON.parse(localStorage.getItem(`results-${this.id}`));
+        this.state.loaded = true;
+        return;
+      }
+
+      this.loadCollection();
     },
 
     methods: {
@@ -83,7 +169,7 @@
             this.loadAllBins();
           })
           .catch((error) => {
-            throw new Error ('jsonbin collection', error);
+            throw new Error ('JSON bin collection load error', error);
           });
       },
 
@@ -92,9 +178,8 @@
        */
       loadAllBins() {
         if (this.binIds.length === 0) {
-          this.results.sort(this.compare);
           this.state.loaded = true;
-          localStorage.setItem(`submissions-${this.date}`, JSON.stringify(this.results));
+          localStorage.setItem(`results-${this.id}`, JSON.stringify(this.results));
           return;
         }
 
@@ -114,14 +199,33 @@
             this.loadAllBins();
           })
           .catch((error) => {
-            throw new Error('JSON bin load', error);
+            throw new Error('JSON bin load error', error);
           })
+      },
+
+      /**
+       * Deletes localStorage and reloads.
+       */
+      reloadData() {
+        localStorage.removeItem(`results-${this.id}`);
+        this.state.loaded = false;
+        this.loadCollection();
+      },
+
+      /**
+       * Compare function for sorting array by timestamp.
+       */
+      compareTimestamp(a, b) {
+        if (a.timestamp < b.timestamp) return -1;
+        if (b.timestamp < a.timestamp) return 1;
+
+        return 0;
       },
 
       /**
        * Compare function for sorting array.
        */
-      compare(a, b) {
+      compareScore(a, b) {
         if (a.score > b.score) return -1;
         if (b.score > a.score) return 1;
 

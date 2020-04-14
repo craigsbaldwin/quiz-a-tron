@@ -6,13 +6,19 @@
 
     <h2 class="medal__title">{{ placeString }} Place</h2>
 
-    <div class="medal__total-display">
-      <div class="medal__total-value">
-        {{ score }}pt{{ (score === 1) ? '' : 's' }}
+    <div class="medal__totals">
+      <div class="medal__percentage">
+        <strong>{{ Math.round((score / available) * 100) }}%</strong>
       </div>
 
-      <div class="medal__total-available">
-        {{ available }}pt{{ (available === 1) ? '' : 's' }}
+      <div class="medal__total-display">
+        <div class="medal__total-value">
+          {{ score }}pt{{ (score === 1) ? '' : 's' }}
+        </div>
+
+        <div class="medal__total-available">
+          {{ available }}pt{{ (available === 1) ? '' : 's' }}
+        </div>
       </div>
     </div>
   </div>
@@ -22,7 +28,7 @@
   export default {
     props: {
       available: Number,
-      place: String,
+      place: Number,
       score: Number,
     },
 
@@ -35,15 +41,15 @@
         let text = '';
 
         switch (this.place) {
-          case '1':
+          case 1:
             text = 'First'
             break;
 
-          case '2':
+          case 2:
             text = 'Second'
             break;
 
-          case '3':
+          case 3:
             text = 'Third'
             break;
         }
@@ -58,15 +64,15 @@
         let suffix = '';
 
         switch (this.place) {
-          case '1':
+          case 1:
             suffix = 'st'
             break;
 
-          case '2':
+          case 2:
             suffix = 'nd'
             break;
 
-          case '3':
+          case 3:
             suffix = 'rd'
             break;
         }

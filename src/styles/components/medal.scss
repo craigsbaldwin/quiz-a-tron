@@ -37,47 +37,51 @@
       right: 0;
       transform: rotate(30deg);
     }
+  }
 
-    #{$parent}__disc {
-      align-items: center;
+  &__disc {
+    align-items: center;
+    border-radius: 100%;
+    display: flex;
+    height: 100%;
+    font-size: var(--font-2xl);
+    font-weight: var(--weight-bold);
+    justify-content: center;
+    left: 0;
+    position: relative;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+    top: 0;
+    width: 100%;
+    z-index: 2;
+
+    &::before {
+      content: '';
       border-radius: 100%;
-      display: flex;
-      height: 100%;
-      font-size: var(--font-2xl);
-      font-weight: var(--weight-bold);
-      justify-content: center;
-      left: 0;
-      position: relative;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
-      top: 0;
-      width: 100%;
-      z-index: 2;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+      height: 90%;
+      left: 5%;
+      position: absolute;
+      top: 5%;
+      width: 90%;
+    }
 
-      &::before {
-        content: '';
-        border-radius: 100%;
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
-        height: 90%;
-        left: 5%;
-        position: absolute;
-        top: 5%;
-        width: 90%;
-      }
+    span {
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    }
 
-      .results-table__people--first & {
-        background-color: var(--colour-first);
-        color: var(--colour-first);
-      }
+    .results-table__people--0 & {
+      background-color: var(--colour-first);
+      color: var(--colour-first);
+    }
 
-      .results-table__people--second & {
-        background-color: var(--colour-second);
-        color: var(--colour-second);
-      }
+    .results-table__people--1 & {
+      background-color: var(--colour-second);
+      color: var(--colour-second);
+    }
 
-      .results-table__people--third & {
-        background-color: var(--colour-third);
-        color: var(--colour-third);
-      }
+    .results-table__people--2 & {
+      background-color: var(--colour-third);
+      color: var(--colour-third);
     }
   }
 
@@ -86,10 +90,19 @@
     margin-bottom: 0;
   }
 
+  &__totals {
+    align-items: center;
+    display: flex;
+    margin-left: auto;
+  }
+
+  &__percentage {
+    margin-right: var(--gutter-s);
+  }
+
   &__total-display {
     display: flex;
     flex-direction: column;
-    margin-left: auto;
   }
 
   &__total-value {

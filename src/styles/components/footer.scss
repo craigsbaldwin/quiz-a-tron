@@ -1,0 +1,38 @@
+/**
+ * Component: Footer
+ * ------------------------------------------------------------------------------
+ * Global site footer.
+ *
+ */
+.footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--gutter-l);
+
+  &__id {
+    background-color: var(--colour-light-grey);
+    border-radius: 2px;
+    font-size: 0.7rem;
+    line-height: 1;
+    padding: var(--gutter-2xs);
+    text-transform: uppercase;
+  }
+
+  &__reload {
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    margin-left: auto;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus {
+      background-color: var(--colour-light-grey);
+      outline: 0;
+    }
+  }
+}
