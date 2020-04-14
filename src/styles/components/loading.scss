@@ -83,3 +83,47 @@
     margin-top: var(--gutter-m);
   }
 }
+
+.robot {
+  &__eyes {
+    animation: eyes 3s linear normal infinite;
+  }
+
+  &__blink {
+    animation: blink 3s linear normal infinite;
+  }
+}
+
+@keyframes eyes {
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  52%,
+  56% {
+    opacity: 0;
+  }
+
+  60%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 0;
+  }
+
+  52%,
+  56% {
+    opacity: 1;
+  }
+
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
