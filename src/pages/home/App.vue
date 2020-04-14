@@ -1,6 +1,5 @@
 <template>
   <div
-    class="page page--quiz"
     :class="{ 'is-finished': state.finished && state.submission === 'submitted' }"
   >
     <header class="header">

@@ -1,5 +1,5 @@
 <template>
-  <div class="page page--results">
+  <div>
     <header class="header">
       <h1>Leaderboard</h1>
     </header>
@@ -229,7 +229,7 @@
             this.loadAllBins();
           })
           .catch((error) => {
-            throw new Error ('jsonbin collection', error);
+            throw new Error ('JSON bin collection load error', error);
           });
       },
 
@@ -264,21 +264,21 @@
       },
 
       /**
-       * Checks if current ID is in usedIds array.
-       * @param {Number} id - Current ID.
-       * @param {Array} idArray - usedIds array.
-       */
-      isRowDisabled(id, idArray) {
-        return (!idArray.includes(id));
-      },
-
-      /**
        * Deletes localStorage and reloads.
        */
       reloadData() {
         localStorage.removeItem('leaderboard');
         this.state.loaded = false;
         this.loadCollection();
+      },
+
+      /**
+       * Checks if current ID is in usedIds array.
+       * @param {Number} id - Current ID.
+       * @param {Array} idArray - usedIds array.
+       */
+      isRowDisabled(id, idArray) {
+        return (!idArray.includes(id));
       },
 
       /**
