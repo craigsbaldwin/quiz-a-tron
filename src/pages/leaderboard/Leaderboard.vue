@@ -74,9 +74,9 @@
         </div>
       </div>
 
-      <footer class="leaderboard__footer">
+      <footer class="footer">
         <button
-          class="leaderboard__reload"
+          class="footer__reload"
           @click.prevent="reloadData"
         >
           <small>Reload</small>

@@ -79,12 +79,12 @@
       ></button>
     </form>
 
-    <footer class="start__footer">
-      <small class="start__copyright">
+    <footer class="footer">
+      <small class="footer__copyright">
         Built by <a href="https://craigbaldwin.com" target="blank">Craig Baldwin</a> 2020.
       </small>
 
-      <small class="start__id">
+      <small class="footer__id">
         Round {{ id }}
       </small>
     </footer>

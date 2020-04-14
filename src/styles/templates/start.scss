@@ -57,20 +57,4 @@
   &__input {
     margin-bottom: var(--gutter-s);
   }
-
-  &__footer {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    margin-top: var(--gutter-l);
-  }
-
-  &__id {
-    background-color: var(--colour-light-grey);
-    border-radius: 2px;
-    font-size: 0.7rem;
-    line-height: 1;
-    padding: var(--gutter-2xs);
-    text-transform: uppercase;
-  }
 }
