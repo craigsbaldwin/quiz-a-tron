@@ -18,13 +18,15 @@
       <h2 class="start__label label">Rules</h2>
 
       <ul class="start__group outlined-group">
+        <li>You will need a password to start the quiz</li>
         <li>30 seconds for each question, unless otherwise stated</li>
         <li>You will not be able to finish the quiz without the quiz presentation</li>
         <li>Questions are scored on their difficulty and shown underneath each question</li>
         <li>You must provide an answer to proceed</li>
         <li>You will not be able to go back once you've answered a question, no do-overs</li>
         <li>A password is required to unlock your score at the end, we will not be going through the answers one at a time</li>
-        <li>If you try to debug the code to find the answers you are immediately disqualified</li>
+        <li>If you try to cheat you are immediately disqualified</li>
+        <li>I will make the source code available later</li>
       </ul>
     </div>
 
