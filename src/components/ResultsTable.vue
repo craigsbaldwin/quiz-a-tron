@@ -2,6 +2,7 @@
   <div>
     <PasswordForm
       v-if="state.locked"
+      event="Results:Unlock"
       password="password"
     />
 
@@ -90,7 +91,7 @@
       /**
        * EventBus.
        */
-      window.VueEventBus.$on('Quiz:Unlock', () => {
+      window.VueEventBus.$on('Results:Unlock', () => {
         this.state.locked = false;
       });
     },
