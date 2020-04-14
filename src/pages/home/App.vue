@@ -22,6 +22,7 @@
       >
         <StartPage
           v-if="step === 0"
+          :debug="state.debug"
           :id="submission.id"
           :locked="state.locked"
         />

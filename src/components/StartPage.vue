@@ -53,7 +53,7 @@
     </div>
 
     <PasswordForm
-      v-if="locked"
+      v-if="locked && !debug"
       password="password"
     />
 
@@ -115,6 +115,7 @@
     },
 
     props: {
+      debug: Boolean,
       id: Number,
       locked: Boolean,
     },
