@@ -43,14 +43,14 @@
           v-else-if="!isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) && question.type === 'number'"
           class="score-table__answer score-table__answer--number"
         >
-          {{ answer[index] }} ± {{ singleChoice.accuracy }}
+          {{ answer[index] }} ± {{ singleChoice.accuracy }} {{ singleChoice.accuracyUnits }}
         </span>
 
         <span
           v-else-if="isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) && question.type === 'number'"
           class="score-table__answer score-table__answer--number"
         >
-          ({{ answer[index] }} ± {{ singleChoice.accuracy }})
+          ({{ answer[index] }} ± {{ singleChoice.accuracy }} {{ singleChoice.accuracyUnits }})
         </span>
       </div>
 

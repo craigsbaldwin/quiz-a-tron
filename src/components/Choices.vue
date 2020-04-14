@@ -3,6 +3,7 @@
     <NumberField
       v-for="(part, index) in question.choices"
       :accuracy="part.accuracy"
+      :accuracyUnits="part.accuracyUnits"
       :number-group="index"
       :key="`Question${question.number}-Choice${index}`"
       :label="part.label"

@@ -6,6 +6,7 @@ const data = [
     choices: [
       {
         accuracy: 10,
+        accuracyUnits: 'years',
         answered: false,
         label: 'Century',
         points: 1,
