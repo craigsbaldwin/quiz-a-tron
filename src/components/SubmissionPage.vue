@@ -41,6 +41,7 @@
     data() {
       return {
         collectionId: '5e942fdfb08d064dc025fafe',
+        start: 0,
       };
     },
 
@@ -59,37 +60,99 @@
        * Submit the form.
        */
       beginSubmission() {
-        const start = performance.now();
+        this.start = performance.now();
 
         fetch('https://ipinfo.io/json?token=eba9824532e19b')
           .then(response => response.json())
           .then((response) => {
             const data = {
               ip: response.ip,
-              timestamp: this.getTimestamp(),
             };
 
             window.VueEventBus.$emit('Submission:Update', data);
-            this.submitForm(start);
+            this.fetchTimestamp();
           })
           .catch((error) => {
             const data = {
               ip: 'Blocked',
-              timestamp: this.getTimestamp(),
             };
 
             window.VueEventBus.$emit('Submission:Update', data);
-            this.submitForm(start);
+            this.fetchTimestamp();
 
             throw new Error ('IP lookup error', error);
           });
       },
 
       /**
-       * Submit the form.
-       * @param {Number} start - Start timing value.
+       * Get timestamp from API.
        */
-      submitForm(start) {
+      fetchTimestamp() {
+        fetch('http://worldclockapi.com/api/json/utc/now')
+          .then(response => response.json())
+          .then((response) => {
+            const data = {
+              timestamp: this.getTimestamp(response),
+            };
+
+            window.VueEventBus.$emit('Submission:Update', data);
+            this.submitForm();
+          })
+          .catch((error) => {
+            const data = {
+              timestamp: this.getTimestamp(),
+            };
+
+            window.VueEventBus.$emit('Submission:Update', data);
+            this.submitForm();
+
+            throw new Error ('IP lookup error', error);
+          });
+      },
+
+      /**
+       * Get the timestamp of submission.
+       * @param {Object} response - Timestamp API response.
+       * @returns {String}
+       */
+      getTimestamp(response) {
+        let date = new Date();
+
+        if (response) {
+          date = new Date(response.currentDateTime);
+        }
+
+        const year = date.getFullYear();
+
+        let month = (date.getMonth() + 1).toString();
+        if (month.length === 1) {
+          month = `0${month}`;
+        }
+
+        let day = date.getDate().toString();
+        if (day.length === 1) {
+          day = `0${day}`;
+        }
+
+        let hours = date.getUTCHours().toString();
+        if (hours.length === 1) {
+          hours = `0${hours}`;
+        }
+
+        const minutes = date.getMinutes().toString();
+
+        let seconds = date.getSeconds().toString();
+        if (seconds.length === 1) {
+          seconds = `0${seconds}`;
+        }
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      },
+
+      /**
+       * Submit the form.
+       */
+      submitForm() {
         fetch('https://api.jsonbin.io/b', {
           method: 'post',
           headers: {
@@ -103,62 +166,28 @@
         })
           .then(response => response.json())
           .then((response) => {
-            this.formSubmitted(response, start);
+            this.formSubmitted(response);
           })
           .catch((error) => {
-            this.displayError(start);
+            this.displayError();
 
             throw new Error ('JSON bin submission error', error);
           });
       },
 
       /**
-       * Get the timestamp of submission.
-       * @returns {String}
-       */
-      getTimestamp() {
-        const date = new Date();
-        const year = date.getFullYear();
-
-        let month = (date.getMonth() + 1).toString();
-        if (month.length === 1) {
-          month = `0${month}`;
-        }
-
-        let day = date.getDate().toString();
-        if (day.length === 1) {
-          day = `0${day}`;
-        }
-
-        let hours = date.getHours().toString();
-        if (hours.length === 1) {
-          hours = `0${day}`;
-        }
-
-        const minutes = date.getMinutes().toString();
-
-        let seconds = date.getSeconds().toString();
-        if (seconds.length === 1) {
-          seconds = `0${day}`;
-        }
-
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-      },
-
-      /**
        * Emit event when form has been submitted.
        * - Show animation for at least three seconds.
        * @param {Object} response - Bin submission response.
-       * @param {Number} start - Start timing value.
        */
-      formSubmitted(response, start) {
+      formSubmitted(response) {
         if (!response.success) {
           window.VueEventBus.$emit('Submission:State', 'error');
           return;
         }
 
         const finish = performance.now();
-        const duration = (finish - start);
+        const duration = (finish - this.start);
 
         if (duration > 3000) {
           window.VueEventBus.$emit('Submission:State', 'submitted');
