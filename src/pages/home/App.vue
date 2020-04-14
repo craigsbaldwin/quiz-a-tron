@@ -2,13 +2,9 @@
   <div
     :class="{ 'is-finished': state.finished && state.submission === 'submitted' }"
   >
-    <header class="header">
-      <div class="header__icon">
-        <img src="../../assets/icon.svg" role="presentation">
-      </div>
-
-      <h1 class="header__title">Quiz-a-tron 1000</h1>
-    </header>
+    <Header
+      title="Quiz-a-tron 1000"
+    />
 
     <Loading
       v-if="!state.loaded"
@@ -83,6 +79,7 @@
 
 <script>
   import FinishPage from '../../components/FinishPage.vue';
+  import Header from '../../components/Header.vue';
   import Loading from '../../components/Loading.vue';
   import ProgressBar from '../../components/ProgressBar.vue';
   import Question from '../../components/Question.vue';
@@ -97,6 +94,7 @@
 
     components: {
       FinishPage,
+      Header,
       Loading,
       ProgressBar,
       Question,

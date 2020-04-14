@@ -1,8 +1,8 @@
 <template>
   <div>
-    <header class="header">
-      <h1>Leaderboard</h1>
-    </header>
+    <Header
+      title="Leaderboard"
+    />
 
     <ProgressBar
       :progress="100"
@@ -87,6 +87,7 @@
 </template>
 
 <script>
+  import Header from '../../components/Header.vue';
   import Loading from '../../components/Loading.vue';
   import ProgressBar from '../../components/ProgressBar.vue';
 
@@ -94,6 +95,7 @@
     name: 'Results',
 
     components: {
+      Header,
       Loading,
       ProgressBar,
     },

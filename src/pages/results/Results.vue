@@ -1,8 +1,8 @@
 <template>
   <div>
-    <header class="header">
-      <h1>Round {{ id }} Results</h1>
-    </header>
+    <Header
+      :title="`Round ${id} Results`"
+    />
 
     <ProgressBar
       :progress="100"
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+  import Header from '../../components/Header.vue';
   import Loading from '../../components/Loading.vue';
   import ProgressBar from '../../components/ProgressBar.vue';
   import ResultsTable from '../../components/ResultsTable.vue';
@@ -33,6 +34,7 @@
     name: 'Results',
 
     components: {
+      Header,
       Loading,
       ProgressBar,
       ResultsTable,
