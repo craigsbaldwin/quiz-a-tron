@@ -118,7 +118,7 @@
         score: 0,
         step: 0,
         state: {
-          debug: true,
+          debug: false,
           finished: false,
           loaded: false,
           locked: true,
