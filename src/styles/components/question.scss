@@ -19,15 +19,21 @@
     border-radius: 100%;
     color: var(--colour-text-inverse);
     display: flex;
+    flex: 1 1 var(--header);
     font-size: var(--font-l);
     font-weight: bold;
     height: var(--header);
     justify-content: center;
+    max-height: var(--header);
+    max-width: var(--header);
+    min-height: var(--header);
+    min-width: var(--header);
     margin-right: var(--gutter-s);
     width: var(--header);
   }
 
   &__question-text {
+    flex: 1 1 auto;
     margin-bottom: 0;
   }
 
