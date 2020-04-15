@@ -11,11 +11,12 @@
   flex-direction: column;
   justify-content: center;
   min-height: calc(100vh - var(--header) - var(--gutter-l) - var(--gutter-l));
+  padding: var(--gutter-m) 0;
   position: relative;
 
   &__container {
     max-width: 350px;
-    width: 90%;
+    width: 70%;
   }
 
   &__robot {
@@ -24,7 +25,7 @@
     position: relative;
     width: 100%;
 
-    img {
+    .robot {
       height: 100%;
       left: 0;
       object-fit: contain;

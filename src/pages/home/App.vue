@@ -6,16 +6,16 @@
       :title="`Quiz-a-tron ${renderVersion()}`"
     />
 
+    <ProgressBar
+      :progress="progress"
+    />
+
     <Loading
       v-if="!state.loaded"
       text="Loading data"
     />
 
     <div v-else>
-      <ProgressBar
-        :progress="progress"
-      />
-
       <div
         v-if="!state.showResults"
         class="container"
@@ -119,7 +119,7 @@
         score: 0,
         step: 0,
         state: {
-          debug: true,
+          debug: false,
           finished: false,
           loaded: false,
           locked: true,
