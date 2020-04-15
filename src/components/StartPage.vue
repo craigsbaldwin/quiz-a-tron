@@ -74,6 +74,7 @@
         class="start__input input-field__input"
         :max="characterLimit"
         placeholder="Name"
+        ref="nameInput"
         type="text"
         @keyup="handleNameInput"
       >
@@ -118,6 +119,18 @@
       debug: Boolean,
       id: Number,
       locked: Boolean,
+    },
+
+    mounted() {
+
+      /**
+       * EventBus.
+       */
+      window.VueEventBus.$on('Quiz:Unlock', () => {
+        window.setTimeout(() => {
+          this.$refs.nameInput.focus();
+        }, 0);
+      });
     },
 
     methods: {
