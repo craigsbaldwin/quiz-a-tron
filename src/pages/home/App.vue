@@ -249,6 +249,10 @@
 
         window.setTimeout(() => {
           this.state.loaded = true;
+
+          window.setTimeout(() => {
+            this.scrollToTop();
+          }, 0);
         }, timeout);
       },
 
