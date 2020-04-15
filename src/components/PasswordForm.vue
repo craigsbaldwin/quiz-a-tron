@@ -1,6 +1,7 @@
 <template>
   <form
     class="password input-field"
+    :class="{ 'has-error': error }"
     js-password="container"
     @submit.prevent="handleSubmit"
   >
@@ -16,8 +17,9 @@
         id="password"
         class="password__input input-field__input"
         placeholder="Password"
-        type="password"
-        aria-invalid="false"
+        ref="passwordInput"
+        :type="setInputType()"
+        :aria-invalid="error"
         data-lpignore="true"
         @click="handlePasswordClick"
         @keyup="handlePasswordInput"
@@ -25,9 +27,10 @@
 
       <button
         class="password__reveal"
+        :class="{ 'is-active': reveal }"
         role="switch"
         type="button"
-        aria-checked="false"
+        :aria-checked="reveal.toString()"
         @click="revealPassword"
       >
         Reveal
@@ -38,88 +41,95 @@
       class="password__error"
       role="status"
       aria-live="polite"
-      js-password="error"
+      v-text="renderErrorText()"
     ></span>
 
     <button
       class="button"
       type="submit"
     >
-      Submit
+      Unlock
     </button>
   </form>
 </template>
 
 <script>
   export default {
+    data() {
+      return {
+        error: false,
+        reveal: false,
+      }
+    },
+
     props: {
+      event: {
+        type: String,
+        default: 'Quiz:Unlock'
+      },
       password: String,
+    },
+
+    mounted() {
+      this.$refs.passwordInput.focus();
     },
 
     methods: {
 
       /**
-       * Handle password input click.
-       * @param {Event} event - Click event.
+       * Renders error text.
        */
-      handlePasswordClick(event) {
-        const element = event.target;
+      renderErrorText() {
+        if (this.error) {
+          return 'You\'ve enter the password incorrectly';
+        }
+
+        return '';
+      },
+
+      /**
+       * Handle password input click.
+       */
+      handlePasswordClick() {
+        const element = this.$refs.passwordInput;
         element.setSelectionRange(0, element.value.length);
       },
 
       /**
        * Handle password field input.
-       * @param {Event} event - Key up event.
        */
-      handlePasswordInput(event) {
-        const element = event.target;
-        const passwordInput = element;
-        const passwordContainer = element.closest('[js-password="container"]');
-        const passwordError = passwordContainer.querySelector('[js-password="error"]');
-
-        passwordError.innerText = '';
-        passwordContainer.classList.remove('has-error');
-        passwordInput.setAttribute('aria-invalid', false);
+      handlePasswordInput() {
+        this.error = false;
       },
 
       /**
        * Reveal the password value.
-       * @param {Event} event - Click event.
        */
-      revealPassword(event) {
-        const element = event.target;
+      revealPassword() {
+        this.reveal = !this.reveal;
+      },
 
-        if (!element.classList.contains('is-active')) {
-          element.classList.add('is-active');
-          element.setAttribute('aria-checked', true);
-          element.previousElementSibling.setAttribute('type', 'text');
-          return;
+      /**
+       * Sets password input type.
+       */
+      setInputType() {
+        if (this.reveal) {
+          return 'text';
         }
 
-        element.classList.remove('is-active');
-        element.setAttribute('aria-checked', false);
-        element.previousElementSibling.setAttribute('type', 'password');
+        return 'password';
       },
 
       /**
        * Submit the password input.
-       * @param {Event} event - Click event.
        */
-      handleSubmit(event) {
-        const element = event.target;
-        const passwordInput = element.querySelector('input');
-        const passwordValue = passwordInput.value;
-        const passwordContainer = element.closest('[js-password="container"]');
-        const passwordError = passwordContainer.querySelector('[js-password="error"]');
-
-        if (passwordValue === this.password) {
-          window.VueEventBus.$emit('Quiz:Unlock');
+      handleSubmit() {
+        if (this.$refs.passwordInput.value === this.password) {
+          window.VueEventBus.$emit(this.event);
           return;
         }
 
-        passwordInput.setAttribute('aria-invalid', true);
-        passwordContainer.classList.add('has-error');
-        passwordError.innerText = 'You\'ve enter the password incorrectly';
+        this.error = true;
       }
     }
   }

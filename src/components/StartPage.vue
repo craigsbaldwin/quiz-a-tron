@@ -2,11 +2,11 @@
   <div class="start">
     <div class="start__content">
       <p>
-        Welcome to the <strong>Quiz-a-tron</strong>, a Vue-powered quiz app.
+        Welcome to the <strong>Quiz-a-tron 1000</strong>, a Vue-powered quiz robot.
       </p>
 
       <p>
-        It's time to test all aspects of your knowledge, from music and movies, to geography and language, and everything in between. This is meant to be tricky.
+        Each week/fortnight we'll be doing a quiz in the wind down until the end of the lockdown. This is your chance to win the minipresso that has been sat on my desk for over a year.
       </p>
 
       <p class="start__warning">
@@ -18,13 +18,15 @@
       <h2 class="start__label label">Rules</h2>
 
       <ul class="start__group outlined-group">
+        <li>You will need a password to start the quiz</li>
         <li>30 seconds for each question, unless otherwise stated</li>
-        <li>The questions are not in this app, you will not be able to finish the quiz without the presentation</li>
+        <li>You will not be able to finish the quiz without the quiz presentation</li>
         <li>Questions are scored on their difficulty and shown underneath each question</li>
         <li>You must provide an answer to proceed</li>
         <li>You will not be able to go back once you've answered a question, no do-overs</li>
         <li>A password is required to unlock your score at the end, we will not be going through the answers one at a time</li>
-        <li>If you try to debug the code to find the answers you are immediately disqualified</li>
+        <li>If you try to cheat you are immediately disqualified</li>
+        <li>I will make the source code available later</li>
       </ul>
     </div>
 
@@ -50,7 +52,13 @@
       </div>
     </div>
 
+    <PasswordForm
+      v-if="locked && !debug"
+      password="password"
+    />
+
     <form
+      v-else
       class="start__form input-field"
       @submit.prevent="handleStart"
     >
@@ -66,6 +74,7 @@
         class="start__input input-field__input"
         :max="characterLimit"
         placeholder="Name"
+        ref="nameInput"
         type="text"
         @keyup="handleNameInput"
       >
@@ -79,19 +88,49 @@
       ></button>
     </form>
 
-    <small class="start__footer">
-      Built by <a href="https://craigbaldwin.com" target="blank">Craig Baldwin</a> 2020.
-    </small>
+    <footer class="footer">
+      <small class="footer__copyright">
+        Built by <a href="https://craigbaldwin.com" target="blank">Craig Baldwin</a> 2020.
+      </small>
+
+      <small class="footer__id">
+        Round {{ id }}
+      </small>
+    </footer>
   </div>
 </template>
 
 <script>
+  import PasswordForm from './PasswordForm.vue';
+
   export default {
+    components: {
+      PasswordForm,
+    },
+
     data() {
       return {
         characterLimit: 128,
         startEnabled: false,
       }
+    },
+
+    props: {
+      debug: Boolean,
+      id: Number,
+      locked: Boolean,
+    },
+
+    mounted() {
+
+      /**
+       * EventBus.
+       */
+      window.VueEventBus.$on('Quiz:Unlock', () => {
+        window.setTimeout(() => {
+          this.$refs.nameInput.focus();
+        }, 0);
+      });
     },
 
     methods: {

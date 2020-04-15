@@ -22,7 +22,7 @@
       >
 
       <span class="input-field__accuracy">
-        ±{{ accuracy }}
+        ±{{ accuracy }} {{ accuracyUnits }}
       </span>
     </div>
   </div>
@@ -32,6 +32,7 @@
   export default {
     props: {
       accuracy: Number,
+      accuracyUnits: String,
       label: String,
       step: Number,
       numberGroup: Number,

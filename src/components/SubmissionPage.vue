@@ -1,12 +1,12 @@
 <template>
   <div class="submission">
-    <span v-if="submitted === 'false'">
+    <span v-if="state.submission === 'not-submitted'">
       <Loading
         text="Submitting answers"
       />
     </span>
 
-    <span v-else-if="submitted === 'error'">
+    <span v-else-if="state.submission === 'error'">
       <h2>Error</h2>
 
       <p>There was an error submitting, please try again. If submitting fails again then please proceed to your score.</p>
@@ -38,9 +38,16 @@
       Loading,
     },
 
+    data() {
+      return {
+        collectionId: '5e942fdfb08d064dc025fafe',
+        start: 0,
+      };
+    },
+
     props: {
+      state: Object,
       submission: Object,
-      submitted: String,
     },
 
     mounted() {
@@ -53,56 +60,68 @@
        * Submit the form.
        */
       beginSubmission() {
-        const start = performance.now();
+        this.start = performance.now();
 
         fetch('https://ipinfo.io/json?token=eba9824532e19b')
           .then(response => response.json())
           .then((response) => {
-            this.submission.id = response.ip;
-            this.submission.timestamp = this.getTimestamp();
+            const data = {
+              ip: response.ip,
+            };
 
-            this.submitForm(start);
+            window.VueEventBus.$emit('Submission:Update', data);
+            this.fetchTimestamp();
           })
           .catch((error) => {
-            this.displayError(start);
+            const data = {
+              ip: 'Blocked',
+            };
 
-            throw new Error ('IP lookup', error);
+            window.VueEventBus.$emit('Submission:Update', data);
+            this.fetchTimestamp();
+
+            throw new Error ('IP lookup error', error);
           });
       },
 
       /**
-       * Submit the form.
-       * @param {Number} start - Start timing value.
+       * Get timestamp from API.
        */
-      submitForm(start) {
-        fetch('https://api.jsonbin.io/b', {
-          method: 'post',
-          headers: {
-            'collection-id': '5e0f71c2fadb735054fc987c',
-            'Content-Type': 'application/json',
-            'name': this.submission.name,
-            'private': false,
-            'secret-key': '$2b$10$//.FQ70G0YQb6oFpN7RwMeb1RJS95U1tjzSrDCTXM/42M.l8ztAZi',
-          },
-          body: JSON.stringify(this.submission),
-        })
+      fetchTimestamp() {
+        fetch('http://worldclockapi.com/api/json/utc/now')
           .then(response => response.json())
           .then((response) => {
-            this.formSubmitted(response, start);
+            const data = {
+              timestamp: this.getTimestamp(response),
+            };
+
+            window.VueEventBus.$emit('Submission:Update', data);
+            this.submitForm();
           })
           .catch((error) => {
-            this.displayError(start);
+            const data = {
+              timestamp: this.getTimestamp(),
+            };
 
-            throw new Error ('jsonbin submission', error);
+            window.VueEventBus.$emit('Submission:Update', data);
+            this.submitForm();
+
+            throw new Error ('IP lookup error', error);
           });
       },
 
       /**
        * Get the timestamp of submission.
+       * @param {Object} response - Timestamp API response.
        * @returns {String}
        */
-      getTimestamp() {
-        const date = new Date();
+      getTimestamp(response) {
+        let date = new Date();
+
+        if (response) {
+          date = new Date(response.currentDateTime);
+        }
+
         const year = date.getFullYear();
 
         let month = (date.getMonth() + 1).toString();
@@ -115,42 +134,67 @@
           day = `0${day}`;
         }
 
-        let hours = date.getHours().toString();
+        let hours = date.getUTCHours().toString();
         if (hours.length === 1) {
-          hours = `0${day}`;
+          hours = `0${hours}`;
         }
 
         const minutes = date.getMinutes().toString();
 
         let seconds = date.getSeconds().toString();
         if (seconds.length === 1) {
-          seconds = `0${day}`;
+          seconds = `0${seconds}`;
         }
 
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       },
 
       /**
+       * Submit the form.
+       */
+      submitForm() {
+        fetch('https://api.jsonbin.io/b', {
+          method: 'post',
+          headers: {
+            'collection-id': this.collectionId,
+            'Content-Type': 'application/json',
+            'name': this.submission.name,
+            'private': false,
+            'secret-key': '$2b$10$//.FQ70G0YQb6oFpN7RwMeb1RJS95U1tjzSrDCTXM/42M.l8ztAZi',
+          },
+          body: JSON.stringify(this.submission),
+        })
+          .then(response => response.json())
+          .then((response) => {
+            this.formSubmitted(response);
+          })
+          .catch((error) => {
+            this.displayError();
+
+            throw new Error ('JSON bin submission error', error);
+          });
+      },
+
+      /**
        * Emit event when form has been submitted.
        * - Show animation for at least three seconds.
        * @param {Object} response - Bin submission response.
-       * @param {Number} start - Start timing value.
        */
-      formSubmitted(response, start) {
+      formSubmitted(response) {
         if (!response.success) {
-          window.VueEventBus.$emit('Submission:Error');
+          window.VueEventBus.$emit('Submission:State', 'error');
           return;
         }
 
         const finish = performance.now();
-        const duration = (finish - start);
+        const duration = (finish - this.start);
 
         if (duration > 3000) {
-          window.VueEventBus.$emit('Submission:Submitted');
+          window.VueEventBus.$emit('Submission:State', 'submitted');
 
         } else {
           window.setTimeout(() => {
-            window.VueEventBus.$emit('Submission:Submitted');
+            window.VueEventBus.$emit('Submission:State', 'submitted');
           }, (3000 - duration));
         }
       },
@@ -164,11 +208,11 @@
         const duration = (finish - start);
 
         if (duration > 3000) {
-          window.VueEventBus.$emit('Submission:Error');
+          window.VueEventBus.$emit('Submission:State', 'error');
 
         } else {
           window.setTimeout(() => {
-            window.VueEventBus.$emit('Submission:Error');
+            window.VueEventBus.$emit('Submission:State', 'error');
           }, (3000 - duration));
         }
       },
@@ -177,7 +221,7 @@
        * Retry the submission.
        */
       retrySubmission() {
-        window.VueEventBus.$emit('Submission:Retry');
+        window.VueEventBus.$emit('Submission:State', 'not-submitted');
         this.beginSubmission();
       },
 
@@ -185,7 +229,7 @@
        * If all else fails then skip submission.
        */
       skipSubmission() {
-        window.VueEventBus.$emit('Submission:Submitted');
+        window.VueEventBus.$emit('Submission:State', 'skipped');
       },
     },
   }

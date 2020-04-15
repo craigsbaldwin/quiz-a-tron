@@ -5,12 +5,12 @@
       [
         { 'is-correct': questionCorrect },
         { 'is-wrong': questionWrong },
-        { 'is-mixed': questionMixed },
+        { 'is-mixed': !questionCorrect && !questionWrong },
       ]
     "
   >
     <div class="score-table__heading">
-      <h3>Question {{ index + 1 }}</h3>
+      <h3>Question {{ question.number }}</h3>
 
       <span
         v-text="questionTotal"
@@ -23,39 +23,39 @@
       class="score-table__row"
       :class="
         [
-          { 'is-correct': singleChoice.saved && singleChoice.correct },
-          { 'is-wrong': singleChoice.saved && !singleChoice.correct },
+          { 'is-correct': isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) },
+          { 'is-wrong': !isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) },
         ]
       "
-      :key="index"
+      :key="`QuestionScore${question.number}-Choice${index}`"
     >
       <div class="score-table__cell">
-        <span
-          v-text="givenAnswerValue(index)"
-          class="score-table__given-answer"
-        ></span>
+        <span class="score-table__given-answer">{{ choice[index] }}</span>
 
         <span
-          v-if="singleChoice.saved && !singleChoice.correct && question.type !== 'number'"
-          v-text="answerValue(index)"
+          v-if="!isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) && question.type !== 'number'"
           class="score-table__answer"
-        ></span>
+        >
+          {{ answer[index] }}
+        </span>
 
         <span
-          v-else-if="singleChoice.saved && !singleChoice.correct && question.type === 'number'"
-          v-text="`${answerValue(index)} ± ${singleChoice.accuracy}`"
+          v-else-if="!isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) && question.type === 'number'"
           class="score-table__answer score-table__answer--number"
-        ></span>
+        >
+          {{ answer[index] }} ± {{ singleChoice.accuracy }} {{ singleChoice.accuracyUnits }}
+        </span>
 
         <span
-          v-else-if="singleChoice.saved && singleChoice.correct && question.type === 'number'"
-          v-text="`(${answerValue(index)} ± ${singleChoice.accuracy})`"
+          v-else-if="isCorrect(question.type, choice[index], answer[index], singleChoice.accuracy) && question.type === 'number'"
           class="score-table__answer score-table__answer--number"
-        ></span>
+        >
+          ({{ answer[index] }} ± {{ singleChoice.accuracy }} {{ singleChoice.accuracyUnits }})
+        </span>
       </div>
 
       <span
-        v-text="markQuestion(question, index)"
+        v-text="markQuestion(index)"
         class="score-table__cell score-table__points"
       ></span>
     </div>
@@ -63,77 +63,13 @@
 </template>
 
 <script>
+  import {isCorrect} from './utils.js';
+
   export default {
     props: {
-      index: Number,
+      answer: Array,
+      choice: Array,
       question: Object,
-    },
-
-    methods: {
-
-      /**
-       * Get the plain text given answer value.
-       * @param {Number} index - Choice index.
-       * @returns {String}
-       */
-      givenAnswerValue(index) {
-        if (this.question.choices[index].saved === false) {
-          return 'Not answered';
-        }
-
-        switch (this.question.type) {
-          case 'number':
-            return this.question.givenAnswers[index];
-
-          case 'radio':
-            return this.question.choices[index].answers[this.question.givenAnswers[index]].label;
-
-          case 'select':
-            return this.question.givenAnswers[index];
-
-          case 'text':
-            return this.question.givenAnswers[index];
-        }
-      },
-
-      /**
-       * Get the plain text answer value.
-       * @param {Number} index - Choice index.
-       * @returns {String}
-       */
-      answerValue(index) {
-        switch (this.question.type) {
-          case 'number':
-            return this.question.answers[index];
-
-          case 'radio':
-            return this.question.choices[index].answers[this.question.answers[index]].label;
-
-          case 'select':
-            return this.question.answers[index];
-
-          case 'text':
-            return this.question.answers[index];
-        }
-      },
-
-      /**
-       * Mark the question choice.
-       * @param {Object} question - Question data.
-       * @param {Number} choiceIndex - Current choice index.
-       * @returns {String}
-       */
-      markQuestion(question, choiceIndex) {
-        if (!question.choices[choiceIndex].saved) {
-          return ''
-        }
-
-        if (question.choices[choiceIndex].correct) {
-          return `${question.choices[choiceIndex].points}pt${(question.choices[choiceIndex].points === 1) ? '' : 's'}`;
-        }
-
-        return '0pts';
-      },
     },
 
     computed: {
@@ -143,10 +79,11 @@
        * @returns {Boolean}
        */
       questionCorrect() {
-        const notSaved = this.question.choices.filter((choice) => choice.saved === false);
-        const wrongAnswers = this.question.choices.filter((choice) => choice.correct === false);
+        const correctAnswers = this.choice.filter((choice, index) => {
+          return isCorrect(this.question.type, choice,  this.answer[index], this.question.choices[index].accuracy);
+        });
 
-        return (notSaved.length === 0 && wrongAnswers.length === 0);
+        return (correctAnswers.length === this.answer.length);
       },
 
       /**
@@ -154,39 +91,63 @@
        * @returns {Boolean}
        */
       questionWrong() {
-        const wrongAnswers = this.question.choices.filter((choice) => choice.saved && choice.correct === false);
+        const wrongAnswers = this.choice.filter((choice, index) => {
+          return !isCorrect(this.question.type, choice,  this.answer[index], this.question.choices[index].accuracy);
+        });
 
-        return (wrongAnswers.length === this.question.answers.length);
+        return (wrongAnswers.length === this.answer.length);
       },
 
       /**
-       * Question isn't totally correct or wrong.
-       * @returns {Boolean}
-       */
-      questionMixed() {
-        const notSaved = this.question.choices.filter((choice) => choice.saved === false);
-        const wrongAnswers = this.question.choices.filter((choice) => choice.saved && choice.correct === false);
-
-        return (notSaved.length === 0 && wrongAnswers.length !== 0 && wrongAnswers.length !== this.question.answers.length);
-      },
-
-      /**
-       * Calculate the question total points available.
+       * Calculate the question's total awarded points.
        * @returns {Number}
        */
       questionTotal() {
         let total = 0;
+        let available = 0;
 
-        this.question.choices.forEach((choice) => {
-          if (!choice.correct) {
+        this.question.choices.forEach((choice, index) => {
+          available += choice.points;
+
+          if (!isCorrect(this.question.type, this.choice[index], this.answer[index], choice.accuracy)) {
             return;
           }
 
           total += choice.points;
         });
 
-        return `${total}pt${(total === 1) ? '' : 's'}`;
+        return `${total}/${available}`;
       },
-    }
+    },
+
+    methods: {
+
+      /**
+       * Use util function to determine if correct.
+       * @param {String} type - Question type.
+       * @param {String|Number} choice - Given answer.
+       * @param {String|Number} answer - Actual answer.
+       * @param {Number} accuracy - Accepted accuracy.
+       */
+      isCorrect(type, choice, answer, accuracy) {
+        return isCorrect(type, choice, answer, accuracy);
+      },
+
+      /**
+       * Mark the question choice.
+       * @param {Number} index - Current choice index.
+       * @returns {String}
+       */
+      markQuestion(index) {
+        let points = 0;
+        const available = this.question.choices[index].points;
+
+        if (isCorrect(this.question.type, this.choice[index], this.answer[index], this.question.choices[index].accuracy)) {
+          points = this.question.choices[index].points;
+        }
+
+        return `${points}/${available}`;
+      },
+    },
   }
 </script>

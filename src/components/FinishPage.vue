@@ -1,18 +1,19 @@
 <template>
   <div class="finish">
-    <div
-      v-if="!unlocked"
-      class="finish__intro"
-    >
+    <div class="finish__intro">
       <h2>That's a wrap</h2>
 
-      <p>
-        Your answers have been submitted. To review your score you must first enter a password, which I'll be providing after announcing who's won.
+      <p v-if="state.submission === 'submitted'">
+        Your answers have been submitted. To review your score you must first enter a password, which I'll be providing after showing the current leaderboard.
+      </p>
+
+      <p v-else>
+        Your answers haven't been submitted, you will need to manually share your score with me. To review your score you must first enter a password, which I'll be providing after showing the current leaderboard.
       </p>
     </div>
 
     <PasswordForm
-      v-if="!unlocked"
+      event="Results:Unlock"
       password="password"
     />
   </div>
@@ -28,7 +29,7 @@
 
     props: {
       questions: Array,
-      unlocked: Boolean,
+      state: Object,
     },
   }
 </script>

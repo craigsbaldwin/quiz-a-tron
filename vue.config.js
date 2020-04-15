@@ -8,6 +8,12 @@ module.exports = {
       title: 'Home',
       chunks: ['chunk-vendors', 'chunk-common', 'index'],
     },
+    'leaderboard': {
+      entry: './src/pages/leaderboard/main.js',
+      template: 'public/index.html',
+      title: 'Leaderboard',
+      chunks: ['chunk-vendors', 'chunk-common', 'leaderboard'],
+    },
     'results': {
       entry: './src/pages/results/main.js',
       template: 'public/index.html',

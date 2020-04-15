@@ -1,14 +1,13 @@
 <template>
   <div
-    class="page page--quiz"
-    :class="{ 'is-finished': finished && submitted === 'true' }"
+    :class="{ 'is-finished': state.finished && state.submission === 'submitted' }"
   >
-    <header class="header">
-      <h1>Quiz-a-tron</h1>
-    </header>
+    <Header
+      title="Quiz-a-tron 1000"
+    />
 
     <Loading
-      v-if="!loaded"
+      v-if="!state.loaded"
       text="Loading data"
     />
 
@@ -18,40 +17,67 @@
       />
 
       <div
-        v-if="!unlocked"
+        v-if="!state.showResults"
         class="container"
       >
         <StartPage
           v-if="step === 0"
+          :debug="state.debug"
+          :id="submission.id"
+          :locked="state.locked"
         />
 
-        <Questions
-          v-if="!finished"
-          :step="step"
+        <div
+          v-if="!state.finished"
+          class="questions"
+        >
+          <div class="questions__container">
+            <Question
+              v-for="(question) in questions"
+              class="questions__question question"
+              :class="{ 'is-active': step === (question.number) }"
+              :key="`Question${question.number}`"
+              :no-of-questions="questions.length"
+              :step="step"
+              :question="question"
+            />
+          </div>
+        </div>
+
+        <ScoringPage
+          v-if="state.finished && state.scoring"
+          :choices="choices"
+          :display="false"
           :questions="questions"
+          :total-available="totalAvailable"
         />
 
         <SubmissionPage
-          v-if="finished && submitted !== 'true'"
+          v-if="state.finished && !state.scoring && state.submission !== 'submitted'"
+          :state="state"
           :submission="submission"
-          :submitted="submitted"
         />
 
         <FinishPage
-          v-if="finished && submitted === 'true'"
+          v-if="
+            state.finished &&
+            !state.scoring &&
+            (state.submission === 'submitted' || state.submission === 'skipped') &&
+            !state.showResults
+          "
           :questions="questions"
-          :unlocked="unlocked"
+          :state="state"
         />
       </div>
 
       <div
-        v-if="debug && step > 0 || unlocked"
+        v-if="state.showResults"
         class="container"
       >
-        <Scoring
+        <ScoringPage
+          :choices="choices"
           :questions="questions"
           :total-available="totalAvailable"
-          :total-score="totalScore"
         />
       </div>
     </div>
@@ -60,53 +86,78 @@
 
 <script>
   import FinishPage from '../../components/FinishPage.vue';
+  import Header from '../../components/Header.vue';
   import Loading from '../../components/Loading.vue';
   import ProgressBar from '../../components/ProgressBar.vue';
-  import Questions from '../../components/Questions.vue';
-  import Scoring from '../../components/Scoring.vue';
+  import Question from '../../components/Question.vue';
+  import ScoringPage from '../../components/ScoringPage.vue';
   import StartPage from '../../components/StartPage.vue';
   import SubmissionPage from '../../components/SubmissionPage.vue';
 
-  import devData from '../../data/dev-data.js';
+  import questions from '../../data/questions.js';
 
   export default {
     name: 'Quiz-a-tron',
 
     components: {
       FinishPage,
+      Header,
       Loading,
       ProgressBar,
-      Questions,
-      Scoring,
+      Question,
+      ScoringPage,
       StartPage,
       SubmissionPage,
     },
 
     data() {
       return {
-        binId: '5dfcd5a02c714135cda4b6d5',
-        date: 'jan',
-        debug: false,
-        finished: false,
-        loaded: false,
+        choices: [],
         progress: 0,
-        questions: [],
+        questions: questions.data,
         score: 0,
         step: 0,
+        state: {
+          debug: false,
+          finished: false,
+          loaded: false,
+          locked: true,
+          scoring: false,
+          showResults: false,
+          submission: 'not-submitted',
+        },
         submission: {
           available: 0,
-          id: '',
+          id: 1,
+          ip: '',
           name: '',
           score: 0,
           timestamp: '',
         },
-        submitted: 'false',
-        unlocked: false,
       };
     },
 
+    computed: {
+
+      /**
+       * Calculate total available points.
+       * @returns {Number}
+       */
+      totalAvailable() {
+        let total = 0;
+
+        this.questions.forEach((question) => {
+          question.choices.forEach((choice) => {
+            total += choice.points;
+          });
+        });
+
+        return total;
+      },
+    },
+
     mounted() {
-      if (!this.debug) {
+      if (!this.state.debug) {
         this.navigationWarnings();
       }
 
@@ -114,7 +165,7 @@
       this.submission.available = this.totalAvailable;
 
       /**
-       * EventBus.
+       * Quiz events.
        */
       window.VueEventBus.$on('Quiz:Start', () => {
         this.navigateNextQuestion(0);
@@ -131,6 +182,18 @@
         this.submission.name = escapedName;
       });
 
+      window.VueEventBus.$on('Quiz:Marked', (score) => {
+        this.submission.score = score;
+        this.state.scoring = false;
+      });
+
+      window.VueEventBus.$on('Quiz:Unlock', () => {
+        this.state.locked = false;
+      });
+
+      /**
+       * Question events.
+       */
       window.VueEventBus.$on('Question:Input', (data) => {
         this.handleAnswerInput(data);
       });
@@ -143,24 +206,23 @@
         this.handleQuestionSubmit(questionNumber);
       });
 
-      window.VueEventBus.$on('Quiz:Finish', () => {
-        this.handleQuizFinish();
+      /**
+       * Submission events.
+       */
+      window.VueEventBus.$on('Submission:Update', (data) => {
+        this.submission.ip = data.ip;
+        this.submission.timestamp = data.timestamp;
       });
 
-      window.VueEventBus.$on('Submission:Submitted', () => {
-        this.submitted = 'true';
+      window.VueEventBus.$on('Submission:State', (state) => {
+        this.state.submission = state;
       });
 
-      window.VueEventBus.$on('Submission:Retry', () => {
-        this.submitted = 'false';
-      });
-
-      window.VueEventBus.$on('Submission:Error', () => {
-        this.submitted = 'error';
-      });
-
-      window.VueEventBus.$on('Quiz:Unlock', () => {
-        this.unlocked = true;
+      /**
+       * Results events.
+       */
+      window.VueEventBus.$on('Results:Unlock', () => {
+        this.state.showResults = true;
       });
     },
 
@@ -176,31 +238,22 @@
       },
 
       /**
-       * Load data from JSONBIN.
+       * Load data from local data.
        */
       loadData() {
-        if (this.debug) {
-          this.questions = devData.data;
-          this.loaded = true;
-          return;
+        let timeout = 3000;
+
+        if (this.state.debug) {
+          timeout = 0;
         }
 
-        if (localStorage.getItem(`questions-${this.date}`) !== null) {
-          this.questions = JSON.parse(localStorage.getItem(`questions-${this.date}`));
-          this.loaded = true;
-          return;
-        }
+        window.setTimeout(() => {
+          this.state.loaded = true;
 
-        fetch(`https://api.jsonbin.io/b/${this.binId}/latest`)
-          .then(response => response.json())
-          .then((response) => {
-            localStorage.setItem(`questions-${this.date}`, JSON.stringify(response));
-            this.questions = response;
-            this.loaded = true;
-          })
-          .catch((error) => {
-            throw new Error('JSON bin load', error);
-          })
+          window.setTimeout(() => {
+            this.scrollToTop();
+          }, 0);
+        }, timeout);
       },
 
       /**
@@ -231,7 +284,9 @@
         const choices = activeQuestion.querySelector('[js-choices="group"]');
         const input = choices.querySelector('[js-choices="input"]');
 
-        input.focus();
+        window.setTimeout(() => {
+          input.focus();
+        }, 0);
       },
 
       /**
@@ -268,7 +323,6 @@
       handleQuestionSubmit(questionNumber) {
         this.saveAnswer(questionNumber);
         this.calculateProgress(questionNumber + 1);
-        this.markAnswer(questionNumber - 1);
 
         if (questionNumber === this.questions.length) {
           this.handleQuizFinish();
@@ -285,6 +339,7 @@
        */
       saveAnswer(questionNumber) {
         const choices = [...document.querySelectorAll(`[js-question="${questionNumber}"] [js-choices="group"]`)];
+        const saveArray = [];
 
         choices.forEach((group, groupIndex) => {
           const inputs = [...group.querySelectorAll('[js-choices="input"]')];
@@ -294,56 +349,23 @@
 
             switch (type) {
                case 'number':
-                this.questions[questionNumber - 1].givenAnswers[groupIndex] = Number(input.value);
+                saveArray.push(Number(input.value));
                 break;
 
               case 'radio':
                 if (!input.checked) { return; }
-                this.questions[questionNumber - 1].givenAnswers[groupIndex] = index;
+                saveArray.push(this.questions[questionNumber - 1].choices[groupIndex].answers[index].label);
                 break;
 
               case 'select':
               case 'text':
-                this.questions[questionNumber - 1].givenAnswers[groupIndex] = input.value;
+                saveArray.push(input.value);
                 break;
             }
           });
         });
 
-        this.questions[questionNumber - 1].choices.forEach((choice) => {
-          choice.saved = true;
-        });
-      },
-
-      /**
-       * Marks the answer when question is submitted.
-       * @param {Number} questionIndex - Question's index number.
-       */
-      markAnswer(questionIndex) {
-        const question = this.questions[questionIndex];
-
-        question.givenAnswers.forEach((givenAnswer, index) => {
-          let answer = question.answers[index];
-
-          if (typeof answer === 'string') {
-            answer = answer.toLowerCase();
-            givenAnswer = givenAnswer.toLowerCase();
-          }
-
-          /**
-           * Number questions have an accuracy threshold.
-           */
-          if (question.type === 'number') {
-            const accuracy = question.choices[index].accuracy;
-            question.choices[index].correct = (givenAnswer >= (answer - accuracy) && givenAnswer <= (answer + accuracy));
-
-            return;
-          }
-
-          question.choices[index].correct = (answer === givenAnswer);
-        });
-
-        this.submission.score = this.totalScore;
+        this.choices.push(saveArray);
       },
 
       /**
@@ -351,46 +373,8 @@
        */
       handleQuizFinish() {
         this.scrollToTop();
-        this.finished = true;
-      },
-    },
-
-    computed: {
-
-      /**
-       * Calculate the total score by iterating over all questions.
-       * @returns {Number}
-       */
-      totalScore() {
-        let score = 0;
-
-        this.questions.forEach((question) => {
-          question.choices.forEach((choice) => {
-            if (!choice.answered || !choice.correct) {
-              return;
-            }
-
-            score += choice.points;
-          });
-        });
-
-        return score;
-      },
-
-      /**
-       * Calculate total available points.
-       * @returns {Number}
-       */
-      totalAvailable() {
-        let total = 0;
-
-        this.questions.forEach((question) => {
-          question.choices.forEach((choice) => {
-            total += choice.points;
-          });
-        });
-
-        return total;
+        this.state.finished = true;
+        this.state.scoring = true;
       },
     },
   }

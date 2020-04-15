@@ -13,12 +13,12 @@
   --colour-text: rgb(52, 73, 94);
   --colour-text-inverse: rgb(255, 255, 255);
 
-  --colour-green: rgb(69, 212, 198);
+  --colour-green: rgb(46, 204, 113);
   --colour-light-grey: rgb(225, 225, 225);
   --colour-grey: rgb(189, 195, 199);
   --colour-yellow: rgb(241, 196, 15);
   --colour-red: rgb(231, 76, 60);
-  --colour-purple: rgb(70, 46, 180);
+  --colour-purple: rgb(70, 46, 180); // #462eb4
 
   --colour-white: rgb(255, 255, 255);
 
@@ -29,6 +29,8 @@
   /**
    * Typography.
    */
+  --font-family: 'Inter', sans-serif;
+
   --font-xs: 0.875rem;
   --font-s: 1rem;
   --font-m: 1.25rem;
@@ -70,7 +72,7 @@
 /**
  * Animations.
  */
- @keyframes intro {
+@keyframes intro {
   from {
     opacity: 0;
   }

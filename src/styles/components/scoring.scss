@@ -6,7 +6,6 @@
  */
 .scoring {
   animation: intro var(--timing-l) var(--easing);
-  margin-top: var(--gutter-m);
 
   &__table:not(:last-child) {
     margin-bottom: var(--gutter-s);
@@ -38,9 +37,6 @@
   &__total-available {
     font-weight: var(--weight-bold);
     padding-top: var(--gutter-2xs);
-  }
-
-  .is-finished & {
-    margin-top: 0;
+    text-align: center;
   }
 }

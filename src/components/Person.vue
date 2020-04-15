@@ -4,9 +4,9 @@
     :class="
       [
         { 'person--tied': index > 0 },
-        { 'person--first': place === '1' },
-        { 'person--second': place === '2' },
-        { 'person--third': place === '3' },
+        { 'person--first': place === 1 },
+        { 'person--second': place === 2 },
+        { 'person--third': place === 3 },
       ]
     "
   >
@@ -21,7 +21,7 @@
     props: {
       index: Number,
       person: Object,
-      place: String,
+      place: Number,
     },
   }
 </script>

@@ -1,73 +1,53 @@
 <template>
   <div>
     <PasswordForm
-      v-if="!unlocked"
+      v-if="state.locked"
+      event="Results:Unlock"
       password="password"
     />
 
     <div
-      v-if="unlocked"
+      v-else
       class="results-table"
     >
       <div
-        v-if="show === 1"
-        class="results-table__people results-table__people--first"
+        v-for="(position, place0) in positions"
+        class="results-table__people"
+        :class="`results-table__people--${place0}`"
+        :key="`Position-${place0}`"
       >
-        <Medal
-          :available="places.first[0].available"
-          place="1"
-          :score="places.first[0].score"
-        />
+        <div
+          v-if="place0 === show"
+        >
+          <Medal
+            :available="position[0].available"
+            :place="(place0 + 1)"
+            :score="position[0].score"
+          />
 
-        <Person
-          v-for="(person, index) in places.first"
-          :index="index"
-          :key="index"
-          :person="person"
-          place="1"
-        />
-      </div>
-
-      <div
-        v-if="show === 2"
-        class="results-table__people results-table__people--second"
-      >
-        <Medal
-          :available="places.second[0].available"
-          place="2"
-          :score="places.second[0].score"
-        />
-
-        <Person
-          v-for="(person, index) in places.second"
-          :index="index"
-          :key="index"
-          :person="person"
-          place="2"
-        />
-      </div>
-
-      <div
-        v-if="show === 3"
-        class="results-table__people results-table__people--third"
-      >
-        <Medal
-          :available="places.third[0].available"
-          place="3"
-          :score="places.third[0].score"
-        />
-
-        <Person
-          v-for="(person, index) in places.third"
-          :index="index"
-          :key="index"
-          :person="person"
-          place="3"
-        />
+          <Person
+            v-for="(result, index) in position"
+            :class="{ 'is-active': place0 === showPeople }"
+            :index="index"
+            :key="`Person-${index}`"
+            :person="result"
+            :place="(place0 + 1)"
+            :style="`transition-delay: ${1 * index}s;`"
+          />
+        </div>
       </div>
 
       <button
-        v-if="show !== 1"
+        v-if="showPeople !== show"
+        class="button"
+        type="button"
+        @click="showPeople -= 1"
+      >
+        Reveal
+      </button>
+
+      <button
+        v-if="show !== 0 && showPeople === show"
         class="button"
         type="button"
         @click="show -= 1"
@@ -75,6 +55,18 @@
         Next
       </button>
     </div>
+
+    <footer
+      v-if="state.locked"
+      class="footer"
+    >
+      <button
+        class="footer__reload"
+        @click.prevent="reloadData"
+      >
+        <small>Reload</small>
+      </button>
+    </footer>
   </div>
 </template>
 
@@ -90,59 +82,28 @@
       Person,
     },
 
-    props: {
-      results: Array,
-      unlocked: Boolean,
-    },
-
     data() {
       return {
-        show: 3,
-        tempResults: this.results,
-        places: {
-          first: [],
-          second: [],
-          third: [],
+        show: 2,
+        showPeople: 3,
+        state: {
+          locked: true,
         },
-      }
+      };
+    },
+
+    props: {
+      positions: Array,
     },
 
     mounted() {
-      this.calculateWinners('first');
-      this.calculateWinners('second');
-      this.calculateWinners('third');
+
+      /**
+       * EventBus.
+       */
+      window.VueEventBus.$on('Results:Unlock', () => {
+        this.state.locked = false;
+      });
     },
-
-    methods: {
-
-      /**
-       * Return winner array.
-       * @param {String} position - Position.
-       */
-      calculateWinners(position) {
-        this.places[position].push(this.tempResults[0]);
-        this.tempResults = this.arrayRemove(this.tempResults, 0);
-
-        this.tempResults.forEach((result, index) => {
-          if (result.score < this.places[position][0].score) {
-            return;
-          }
-
-          this.places[position].push(result);
-          this.tempResults = this.arrayRemove(this.tempResults, index);
-        });
-      },
-
-      /**
-       * Remove item from array.
-       * @param {Array} array - Array to filter.
-       * @param {Number} index - Index of item to remove.
-       */
-      arrayRemove(array, index) {
-        return array.filter((item, filterIndex) => {
-          return filterIndex !== index;
-        });
-      },
-    }
   }
 </script>

@@ -13,7 +13,7 @@
   }
 
   &__warning {
-    background-image: linear-gradient(to right, var(--colour-purple), var(--colour-green));
+    background-color: var(--colour-purple);
     color: var(--colour-text-inverse);
     font-weight: var(--weight-bold);
     padding: var(--gutter-s);
@@ -56,10 +56,5 @@
 
   &__input {
     margin-bottom: var(--gutter-s);
-  }
-
-  &__footer {
-    display: block;
-    margin-top: var(--gutter-l);
   }
 }
