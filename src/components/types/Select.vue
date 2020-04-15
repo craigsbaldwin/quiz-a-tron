@@ -20,8 +20,9 @@
       >
         <option
           disabled
+          hidden
           selected
-          value="false"
+          value=""
         >
           Select an answer...
         </option>
@@ -59,7 +60,7 @@
           group: this.selectGroup,
         }
 
-        if (element.value === 'false') {
+        if (element.value === '') {
           window.VueEventBus.$emit('Question:Disable', data);
           return;
         }
