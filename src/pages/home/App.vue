@@ -3,7 +3,7 @@
     :class="{ 'is-finished': state.finished && state.submission === 'submitted' }"
   >
     <Header
-      title="Quiz-a-tron 1000"
+      :title="`Quiz-a-tron ${renderVersion()}`"
     />
 
     <Loading
@@ -25,6 +25,7 @@
           :debug="state.debug"
           :id="submission.id"
           :locked="state.locked"
+          :version="renderVersion()"
         />
 
         <div
@@ -118,7 +119,7 @@
         score: 0,
         step: 0,
         state: {
-          debug: false,
+          debug: true,
           finished: false,
           loaded: false,
           locked: true,
@@ -235,6 +236,21 @@
         window.onbeforeunload = function() {
           return 'Refreshing this page will lose all progress';
         };
+      },
+
+      /**
+       * Render version number.
+       */
+      renderVersion() {
+        const string = this.submission.id.toString();
+
+        if (string.length === 1) {
+          return `100${this.submission.id}`;
+        } else if (string.length === 2) {
+          return `10${this.submission.id}`;
+        } else {
+          return `1${this.submission.id}`;
+        }
       },
 
       /**

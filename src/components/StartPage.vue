@@ -2,7 +2,7 @@
   <div class="start">
     <div class="start__content">
       <p>
-        Welcome to the <strong>Quiz-a-tron 1000</strong>, a Vue-powered quiz robot.
+        Welcome to the <strong>Quiz-a-tron {{ version }}</strong>, a Vue-powered quiz robot.
       </p>
 
       <p>
@@ -119,6 +119,7 @@
       debug: Boolean,
       id: Number,
       locked: Boolean,
+      version: String,
     },
 
     mounted() {
